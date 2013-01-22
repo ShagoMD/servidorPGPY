@@ -6,7 +6,7 @@ from django.template import RequestContext
 EVENT_FIELDS_BASIC = ["altitud","descripcion","latitud","longitud","nombre","paginaWeb","telefono"]
 
 
-def crearPOI(request):
+def registrarPDI(request):
 	if request.method == "POST":
 		success, params = extract_params(request.POST,EVENT_FIELDS_BASIC)
 		if success:
