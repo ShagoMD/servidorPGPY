@@ -28,13 +28,18 @@ def peticionObtenerListadoPuntosDeInteres(request):
 		if success:
 			#return HttpResponse(parametrosPeticion)
 			try:	
-				obtenerListadoPuntosDeInteres(parametrosPeticion["latitud"],parametrosPeticion["longitud"],parametrosPeticion["rangoMaximoAlcance"])
+				
+				lista_puntos_de_interes = obtenerListadoPuntosDeInteres(parametrosPeticion["latitud"],parametrosPeticion["longitud"],parametrosPeticion["rangoMaximoAlcance"])
+				return	render_to_json("PDI/respuesta/puntoDeInteres.json",{'codigo':100, 'mensaje':lista_puntos_de_interes})
 			except Exception,err:
-				return HttpResponse(err)
+				   
+				   return	render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':err})
 					
 		else:			
+			
 			return	render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'Los parametros son incorrectos'})
 	else:
+		
 		return	render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'La peticion no es post'})
 		
 				
