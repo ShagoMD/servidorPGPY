@@ -1,3 +1,5 @@
+from django.shortcuts import render_to_response
+
 def _extract_params(request, fields, mandatory=False):
     
     fields_dict = {}
@@ -25,3 +27,13 @@ def extract_params(request, mandatory_fields, optional_fields=None):
         params.update(params_opt)
     
     return True, params
+
+def render_to_json(*args, **kwargs):
+    
+    response = render_to_response(*args, **kwargs)
+    #response['mimetype'] = "application/json"
+    response['Pragma'] = "no cache"
+    response['Cache-Control'] = "no-cache, must-revalidate"
+    response['Content-Type'] = "application/json"
+
+    return response
