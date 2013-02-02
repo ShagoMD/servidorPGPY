@@ -5,7 +5,7 @@ TIPO_CADENA = '3'
 
 
 def esTipoValido(variable, tipo):
-   tipoValido = true;
+   tipoValido = True;
    
    try:
         if tipo == TIPO_ENTERO:
@@ -15,6 +15,7 @@ def esTipoValido(variable, tipo):
         elif tipo == TIPO_CADENA:
             str(variable)
    except exceptions.ValueError:
-        tipoValido = false;
+        tipoValido = False;
+        print "Error conversion"
     
    return tipoValido;

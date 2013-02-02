@@ -1,4 +1,4 @@
-from django.db import models
+#from django.db import models
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 # Create your models here.
@@ -13,7 +13,7 @@ class PuntoDeInteres(models.Model):
     paginaWeb = models.CharField(max_length=500)
     correoElectronico = models.CharField(max_length=120)
     rutaImagen = models.CharField(max_length=310)
-    posicion = models.PointField()
+    posicion = models.PointField(srid=4326)
     altitud = models.FloatField(default=0.0)
     objects = models.GeoManager()
     favoritos = models.ManyToManyField(User,editable=False, related_name = 'favoritos')
