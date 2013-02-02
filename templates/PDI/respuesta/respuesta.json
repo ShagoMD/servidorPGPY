@@ -1,0 +1,5 @@
+"respuesta":
+			{
+			"codigo":{% block codigo %}{% endblock %}
+			"mensaje":{% block mensaje %}{% endblock %} 
+			}

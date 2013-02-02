@@ -1,0 +1,26 @@
+{% extends 'PDI/respuesta/respuesta.json' %}
+
+{% block codigo %}{{codigo}}{% endblock %}
+
+{% block mensaje %}
+		
+	[{% for pdi in lista_pdi %}
+		{
+			"nombre": {{ pdi.nombre }},
+			"descripcion": "{{pdi.descripcion}}",
+			"telefono": "{{pdi.telefono}}",
+			"direccion":"{{pdi.direccion}}", 
+			"categoria":"{{pdi.categoria}}",
+			"url":"{{pdi.paginaWeb}}",
+			"correoElectronico":"{{pdi.correoElectronico}}",
+			"urlImagen": "{{pdi.rutaImagen}}",
+			"posicion":
+						{
+		   					"latitud": {{ pdi.latitud }},
+		   					"longitud": {{ pdi.longitud }}
+		   					"altitud": {{ pdi.altitud }}
+						}		   
+		}
+	{% endfor %}]
+	
+{% endblock %} 

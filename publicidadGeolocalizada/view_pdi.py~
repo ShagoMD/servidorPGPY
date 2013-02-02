@@ -19,27 +19,16 @@ def registrarPDI(request):
 		return render_to_response("PDI/registrar_poi.html", context_instance=RequestContext(request))
 	
 	
-def peticionObtenerListadoPuntosDeInteres(request):	
+def obtenerListadoPuntosDeInteres(request):	
 	if request.method == "POST":
-		
-		
-		success, parametrosPeticion = extract_params(request.POST,CAMPOS_LISTADO_PDI)
-       
-		if success:
-			#return HttpResponse(parametrosPeticion)
-			try:	
-				
-				lista_puntos_de_interes = obtenerListadoPuntosDeInteres(parametrosPeticion["latitud"],parametrosPeticion["longitud"],parametrosPeticion["rangoMaximoAlcance"])
-				return	render_to_json("PDI/respuesta/puntoDeInteres.json",{'codigo':100, 'mensaje':lista_puntos_de_interes})
-			except Exception,err:
-				   
-				   return	render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':err})
-					
-		else:			
-			
-			return	render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'Los parametros son incorrectos'})
+		exito, params = extract_params(request.POST,EVENT_FIELDS_BASIC)
+		print params
+		if exito:
+			#obtenerListadoPuntosDeInteres(parametros['latitud'],parametros['longitud'],parametros['rangoMaximoAlcance'])
+			return HttpResponse(parametros)
+		else:
+			return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':params})
 	else:
-		
 		return	render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'La peticion no es post'})
 		
 				
