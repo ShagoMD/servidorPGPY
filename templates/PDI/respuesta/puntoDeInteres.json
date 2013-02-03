@@ -16,8 +16,8 @@
 			"urlImagen": "{{pdi.rutaImagen}}",
 			"posicion":
 						{
-		   					"latitud": {{ }},
-		   					"longitud": {{  }}
+		   					"latitud": ,
+		   					"longitud": ,
 		   					"altitud": {{ pdi.altitud }}
 						}		   
 		},

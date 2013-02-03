@@ -14,13 +14,13 @@ def obtenerListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance):
     parametrosValidos = validarParametrosListadoPuntosDeInteres(latitud, longitud, rangoMaximoAlcance=11)
     listaPuntosDeInteres = None
     if parametrosValidos:
-         print "Parametros validos"
+         #print "Parametros validos"
          posicionActual = Point(float(longitud),float(latitud),SRID)
          #listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__dwithin=(posicionActual, D(km=rangoMaximoAlcance)))
          listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance)))
-         print "Test"
-         for pdi in listaPuntosDeInteres:
-            print pdi.posicion.get_x()
+        
+        
+          #  print pdi.posicion.get_x()
     else:
          raise Exception("Los valores de los parametros son incorrectos");
     
