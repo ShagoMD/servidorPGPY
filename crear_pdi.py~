@@ -7,7 +7,7 @@ from django.contrib.gis.geos import *
 from django.contrib.auth.models import User
 
 
-u = User.objects.get(username__exact='prueba')
+u = User.objects.get(username='prueba')
 
 print u
 
@@ -23,6 +23,6 @@ p2.rutaImagen = '/prueba'
 p2.posicion = Point(-89.5905554294586,20.9579931014452,srid=4326)
 p2.propietario = u
 
-p2.save()
+
 
 

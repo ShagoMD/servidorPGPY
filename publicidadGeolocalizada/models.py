@@ -17,7 +17,7 @@ class PuntoDeInteres(models.Model):
     altitud = models.FloatField(default=0.0)
     objects = models.GeoManager()
     favoritos = models.ManyToManyField(User, related_name = 'favoritos')
-    pripietario = models.ForeignKey(User, related_name = 'propiedades')           
+    propietario = models.ForeignKey(User, related_name = 'propiedades')           
      
 
 
