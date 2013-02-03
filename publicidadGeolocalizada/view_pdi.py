@@ -30,7 +30,7 @@ def peticionObtenerListadoPuntosDeInteres(request):
 			try:	
 				
 				lista_puntos_de_interes = obtenerListadoPuntosDeInteres(parametrosPeticion["latitud"],parametrosPeticion["longitud"],parametrosPeticion["rangoMaximoAlcance"])
-				return	render_to_json("PDI/respuesta/puntoDeInteres.json",{'codigo':100, 'mensaje':lista_puntos_de_interes})
+				return	render_to_json("PDI/respuesta/puntoDeInteres.json",{'codigo':100, 'lista_pdi':lista_puntos_de_interes})
 			except Exception,err:
 				   
 				   return	render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':err})

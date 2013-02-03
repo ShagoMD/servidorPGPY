@@ -12,15 +12,15 @@ u = User.objects.get(username='prueba')
 print u
 
 p2 = PuntoDeInteres()
-p2.nombre = 'prueba1'
-p2.descripcion = 'Lugar prueba1'
-p2.telefono = '9999786402'
-p2.direccion = 'Calle prueba'
-p2.categoria = 'prueba'
-p2.paginaWeb = 'www.prueba.com'
-p2.correoElectronico = 'prueba@prueba.com'
-p2.rutaImagen = '/prueba'
-p2.posicion = Point(-89.5905554294586,20.9579931014452,srid=4326)
+p2.nombre = 'Servicio Medico'
+p2.descripcion = 'Servicio Medico'
+p2.telefono = '99998945630'
+p2.direccion = 'Servicio Medico UADY'
+p2.categoria = 'PDI'
+p2.paginaWeb = 'www.serviciomedico.uady.com'
+p2.correoElectronico = 'serviciomedico@uady.mx'
+p2.rutaImagen = '/fmat'
+p2.posicion = Point(-89.62965,20.97965,srid=4326)
 p2.propietario = u
 
 p2.save()
