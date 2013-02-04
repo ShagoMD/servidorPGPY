@@ -18,7 +18,14 @@ class PuntoDeInteres(models.Model):
     objects = models.GeoManager()
     favoritos = models.ManyToManyField(User, related_name = 'favoritos')
     propietario = models.ForeignKey(User, related_name = 'propiedades')           
-     
+    
+    def dehydrate(self, bundle):
+        # remove unneeded point-field from the response data
+        del bundle.data['posicion']
+        # add required fields back to the response data in the form we need it
+        bundle.data['lat'] = bundle.obj.posicion.y
+        bundle.data['lng'] = bundle.obj.posicion.x
+        return bundle 
 
 
 
