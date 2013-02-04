@@ -3,7 +3,7 @@ from models import *
 from django.contrib.gis.geos import *
 from conversionTipos import *
 from django.contrib.gis.measure import D
-
+import pdb
 ###Variables globales
 SRID=4326
 
@@ -30,7 +30,7 @@ def obtenerListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance):
 
 def validarParametrosListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance):
     parametrosValidos = True
-    
+    #pdb.set_trace()
     if latitud == None and not esTipoValido(latitud,TIPO_FLOTANTE):
        parametrosValidos = False
     if longitud != None and not esTipoValido(longitud,TIPO_FLOTANTE):

@@ -4,9 +4,9 @@
 
 {% block mensaje %}
 		
-	[{% for pdi in lista_pdi %}
+	[{% for pdi in lista_pdi  %}
 		{
-			"nombre": {{ pdi.nombre }},
+			"nombre": "{{ pdi.nombre }}",
 			"descripcion": "{{pdi.descripcion}}",
 			"telefono": "{{pdi.telefono}}",
 			"direccion":"{{pdi.direccion}}", 
@@ -20,7 +20,6 @@
 		   					"longitud":{{pdi.posicion.x}} ,
 		   					"altitud": {{ pdi.altitud }}
 						}		   
-		},
-	{% endfor %}]
+		} {% if not forloop.last %},{% endif %}{% endfor %}]
 	
 {% endblock %} 
