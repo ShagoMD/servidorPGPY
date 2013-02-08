@@ -32,10 +32,10 @@ def validarParametrosListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance)
     parametrosValidos = True
     #pdb.set_trace()
     if latitud == None and not esTipoValido(latitud,TIPO_FLOTANTE):
-       parametrosValidos = False
+       parametrosValidos &= False
     if longitud != None and not esTipoValido(longitud,TIPO_FLOTANTE):
-        parametrosValidos == False
+        parametrosValidos &= False
     if rangoMaximoAlcance == None and not esTipoValido(longitud,TIPO_ENTERO):    
-        parametrosValidos = False
+        parametrosValidos &= False
     
     return parametrosValidos

@@ -14,7 +14,7 @@ def esTipoValido(variable, tipo):
             float(variable)
         elif tipo == TIPO_CADENA:
             str(variable)
-   except exceptions.ValueError:
+   except ValueError:
         tipoValido = False;
         print "Error conversion"
     
