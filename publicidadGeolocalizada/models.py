@@ -37,5 +37,5 @@ class Anuncio(models.Model):
     rutaImagen = models.CharField(max_length=500)
     
 class Usuario(models.Model):
-    correoElectronico=models.CharField(max_length=100)
+    correoElectronico=models.CharField(max_length=100,unique=True)
     contrasenia=models.CharField(max_length=24)
