@@ -1,0 +1,10 @@
+{% extends 'PDI/respuesta/respuesta.json' %}
+
+{% block mensaje %}
+		
+	{
+		"usuario" : "{{usuario.email}}",
+		"correo electronico" : "{{usuario.email}}"
+	}
+	
+{% endblock %} 

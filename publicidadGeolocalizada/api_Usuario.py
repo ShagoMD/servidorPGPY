@@ -1,20 +1,21 @@
-from models import *
+from django.contrib.auth.models import User
 import re
 
 def registrarUsuario(correo_e,password):
     correoValido=esCorreoValido(correo_e);
     contraseniaValida=esContraseniaValida(password);
     if not correoValido:
-        return 1;#el correo electrónico no cumple la forma especificada
+        return 1;   
     if not contraseniaValida:
-        return 2;#la contrasenia no cumple los requisitos
+        return 2;   
     
-    nuevoUsuario=Usuario(correoElectronico=correo_e,contrasenia=password);
+    
     try:
+        nuevoUsuario=User.objects.create_user(correo_e,correo_e, password);
         nuevoUsuario.save();
-        return 0;#Usuario creado y registrado
+        return nuevoUsuario;
     except Exception,err:
-        return 3;#el correo ya existe
+        return 3;
 
 def esCorreoValido(correo_e):
     regex=re.compile('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$');
