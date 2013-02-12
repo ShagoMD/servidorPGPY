@@ -4,38 +4,65 @@ from django.contrib.gis.geos import *
 from conversionTipos import *
 from django.contrib.gis.measure import D
 import pdb
-###Variables globales
 SRID=4326
 
 
 def obtenerListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance):
-   # print latitud,longitud,rangoMaximoAlcance
    
     parametrosValidos = validarParametrosListadoPuntosDeInteres(latitud, longitud, rangoMaximoAlcance=11)
     listaPuntosDeInteres = None
     if parametrosValidos:
-         #print "Parametros validos"
+        
          posicionActual = Point(float(longitud),float(latitud),SRID)
-         #listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__dwithin=(posicionActual, D(km=rangoMaximoAlcance)))
          listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance)))
-        
-        
-          #  print pdi.posicion.get_x()
+
     else:
          raise Exception("Los valores de los parametros son incorrectos");
     
     return listaPuntosDeInteres;
 
 
+def obtenerListadoPuntosDeInteresSearch(latitud, longitud, rangoMaximoAlcance, searchString):
+   
+    parametrosValidos = validarParametrosListadoPuntosDeInteresSearch(latitud, longitud, rangoMaximoAlcance, searchString)
+    listaPuntosDeInteres = None
+
+    if parametrosValidos:
+        
+         posicionActual = Point(float(longitud),float(latitud),SRID)
+         
+         listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(m=rangoMaximoAlcance))).filter(nombre__contains=searchString)
+
+    else:
+         raise Exception("Los valores de los parametros son incorrectos");
+    
+    return listaPuntosDeInteres;
+
 
 def validarParametrosListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance):
     parametrosValidos = True
-    #pdb.set_trace()
+
     if latitud == None and not esTipoValido(latitud,TIPO_FLOTANTE):
        parametrosValidos = False
     if longitud != None and not esTipoValido(longitud,TIPO_FLOTANTE):
         parametrosValidos == False
-    if rangoMaximoAlcance == None and not esTipoValido(longitud,TIPO_ENTERO):    
+    if rangoMaximoAlcance == None and not esTipoValido(rangoMaximoAlcance,TIPO_ENTERO):    
         parametrosValidos = False
     
     return parametrosValidos
+
+def validarParametrosListadoPuntosDeInteresSearch(latitud,longitud,rangoMaximoAlcance,searchString):
+    parametrosValidos = True
+     
+    if latitud == None and not esTipoValido(latitud,TIPO_FLOTANTE):
+       parametrosValidos = False
+    if longitud != None and not esTipoValido(longitud,TIPO_FLOTANTE):
+        parametrosValidos == False
+    if rangoMaximoAlcance == None and not esTipoValido(rangoMaximoAlcance,TIPO_ENTERO):    
+        parametrosValidos = False
+    if searchString == None or not esTipoValido(searchString,TIPO_CADENA):
+        parametrosValidos = False
+    
+    return parametrosValidos
+
+
