@@ -6,6 +6,7 @@
 		
 	[{% for pdi in lista_pdi  %}
 		{
+			"id": {{pdi.id}},
 			"nombre": "{{ pdi.nombre }}",
 			"descripcion": "{{pdi.descripcion}}",
 			"telefono": "{{pdi.telefono}}",
