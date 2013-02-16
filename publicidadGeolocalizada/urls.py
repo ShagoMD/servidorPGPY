@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 from view_pdi import *
 from view_pdi_search import *
+from view_pdi_search_category import *
 
 
 # Uncomment the next two lines to enable the admin:
@@ -21,6 +22,7 @@ urlpatterns = patterns('',
  (r'^pdi/registrar/$', registrarPDI),
  (r'^pdi/lista/$', peticionObtenerListadoPuntosDeInteres),
  (r'^pdi/buscar/$', peticionObtenerListadoPuntosDeInteresSearch),
+ (r'^pdi/categoria/$', peticionObtenerListadoPuntosDeInteresSearchCategoria),
  
  #(r'^time/plus/(\d{1,2})/$', hours_ahead),
 
