@@ -26,12 +26,12 @@ def obtenerListadoPuntosDeInteresSearch(latitud, longitud, rangoMaximoAlcance, s
    
     parametrosValidos = validarParametrosListadoPuntosDeInteresSearch(latitud, longitud, rangoMaximoAlcance, searchString)
     listaPuntosDeInteres = None
-
+    pdb.set_trace()
     if parametrosValidos:
         
          posicionActual = Point(float(longitud),float(latitud),SRID)
          
-         listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(m=rangoMaximoAlcance))).filter(nombre__contains=searchString)
+         listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(nombre__contains=searchString)
 
     else:
          raise Exception("Los valores de los parametros son incorrectos");
@@ -49,17 +49,18 @@ def obtenerListadoPuntosDeInteresSearchCategoria(latitud, longitud, rangoMaximoA
          posicionActual = Point(float(longitud),float(latitud),SRID)
          
          if categoria == "nombre":
-             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(m=rangoMaximoAlcance))).filter(nombre__contains=searchString)
+             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(nombre__contains=searchString)
              
-         if categoria == "categoria":
-             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(m=rangoMaximoAlcance))).filter(categoria__contains=searchString)
+         elif categoria == "categoria":
+             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(categoria__contains=searchString)
              
-         if categoria == "descripcion":
-             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(m=rangoMaximoAlcance))).filter(descripcion__contains=searchString)
+         elif categoria == "descripcion":
+             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(descripcion__contains=searchString)
          
-         if categoria == "direccion":
-             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(m=rangoMaximoAlcance))).filter(direccion__contains=searchString)
-                 
+         elif categoria == "direccion":
+             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(direccion__contains=searchString)
+         else:
+             raise Exception("La categoria de busqueda es incorrecta");        
     else:
          raise Exception("Los valores de los parametros son incorrectos");
     
@@ -74,7 +75,7 @@ def validarParametrosListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance)
     elif longitud != None and not esTipoValido(longitud,TIPO_FLOTANTE):
         parametrosValidos = False
         
-    elif rangoMaximoAlcance == None and not esTipoValido(longitud,TIPO_ENTERO):    
+    elif rangoMaximoAlcance == None and not esTipoValido(longitud,TIPO_FLOTANTE):    
          parametrosValidos = False
          
     
@@ -83,13 +84,9 @@ def validarParametrosListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance)
 def validarParametrosListadoPuntosDeInteresSearch(latitud,longitud,rangoMaximoAlcance,searchString):
     parametrosValidos = True
      
-    if latitud == None and not esTipoValido(latitud,TIPO_FLOTANTE):
-       parametrosValidos = False
-    if longitud != None and not esTipoValido(longitud,TIPO_FLOTANTE):
-        parametrosValidos == False
-    if rangoMaximoAlcance == None and not esTipoValido(rangoMaximoAlcance,TIPO_ENTERO):    
+    if not validarParametrosListadoPuntosDeInteres(latitud, longitud, rangoMaximoAlcance):
         parametrosValidos = False
-    if searchString == None or not esTipoValido(searchString,TIPO_CADENA):
+    elif searchString == None or not esTipoValido(searchString,TIPO_CADENA):
         parametrosValidos = False
     
     return parametrosValidos
@@ -97,11 +94,8 @@ def validarParametrosListadoPuntosDeInteresSearch(latitud,longitud,rangoMaximoAl
 def validarParametrosListadoPuntosDeInteresSearchCategoria(latitud,longitud,rangoMaximoAlcance,searchString,categoria):
     parametrosValidos = True
      
-    if latitud == None and not esTipoValido(latitud,TIPO_FLOTANTE):
-       parametrosValidos = False
-    if longitud != None and not esTipoValido(longitud,TIPO_FLOTANTE):
-        parametrosValidos == False
-    if rangoMaximoAlcance == None and not esTipoValido(rangoMaximoAlcance,TIPO_ENTERO):    
+
+    if not validarParametrosListadoPuntosDeInteres(latitud, longitud, rangoMaximoAlcance):
         parametrosValidos = False
     if searchString == None or not esTipoValido(searchString,TIPO_CADENA):
         parametrosValidos = False

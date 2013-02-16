@@ -39,5 +39,4 @@ class Anuncio(models.Model):
 
     
     
-    
->>>>>>> refs/heads/eric_local
+
