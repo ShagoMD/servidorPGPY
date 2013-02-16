@@ -14,10 +14,9 @@ class PuntoDeInteres(models.Model):
     correoElectronico = models.CharField(max_length=120)
     rutaImagen = models.CharField(max_length=310)
     posicion = models.PointField(srid=4326)
-    altitud = models.FloatField(default=0.0)
-    objects = models.GeoManager()
     favoritos = models.ManyToManyField(User, related_name = 'favoritos')
-    propietario = models.ForeignKey(User, related_name = 'propiedades')           
+    propietario = models.ForeignKey(User, related_name = 'propiedades')
+    objects = models.GeoManager()
     
     def dehydrate(self, bundle):
         # remove unneeded point-field from the response data
@@ -36,6 +35,9 @@ class Anuncio(models.Model):
     categoria = models.CharField(max_length=120)
     rutaImagen = models.CharField(max_length=500)
     
-#class Usuario(models.Model):
-#   correoElectronico=models.CharField(max_length=100,unique=True)
-#    contrasenia=models.CharField(max_length=24)
+
+
+    
+    
+    
+>>>>>>> refs/heads/eric_local

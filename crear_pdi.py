@@ -9,12 +9,14 @@ from django.contrib.auth.models import User
 
 u = User.objects.get(username='prueba')
 
-print u
+
+
+#print u
 
 p2 = PuntoDeInteres()
 p2.nombre = 'Servicio Medico'
 p2.descripcion = 'Servicio Medico'
-p2.telefono = '99998945630'
+p2.telefono = '9999894563'
 p2.direccion = 'Servicio Medico UADY'
 p2.categoria = 'PDI'
 p2.paginaWeb = 'www.serviciomedico.uady.com'
