@@ -26,3 +26,11 @@ p2.propietario = u
 p2.save()
 
 
+#Crear anuncio
+pdi = PuntoDeInteres.objects.get(id__exact=4)
+a1 = Anuncio()
+a1.anunciante = pdi
+a1.titulo = 'Inicio del proceso de inscripción'
+a1.descripcion = 'Este 20 de agosto inicia el proceso de inscripcion'
+a1.rutaImagen = '/fmat/inscripcion'
+a1.save()
