@@ -6,18 +6,6 @@ from api_puntoDeInteres import *
 
 EVENT_FIELDS_BASIC = ["altitud","descripcion","latitud","longitud","nombre","paginaWeb","telefono"]
 CAMPOS_LISTADO_PDI = ["latitud","longitud","rangoMaximoAlcance","searchString","categoria"]
-
-def registrarPDI(request):
-	if request.method == "POST":
-		success, params = extract_params(request.POST,EVENT_FIELDS_BASIC)
-       
-		if success:
-			return HttpResponse(params)
-		else:			
-			return HttpResponse(params)	
-	else: 
-		return render_to_response("PDI/registrar_poi.html", context_instance=RequestContext(request))
-	
 	
 def peticionObtenerListadoPuntosDeInteresSearchCategoria(request):	
 	if request.method == "POST":
