@@ -3,6 +3,7 @@ from models import *
 from django.contrib.gis.geos import *
 from conversionTipos import *
 from django.contrib.gis.measure import D
+from api_Usuario import *
 import pdb
 SRID=4326
 
@@ -103,3 +104,21 @@ def validarParametrosListadoPuntosDeInteresSearchCategoria(latitud,longitud,rang
         parametrosValidos = False
         
     return parametrosValidos
+
+def registrarPuntoDeInteres(camposObligatorios,camposOpcionales):
+    usuarioValido=esUsuarioValido(camposObligatorios['usuario']);
+    if usuarioValido is not None:
+        listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=camposObligatorios['usuario']);
+        if(len(listaPDI)<3):
+            posicionNueva=Point(float(camposObligatorios['longitud']),float(camposObligatorios['latitud']),SRID)
+            listaPDIPosiciones=PuntoDeInteres.objects.filter(posicion__exact=posicionNueva);
+            if(len(listaPDIPosiciones)==0):
+                nuevoPDI=PuntoDeInteres(nombre=camposObligatorios['nombre'],categoria=camposObligatorios['categoria'],propietario=usuarioValido,posicion=posicionNueva)
+                nuevoPDI.save();
+                return 0;
+            else:
+                return 1;
+        else:
+            return 2;
+    else:
+        return 3;

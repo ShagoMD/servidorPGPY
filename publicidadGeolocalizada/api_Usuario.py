@@ -32,3 +32,10 @@ def esContraseniaValida(contrasenia):
         return True;
     else:
         return False;
+
+def esUsuarioValido(correo_e):
+    usuario=User.objects.get(email__exact=correo_e);
+    if user is not None:
+        return user;
+    else:
+        return False;
