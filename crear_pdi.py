@@ -1,13 +1,13 @@
 #!/usr/bin/python
 import os
-os.chdir("/home/mehanika/workspace/servidorPGPY")
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+#os.chdir("/home/mehanika/workspace/servidorPGPY")
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from publicidadGeolocalizada.models import *
 from django.contrib.gis.geos import *
 from django.contrib.auth.models import User
 
 
-u = User.objects.get(username='prueba')
+u = User.objects.get(email__exact='azaak@hotmail.com')
 
 
 
@@ -32,7 +32,7 @@ p2.save()
 pdi = PuntoDeInteres.objects.get(id__exact=4)
 a1 = Anuncio()
 a1.anunciante = pdi
-a1.titulo = 'Inicio del proceso de inscripción'
+a1.titulo = 'Inicio del proceso de inscripcion'
 a1.descripcion = 'Este 20 de agosto inicia el proceso de inscripcion'
 a1.rutaImagen = '/fmat/inscripcion'
 a1.save()

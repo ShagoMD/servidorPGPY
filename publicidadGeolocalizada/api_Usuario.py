@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from conversionTipos import *
 import re
 
 def registrarUsuario(correo_e,password):
@@ -34,8 +35,15 @@ def esContraseniaValida(contrasenia):
         return False;
 
 def esUsuarioValido(correo_e):
-    usuario=User.objects.get(email__exact=correo_e);
-    if user is not None:
-        return user;
-    else:
+    try:
+        usuario=User.objects.get(email__exact=correo_e);            
+        return usuario;
+    except Exception,err:
         return False;
+
+def sonParametrosValidosRegistroUsuario(correo_e,password):
+    if correo_e==None or not esTipoValido(correo_e,TIPO_CADENA):
+        return False;
+    if password==None or not esTipoValido(password,TIPO_CADENA):
+        return False;    
+    return True;

@@ -8,7 +8,7 @@ CAMPOS_REGISTRAR_USUARIO=["correo","contrasenia"];
 def peticionRegistrarUsuario(request):
     if request.method=="POST":
         exito,parametros=extract_params(request.POST,CAMPOS_REGISTRAR_USUARIO);
-        if(exito):
+        if(exito and sonParametrosValidosRegistroUsuario(parametros['correo'],parametros['contrasenia'])):
             registroExitoso=registrarUsuario(parametros["correo"],parametros["contrasenia"]);
             if(registroExitoso==1):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'Introduzca un correo electronico valido.'});
