@@ -6,7 +6,7 @@ from django.contrib.gis.measure import D
 from api_Usuario import *
 import pdb
 SRID=4326
-
+MAXIMO_PDI_REGISTRADOS=3
 
 def obtenerListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance):
    
@@ -124,7 +124,7 @@ def registrarPuntoDeInteres(camposObligatorios):
     usuarioValido=esUsuarioValido(camposObligatorios["usuario"]);
     if usuarioValido is not False:            
         listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=camposObligatorios["usuario"]);
-        if(len(listaPDI)<3):
+        if(len(listaPDI)<MAXIMO_PDI_REGISTRADOS):
             posicionNueva=Point(float(camposObligatorios["latitud"]),float(camposObligatorios["longitud"]),srid=SRID);
             listaPDIPosiciones=PuntoDeInteres.objects.filter(posicion__exact=posicionNueva,altitud__exact=camposObligatorios['altitud']);
             if(len(listaPDIPosiciones)==0):
