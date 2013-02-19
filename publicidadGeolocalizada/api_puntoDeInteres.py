@@ -105,7 +105,7 @@ def validarParametrosListadoPuntosDeInteresSearchCategoria(latitud,longitud,rang
         
     return parametrosValidos
 
-def sonParametrosValidosRegistroPDI(usuario,nombre,categoria,latitud,longitud):
+def sonParametrosValidosRegistroPDI(usuario,nombre,categoria,latitud,longitud,altitud):
     if usuario==None or not esTipoValido(usuario,TIPO_CADENA):
         return False;
     if nombre==None or not esTipoValido(nombre,TIPO_CADENA):
@@ -116,30 +116,34 @@ def sonParametrosValidosRegistroPDI(usuario,nombre,categoria,latitud,longitud):
         return False;
     if longitud==None or not esTipoValido(longitud,TIPO_FLOTANTE):
         return False;
+    if altitud==None or not esTipoValido(altitud,TIPO_FLOTANTE):
+        return False;
     return True;
 
 def registrarPuntoDeInteres(camposObligatorios):
     usuarioValido=esUsuarioValido(camposObligatorios["usuario"]);
-    try:
-        cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]))
-        if usuarioValido is not False:
-            listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=camposObligatorios["usuario"]);
-            if(len(listaPDI)<3):
-                posicionNueva=Point(float(camposObligatorios["latitud"]),float(camposObligatorios["longitud"]),SRID)
-                listaPDIPosiciones=PuntoDeInteres.objects.filter(posicion__exact=posicionNueva);
-                if(len(listaPDIPosiciones)==0):
+    if usuarioValido is not False:            
+        listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=camposObligatorios["usuario"]);
+        if(len(listaPDI)<3):
+            posicionNueva=Point(float(camposObligatorios["latitud"]),float(camposObligatorios["longitud"]),srid=SRID);
+            listaPDIPosiciones=PuntoDeInteres.objects.filter(posicion__exact=posicionNueva,altitud__exact=camposObligatorios['altitud']);
+            if(len(listaPDIPosiciones)==0):
+                try:
+                    cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]))
                     nuevoPDI=PuntoDeInteres();
                     nuevoPDI.nombre=camposObligatorios["nombre"];
                     nuevoPDI.categoria=cat;
                     nuevoPDI.propietario=usuarioValido;
-                    nuevoPDI.posicion=Point(float(camposObligatorios["latitud"]),float(camposObligatorios["longitud"]),srid=SRID)
+                    nuevoPDI.posicion=posicionNueva;
+                    nuevoPDI.altitud=float(camposObligatorios['altitud']);
                     nuevoPDI.save();
-                    return 0;
-                else:
-                    return 1;
+                    return 0;    
+                except Exception,err:
+                    return 4;
             else:
-                return 2;
+                return 1;
         else:
-            return 3;
-    except Exception,err:
-        return 4;
+            return 2;
+    else:
+        return 3;
+
