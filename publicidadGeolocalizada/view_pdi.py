@@ -39,7 +39,7 @@ def registrarPDI(request):
 			else:
 				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':respuestaOpcinales});
 		else:	
-			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_PARAMETROS_INCOMPLETOS});						
+			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});						
 	else:
 		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});		
 	
