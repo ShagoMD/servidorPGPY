@@ -3,31 +3,45 @@ from django.http import HttpResponse
 from utilidades import *
 from django.template import RequestContext
 from api_puntoDeInteres import *
+from strings import *
 
 CAMPOS_OBLIGATORIOS_REGISTRO_PDI = ["usuario","latitud","longitud","altitud","nombre","categoria"];
 CAMPOS_OPCIONALES_REGISTRO_PDI = ["descripcion","direccion","paginaWeb","telefono","email","imagen"];
 CAMPOS_LISTADO_PDI = ["latitud","longitud","rangoMaximoAlcance"];
 
+CODIGO_REGISTRO_EXITOSO=0;
+CODIGO_LOCALIZACION_REPETIDA=1;
+CODIGO_LIMITE_PDI_ALCANZADO=2;
+CODIGO_USUARIO_INVALIDO=3;
+CODIGO_CATEGORIA_INVALIDA=4
+
 def registrarPDI(request):
 	if request.method == "POST":
-		exito, parametros = extract_params(request.POST,CAMPOS_OBLIGATORIOS_REGISTRO_PDI)
-		#success2,paramOpcionales=extract_params(request.POST,CAMPOS_OPCIONALES_REGISTRO_PDI)
-		if (exito and sonParametrosValidosRegistroPDI(parametros['usuario'],parametros['nombre'],parametros['categoria'],parametros['latitud'],parametros['longitud'],parametros['altitud'])):
-			registroExitoso=registrarPuntoDeInteres(parametros);
-			if(registroExitoso==0):
-				return render_to_json("PDI/respuesta/registroPDI.json",{'codigo':100,'mensaje':'Registro de PDI exitoso'});
-			if(registroExitoso==1):
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':'Los datos de localizacion del PDI que se desea registrar ya han sido utilizados previamente.'});
-			if(registroExitoso==2):
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':'Se ha alcanzado el limite de PDI que su cuenta le permite registrar.'});
-			if(registroExitoso==3):
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':'El usuario que intenta registrar el PDI no existe.'});
-			if(registroExitoso==4):
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':'La categoria sobre la cual se intenta registrar el PDI no existe.'})
+		exito, parametrosObligatorios = extract_params(request.POST,CAMPOS_OBLIGATORIOS_REGISTRO_PDI);
+		exito2,parametrosOpcionales=extract_params(request.POST,CAMPOS_OPCIONALES_REGISTRO_PDI);
+		#eliminar esta linea cuando las categorias esten registradas y funcionando
+		parametrosObligatorios['categoria']='1';
+		
+		if (exito and sonParametrosObligatoriosPDIValidos(parametrosObligatorios)):
+			respuestaOpcinales=sonParametrosOpcionalesPDIValidos(parametrosOpcionales);
+			if respuestaOpcinales==True:
+				codigoRespuesta=registrarPuntoDeInteres(parametrosObligatorios,parametrosOpcionales);
+				if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):
+					return render_to_json("PDI/respuesta/registroPDI.json",{'codigo':100,'mensaje':PDI_MENSAJE_REGISTRO_EXITOSO});
+				if(codigoRespuesta==CODIGO_LOCALIZACION_REPETIDA):
+					return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_LOCALIZACION_REPETIDA});
+				if(codigoRespuesta==CODIGO_LIMITE_PDI_ALCANZADO):
+					return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_LIMITE_PDI_ALCANZADO});
+				if(codigoRespuesta==CODIGO_USUARIO_INVALIDO):
+					return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_USUARIO_INVALIDO});
+				if(codigoRespuesta==CODIGO_CATEGORIA_INVALIDA):
+					return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_CATEGORIA_INVALIDA});
+			else:
+				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':respuestaOpcinales});
 		else:	
-			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':'No se enviaron todos los parametros obligatorios.'});						
+			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_PARAMETROS_INCOMPLETOS});						
 	else:
-		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':'La peticion no fue realizada a traves de POST.'});		
+		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});		
 	
 def peticionObtenerListadoPuntosDeInteres(request):	
 	if request.method == "POST":
