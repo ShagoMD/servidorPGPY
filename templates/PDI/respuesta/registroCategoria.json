@@ -1,0 +1,9 @@
+{% extends 'PDI/respuesta/respuesta.json' %}
+
+{% block codigo %}{{codigo}}{% endblock %}
+{% block mensaje %}
+	{
+		"idCategoria":"{{categoria.id}}",
+		"nombreCategoria":"{{categoria.nombre}}"
+	}
+	{% endblock %} 

@@ -4,6 +4,7 @@ from view_pdi import *
 from view_usuario import *
 from view_pdi_search import *
 from view_pdi_search_category import *
+from view_categoria import *
 
 
 # Uncomment the next two lines to enable the admin:
@@ -24,8 +25,10 @@ urlpatterns = patterns('',
  (r'^pdi/registrar/$', registrarPDI),
  (r'^pdi/lista/$', peticionObtenerListadoPuntosDeInteres),
  (r'^usuario/registrar/$',peticionRegistrarUsuario),
+ (r'^usuario/iniciarSesion/$',peticionIniciarSesion),
  (r'^pdi/buscar/$', peticionObtenerListadoPuntosDeInteresSearch),
  (r'^pdi/categoria/$', peticionObtenerListadoPuntosDeInteresSearchCategoria),
+ (r'^categoria/registrar/$', peticionRegistrarCategoria),
  
  #(r'^time/plus/(\d{1,2})/$', hours_ahead),
 
