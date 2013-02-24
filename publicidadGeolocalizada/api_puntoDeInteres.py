@@ -26,7 +26,6 @@ def obtenerListadoPuntosDeInteresSearch(latitud, longitud, rangoMaximoAlcance, s
    
     parametrosValidos = validarParametrosListadoPuntosDeInteresSearch(latitud, longitud, rangoMaximoAlcance, searchString)
     listaPuntosDeInteres = None
-    pdb.set_trace()
     if parametrosValidos:
         
          posicionActual = Point(float(longitud),float(latitud),SRID)

@@ -7,16 +7,16 @@ from publicidadGeolocalizada.models import *
 from django.contrib.auth.models import User
 
 
-from django.db import transaction
-transaction.rollback()
+#from django.db import transaction
+#transaction.rollback()
 from django.db import connection
 connection._rollback()
 
 
-usuarioTest = User.objects.create_user('pokachu', 'rikrdoxweb_ass@hotmail.com', '123456')
-usuarioTest.is_staff = True
-
-print usuarioTest.get_full_name()
-
-
-usuarioTest.save
+pdi = PuntoDeInteres.objects.get(id__exact=2)
+a1 = Anuncio()
+a1.anunciante = pdi
+a1.titulo = 'Vacunas gratis'
+a1.descripcion = 'Hoy ultimo día'
+a1.rutaImagen = '/servicioMedico/vacunas'
+a1.save()
