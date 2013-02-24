@@ -1,0 +1,13 @@
+{% extends 'PDI/respuesta/respuesta.json' %}
+{% block codigo %}{{codigo}}{% endblock %}
+{% block mensaje %}
+		
+	{
+		"pdi" : "{{anuncio.anunciante_id}}",
+		"anuncio" : "{{anuncio.titulo}}",
+		"descripcion" : "{{anuncio.descripcion}}"
+		"categoria" : "{{anuncio.categoria}}",
+		"imagen" : "{{anuncio.rutaImagen}}",
+	}
+	
+{% endblock %} 
