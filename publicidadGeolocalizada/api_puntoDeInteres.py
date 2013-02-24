@@ -200,3 +200,15 @@ def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,camposOpcionales,p
     pdi.save();
     return;
 
+def obtenerPDIsDeUsuario(usuario):
+    usuarioValido=esUsuarioValido(usuario);
+    if usuarioValido is not False: 
+        listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=usuario);
+        return listaPDI;
+    else:    
+        return CODIGO_USUARIO_INVALIDO;
+    
+    
+    
+    
+    

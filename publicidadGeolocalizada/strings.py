@@ -19,6 +19,8 @@ PDI_MENSAJE_CORREO_INVALIDO="El correo electronico del sitio no es valido.";
 USUARIO_MENSAJE_CORREO_INVALIDO='Introduzca un correo electronico valido.';
 USUARIO_MENSAJE_CONTRASENIA_INVALIDA='La contrasenia debe tener al menos 8 caracteres, una minuscula, una mayuscula y un digito.';
 USUARIO_MENSAJE_CORREO_REPETIDO='El correo electronico introducido ya ha sido registrado en el sistema.';
+USUARIO_MENSAJE_ERROR_INICIO_SESION="La combinacion de usuario y contrasenia utilizada no es valida.";
+USUARIO_MENSAJE_USUARIO_NO_EXISTE="El usuario con el que trata de ingresar no existe.";
 
 #En esta seccion se definen los strings usados por el View, la api y otras clases concernientes a Categoria
 CATEGORIA_MENSAJE_CATEGORIA_INVALIDA="El valor que trata de registrar no es unca cadena de texto.";
