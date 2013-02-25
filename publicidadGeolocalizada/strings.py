@@ -8,12 +8,19 @@ GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS='No se enviaron todos los parametros obli
 PDI_MENSAJE_REGISTRO_EXITOSO='Registro de PDI exitoso';
 PDI_MENSAJE_LOCALIZACION_REPETIDA='Los datos de localizacion del PDI que se desea registrar ya han sido utilizados previamente.';
 PDI_MENSAJE_LIMITE_PDI_ALCANZADO='Se ha alcanzado el limite de PDI que su cuenta le permite registrar.';
-PDI_MENSAJE_USUARIO_INVALIDO='El usuario que intenta registrar el PDI no existe.';
+PDI_MENSAJE_USUARIO_INVALIDO='El usuario no existe.';
 PDI_MENSAJE_CATEGORIA_INVALIDA='La categoria sobre la cual se intenta registrar el PDI no existe.';
 
 PDI_MENSAJE_URL_WEB_INVALIDA="La url del sitio web no tiene el formato correcto.";
 PDI_MENSAJE_URL_IMAGEN_INVALIDA="La url de la imagen no tiene el formato correcto.";
 PDI_MENSAJE_CORREO_INVALIDO="El correo electronico del sitio no es valido.";
+
+PDI_MENSAJE_PDI_NO_EXISTE="El punto de interes que esta tratando de eliminar no existe.";
+PDI_MENSAJE_NO_HAY_PDIs_REGISTRADOS="El usuario no tiene puntos de interes registrados.";
+PDI_MENSAJE_PDI_ELIMINADO="El punto de interes y todos sus anuncion asociados fueron eliminados correctamente.";
+PDI_MENSAJE_TODOS_PDIS_ELIMINADOS="Todos los puntos de interes del usuario y sus respectivos anuncios han sido eliminados correctamente.";
+
+PDI_MENSAJE_PDI_ACTUALIZADO="Los datos del punto de interes fueron actualizados correctamente.";
 
 #En esta seccion se definen los strings usados por el View, la api y otras clases correspondientes a Usuario
 USUARIO_MENSAJE_CORREO_INVALIDO='Introduzca un correo electronico valido.';

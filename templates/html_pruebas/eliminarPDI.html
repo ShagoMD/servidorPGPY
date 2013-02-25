@@ -1,0 +1,37 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<label>ELIMINAR UN PDI DE UN USUARIO</label>
+		
+		<form method="POST" action="http://127.0.0.1:8000/geoAdds/pdi/eliminar/">
+			<table>
+				<tr>
+					<td><label>Usuario (correo)</label></td>
+					<td><input type="text" id="usuario" name="usuario"/></td>
+				</tr>
+				<tr>
+					<td><label>id PDI</label></td>
+					<td><input type="text" id="idPDI" name="idPDI"/></td>
+				</tr>
+				<tr>
+					<td><button type = "submit">Eliminar</button></td>
+				</tr>
+			</table>	
+		</form>
+		
+		<label>ELIMINAR TODOS LOS PDI DE UN USUARIO</label>
+		
+		<form method="POST" action="http://127.0.0.1:8000/geoAdds/pdi/eliminarTodo/">
+			<table>
+				<tr>
+					<td><label>Usuario (correo)</label></td>
+					<td><input type="text" id="usuario" name="usuario"/></td>
+				</tr>
+				<tr>
+					<td><button type = "submit">Eliminar</button></td>
+				</tr>
+			</table>	
+		</form>
+	</body>
+</html>

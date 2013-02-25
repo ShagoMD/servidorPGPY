@@ -10,10 +10,14 @@ SRID=4326
 MAXIMO_PDI_REGISTRADOS=20
 
 CODIGO_REGISTRO_EXITOSO=0;
+
 CODIGO_LOCALIZACION_REPETIDA=1;
 CODIGO_LIMITE_PDI_ALCANZADO=2;
 CODIGO_USUARIO_INVALIDO=3;
-CODIGO_CATEGORIA_INVALIDA=4
+CODIGO_CATEGORIA_INVALIDA=4;
+CODIGO_PDI_NO_EXISTE=5;
+CODIGO_PDI_ELIMINADO=6;
+CODIGO_NO_HAY_PDIs_REGISTRADOS=7;
 
 def obtenerListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance):
    
@@ -133,6 +137,16 @@ def sonParametrosObligatoriosPDIValidos(parametros):
         return False;
     return True;
 
+def sonParametrosObligatoriosActualizarPDIValidos(parametros):    
+    usuario=parametros['usuario'];
+    idPDI=parametros['idPDI'];    
+    
+    if usuario=="" or not esTipoValido(usuario,TIPO_CADENA):
+        return False;
+    if idPDI=="" or not esTipoValido(idPDI,TIPO_ENTERO):
+        return False;
+    return True;
+
 def sonParametrosOpcionalesPDIValidos(parametros):
     descripcion=parametros["descripcion"];
     direccion=parametros["direccion"];
@@ -179,6 +193,51 @@ def registrarPuntoDeInteres(camposObligatorios,camposOpcionales):
     else:
         return CODIGO_USUARIO_INVALIDO;
 
+def actualizarPuntoDeInteres(camposObligatorios,camposOpcionales):    
+    usuarioValido=esUsuarioValido(camposObligatorios["usuario"]);
+    if usuarioValido is not False:            
+        pdi=PuntoDeInteres.objects.get(id=camposObligatorios["idPDI"]);
+        
+        #campos opcionales
+        pdi.descripcion=camposOpcionales['descripcion'];
+        pdi.direccion=camposOpcionales['direccion'];
+        pdi.paginaWeb=camposOpcionales['paginaWeb'];
+        pdi.telefono=camposOpcionales['telefono'];
+        pdi.correoElectronico=camposOpcionales['email'];
+        pdi.rutaImagen=camposOpcionales['imagen'];
+    
+        pdi.save();
+
+        return CODIGO_REGISTRO_EXITOSO;    
+    else:
+        return CODIGO_USUARIO_INVALIDO;
+    
+
+def eliminarPuntoDeInteres(usuario,idPDI):
+    validacion=esUsuarioValido(usuario);
+    if validacion!=False:
+        try:
+            pdi=PuntoDeInteres.objects.get(pk=idPDI);
+            #FALTA CODIGO DE ELIMINAR ANUNCIOS
+            pdi.delete();
+            return CODIGO_PDI_ELIMINADO;
+        except Exception, err:
+            return CODIGO_PDI_NO_EXISTE;
+    else:        
+        return CODIGO_USUARIO_INVALIDO;
+
+def eliminarTodosPuntosDeInteresDeUsuario(usuario):
+    listaPDI=obtenerPDIsDeUsuario(usuario);
+    if(listaPDI==CODIGO_USUARIO_INVALIDO):
+        return CODIGO_USUARIO_INVALIDO;
+    if(len(listaPDI)>0):
+        for pdi in listaPDI:
+            idPDI=pdi.id;
+            pdi.delete();      
+        return CODIGO_PDI_ELIMINADO;
+    else:
+        return CODIGO_NO_HAY_PDIs_REGISTRADOS;
+    
 def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,camposOpcionales,pdi):                    
     cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]))
 

@@ -23,7 +23,10 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
- (r'^pdi/registrar/$', registrarPDI),
+ (r'^pdi/registrar/$', peticionRegistrarPDI),
+ (r'^pdi/actualizar/$', peticionActualizarPDI),
+ (r'^pdi/eliminar/$', peticionEliminarPDI),
+ (r'^pdi/eliminarTodo/$', peticionEliminarTodosPDI),
  (r'^pdi/lista/$', peticionObtenerListadoPuntosDeInteres),
  (r'^usuario/registrar/$',peticionRegistrarUsuario),
  (r'^usuario/iniciarSesion/$',peticionIniciarSesion),
