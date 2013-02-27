@@ -123,9 +123,9 @@ def sonParametrosObligatoriosPDIValidos(parametros):
     longitud=parametros['longitud'];
     altitud=parametros['altitud'];
     
-    if usuario==None or not esTipoValido(usuario,TIPO_CADENA):
+    if usuario=="" or not esTipoValido(usuario,TIPO_CADENA):
         return False;
-    if nombre==None or not esTipoValido(nombre,TIPO_CADENA):
+    if nombre=="" or not esTipoValido(nombre,TIPO_CADENA):
         return False;
     if categoria==None or not esTipoValido(categoria,TIPO_ENTERO):
         return False;
