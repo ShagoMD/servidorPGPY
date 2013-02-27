@@ -6,8 +6,11 @@ from django.contrib.gis.measure import D
 from utilidades import *
 from strings import *
 import pdb
+import re
+
 SRID=4326
 MAXIMO_PDI_REGISTRADOS=20
+REGEX=re.compile('\s+');
 
 CODIGO_REGISTRO_EXITOSO=0;
 
@@ -18,6 +21,8 @@ CODIGO_CATEGORIA_INVALIDA=4;
 CODIGO_PDI_NO_EXISTE=5;
 CODIGO_PDI_ELIMINADO=6;
 CODIGO_NO_HAY_PDIs_REGISTRADOS=7;
+
+
 
 def obtenerListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance):
    
@@ -123,17 +128,17 @@ def sonParametrosObligatoriosPDIValidos(parametros):
     longitud=parametros['longitud'];
     altitud=parametros['altitud'];
     
-    if usuario==None or not esTipoValido(usuario,TIPO_CADENA):
+    if usuario=="" or REGEX.match(usuario) or not esTipoValido(usuario,TIPO_CADENA):
         return False;
-    if nombre==None or not esTipoValido(nombre,TIPO_CADENA):
+    if nombre=="" or REGEX.match(nombre) or not esTipoValido(nombre,TIPO_CADENA):
         return False;
-    if categoria==None or not esTipoValido(categoria,TIPO_ENTERO):
+    if categoria=="" or not esTipoValido(categoria,TIPO_ENTERO):
         return False;
-    if latitud==None or not esTipoValido(latitud,TIPO_FLOTANTE):
+    if latitud=="" or not esTipoValido(latitud,TIPO_FLOTANTE):
         return False;
-    if longitud==None or not esTipoValido(longitud,TIPO_FLOTANTE):
+    if longitud=="" or not esTipoValido(longitud,TIPO_FLOTANTE):
         return False;
-    if altitud==None or not esTipoValido(altitud,TIPO_FLOTANTE):
+    if altitud=="" or not esTipoValido(altitud,TIPO_FLOTANTE):
         return False;
     return True;
 
@@ -141,9 +146,9 @@ def sonParametrosObligatoriosActualizarPDIValidos(parametros):
     usuario=parametros['usuario'];
     idPDI=parametros['idPDI'];    
     
-    if usuario=="" or not esTipoValido(usuario,TIPO_CADENA):
+    if usuario=="" or REGEX.match(usuario) or not esTipoValido(usuario,TIPO_CADENA):
         return False;
-    if idPDI=="" or not esTipoValido(idPDI,TIPO_ENTERO):
+    if idPDI=="" or REGEX.match(idPDI) or not esTipoValido(idPDI,TIPO_ENTERO):
         return False;
     return True;
 
@@ -159,13 +164,13 @@ def sonParametrosOpcionalesPDIValidos(parametros):
         return GENERAL_MENSAJE_CAMPO_TEXTO_INVALIDO;
     if direccion!="" and not esTipoValido(direccion,TIPO_CADENA):
         return GENERAL_MENSAJE_CAMPO_TEXTO_INVALIDO;
-    if paginaWeb!="" and not esURLValida(paginaWeb):
+    if REGEX.match(paginaWeb) and not esURLValida(paginaWeb):
         return PDI_MENSAJE_URL_WEB_INVALIDA;
-    if telefono!="" and not esTipoValido(telefono,TIPO_ENTERO):
+    if REGEX.match(telefono) and not esTipoValido(telefono,TIPO_ENTERO):
         return GENERAL_MENSAJE_CAMPO_TEXTO_INVALIDO;
-    if email!="" and not esCorreoValido(email):
+    if REGEX.match(email) and not esCorreoValido(email):
         return PDI_MENSAJE_CORREO_INVALIDO;
-    if urlImagen!="" and not esURLValida(urlImagen):
+    if REGEX.match(urlImagen) and not esURLValida(urlImagen):
         return PDI_MENSAJE_URL_IMAGEN_INVALIDA;
 
     return True;
