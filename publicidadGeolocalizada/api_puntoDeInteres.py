@@ -56,16 +56,16 @@ def obtenerListadoPuntosDeInteresSearchCategoria(latitud, longitud, rangoMaximoA
          posicionActual = Point(float(longitud),float(latitud),SRID)
          
          if categoria == "nombre":
-             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(nombre__contains=searchString)
+             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(nombre__icontains=searchString)
              
          elif categoria == "categoria":
-             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(categoria__contains=searchString)
+             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(categoria__icontains=searchString)
              
          elif categoria == "descripcion":
-             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(descripcion__contains=searchString)
+             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(descripcion__icontains=searchString)
          
          elif categoria == "direccion":
-             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(direccion__contains=searchString)
+             listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(direccion__icontains=searchString)
          else:
              raise Exception("La categoria de busqueda es incorrecta");        
     else:
