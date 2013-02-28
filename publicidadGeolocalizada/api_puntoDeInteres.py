@@ -51,7 +51,7 @@ def obtenerListadoPuntosDeInteresSearch(latitud, longitud, rangoMaximoAlcance, s
 
 
 def obtenerListadoPuntosDeInteresSearchCategoria(latitud, longitud, rangoMaximoAlcance, searchString, categoria):
-   
+    pdb.set_trace()   
     parametrosValidos = validarParametrosListadoPuntosDeInteresSearchCategoria(latitud, longitud, rangoMaximoAlcance, searchString, categoria)
     listaPuntosDeInteres = None
 
