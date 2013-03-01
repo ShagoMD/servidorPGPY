@@ -1,6 +1,6 @@
 from publicidadGeolocalizada.models import *
 from django.contrib.auth.models import User
-from publicidadGeolocalizada.conversionTipos import *
+from conversionTipos import *
 from django.db import connection
 connection._rollback()
 #import pdb
