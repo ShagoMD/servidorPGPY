@@ -1,11 +1,12 @@
 {% extends 'PDI/respuesta/respuesta.json' %}
 
 {% block codigo %}{{codigo}}{% endblock %}
-{% block mensaje %}	
-	[{% for pdi in lista_pdi  %}
-	 {
-	          "id": "{{pdi.id}}"					
-	 }		   
+{% block mensaje %}
+	PDIs del usuario:[
+		{% for pdi in lista_pdi  %}
+	 	{
+	 		"idPDI": "{{pdi.id}}"
+	 	}		   
 {% if not forloop.last %},{% endif %}{% endfor %}]
 	
 {% endblock %}
