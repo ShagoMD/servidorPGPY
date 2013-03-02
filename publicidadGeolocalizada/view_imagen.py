@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response
 from servidorPGPY.settings import MEDIA_ROOT
 from models import *
 from django.core.files.base import ContentFile
+from PIL import Image
 
 #CAMPOS_IMAGEN = ["nombre", "imagen"]
 CAMPOS_IMAGEN = ["imagen"]
@@ -18,9 +19,15 @@ def peticionImagen(request):
 			
 		imagen = Imagen()
 		
-		file = params[0]
-		fh = ContentFile(request.FILES['imagen'].read())
-		imagen.imagen.save(request.FILES['imagen'].name, fh)
+		#file = params[0]
+		#size = (50,50)
+		imagen.imagen = request.FILES['imagen']
+		
+		nombre = imagen.imagen.name
+
+		fh = ContentFile(imagen.imagen.read())
+		#fh._set_size(500)
+		imagen.imagen.save(nombre, fh)
 		#i.file
 		
 		#archivo.save();
