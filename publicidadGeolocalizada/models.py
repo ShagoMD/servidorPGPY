@@ -31,8 +31,7 @@ class Anuncio(models.Model):
     
 
 class Imagen(models.Model):
-    #imagen = ImageWithThumbsField(upload_to='logo', sizes=((125,125),(200,200)))
+    #imagen = ImageWithThumbsField(upload_to='logo', sizes=((200,200)))
     #nombre = models.CharField(max_length=200)
-    imagen = ImageWithThumbsField(upload_to='logo')
-    
+    imagen = models.ImageField(upload_to='logo')
 
