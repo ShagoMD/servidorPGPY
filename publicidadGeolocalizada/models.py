@@ -1,6 +1,7 @@
 #from django.db import models
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
+from thumbs import ImageWithThumbsField
 # Create your models here.
 
 
@@ -29,7 +30,9 @@ class Anuncio(models.Model):
     rutaImagen = models.CharField(max_length=500)
     
 
-
-    
+class Imagen(models.Model):
+    imagen = ImageWithThumbsField(upload_to='logo', sizes=((125,125),(200,200)))
+    #nombre = models.CharField(max_length=200)
+    #imagen = models.ImageField(upload_to='logo')
     
 

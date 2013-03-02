@@ -1,5 +1,6 @@
 # Django settings for servidorPGPY project.
 import sys
+import os
 from os.path import abspath, dirname, join
 from os import path
 
@@ -8,6 +9,8 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 BASEDIR = path.dirname(path.abspath(__file__))  # join ("/", join("var" , join ("www",  "test-server")))  #path.dirname(path.abspat
 APPEND_SLASH = False
+RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
+
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -51,7 +54,8 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+#MEDIA_ROOT = os.path.join(RUTA_PROYECTO,'pubicidadGeolocalizada\\carga')
+MEDIA_ROOT = "C:\Users\Eric\Favorites\Documents"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
