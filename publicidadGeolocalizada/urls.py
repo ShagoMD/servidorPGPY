@@ -29,6 +29,7 @@ urlpatterns = patterns('',
  (r'^pdi/buscar/$', peticionObtenerListadoPuntosDeInteresSearch),
  (r'^pdi/categoria/$', peticionObtenerListadoPuntosDeInteresSearchCategoria),
  (r'^anuncio/registrar/$', peticionRegistrarAnuncio),
+ (r'^anuncio/modificar/$', peticionModificarAnuncio),
  (r'^imagen/mostrar/$', peticionImagen),
  
  #(r'^time/plus/(\d{1,2})/$', hours_ahead),
