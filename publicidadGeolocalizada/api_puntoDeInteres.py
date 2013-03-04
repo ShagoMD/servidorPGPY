@@ -175,7 +175,7 @@ def sonParametrosOpcionalesPDIValidos(parametros):
 
     return True;
 
-def registrarPuntoDeInteres(camposObligatorios,camposOpcionales):
+def registrarPuntoDeInteres(camposObligatorios):
     usuarioValido=esUsuarioValido(camposObligatorios["usuario"]);
     if usuarioValido is not False:            
         listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=camposObligatorios["usuario"]);
@@ -186,7 +186,7 @@ def registrarPuntoDeInteres(camposObligatorios,camposOpcionales):
                 try:
                     cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]))
                     nuevoPDI=PuntoDeInteres();
-                    guardarPuntoDeInteres(usuarioValido,posicionNueva,camposObligatorios,camposOpcionales,nuevoPDI);
+                    guardarPuntoDeInteres(usuarioValido,posicionNueva,camposObligatorios,nuevoPDI);
                     
                     return CODIGO_REGISTRO_EXITOSO;    
                 except Exception,err:
@@ -243,7 +243,7 @@ def eliminarTodosPuntosDeInteresDeUsuario(usuario):
     else:
         return CODIGO_NO_HAY_PDIs_REGISTRADOS;
     
-def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,camposOpcionales,pdi):                    
+def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,pdi):                    
     cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]))
 
     #campos obligatorios
@@ -251,16 +251,9 @@ def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,camposOpcionales,p
     pdi.categoria=cat;
     pdi.propietario=usuario;
     pdi.posicion=posicion;
-    pdi.altitud=float(camposObligatorios['altitud']);
-    #campos opcionales
-    pdi.descripcion=camposOpcionales['descripcion'];
-    pdi.direccion=camposOpcionales['direccion'];
-    pdi.paginaWeb=camposOpcionales['paginaWeb'];
-    pdi.telefono=camposOpcionales['telefono'];
-    pdi.correoElectronico=camposOpcionales['email'];
-    pdi.rutaImagen=camposOpcionales['imagen'];
-    
+    pdi.altitud=float(camposObligatorios['altitud']);  
     pdi.save();
+    
     return;
 
 def obtenerPDIsDeUsuario(usuario):
