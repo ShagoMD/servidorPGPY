@@ -6,6 +6,7 @@ from view_pdi_search import *
 from view_pdi_search_category import *
 from view_anuncio import *
 from view_imagen import *
+from view_Favorito import *
 
 
 # Uncomment the next two lines to enable the admin:
@@ -30,6 +31,9 @@ urlpatterns = patterns('',
  (r'^pdi/categoria/$', peticionObtenerListadoPuntosDeInteresSearchCategoria),
  (r'^anuncio/registrar/$', peticionRegistrarAnuncio),
  (r'^anuncio/modificar/$', peticionModificarAnuncio),
+ (r'^anuncio/eliminar/$', peticionEliminarAnuncio),
+ (r'^favorito/marcar/$', peticionMarcarPDIcomoFavorito),
+ (r'^favorito/desmarcar/$', peticionDesmarcarPDIcomoFavorito),
  (r'^imagen/mostrar/$', peticionImagen),
  
  #(r'^time/plus/(\d{1,2})/$', hours_ahead),

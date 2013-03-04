@@ -28,7 +28,10 @@ class Anuncio(models.Model):
     descripcion = models.CharField(max_length=500)
     categoria = models.CharField(max_length=120)
     rutaImagen = models.CharField(max_length=500)
-    
+
+class PuntoDeInteres_Favoritos(models.Model):
+    pdi = models.ForeignKey(PuntoDeInteres)
+    usuario = models.ForeignKey(User)
 
 class Imagen(models.Model):
     #imagen = ImageWithThumbsField(upload_to='logo', sizes=((200,200)))

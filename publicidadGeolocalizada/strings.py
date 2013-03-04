@@ -58,3 +58,9 @@ ANUNCIO_MENSAJE_TODOS_LOS_ANUNCIOS_ELIMINADOS='Todos los anuncios del PDI fueron
 ANUNCIO_MENSAJE_ANUNCIO_ACTUALIZADO='Los datos del Anuncio de fueron actualizadas correctamente.'
 ANUNCIO_MENSAJE_LIMITE_ANUNCIO_ALCANZADO='Se ha alcanzado el limite de Anuncios que su PDI le permite registrar.'
 
+#En esta seccion se definen los strings usados por el View, la api, y otras clases relativas a Anuncio
+FAVORITO_MENSAJE_MARCACION_EXITOSA='Marcacion como favorito exitoso'
+FAVORITO_MENSAJE_DESMARCACION_EXITOSA='Desmarcacion como favorito exitoso'
+
+FAVORITO_MENSAJE_PDI_YA_SE_ENCUENTRA_MARCADO='El PDI que intenta marcar, ya se encuentra marcado'
+FAVORITO_MENSAJE_PDI_NO_SE_ENCUENTRA_MARCADO='El PDI que intenta desmarcar, no se encuentra marcado'
