@@ -1,3 +1,12 @@
+
+"""
+view_imagen.py: Se encarga de la funcionalidad de
+subir una imagen al servidor
+
+@author Eric Huerta
+@date 01/03/2013
+"""
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from utilidades import *

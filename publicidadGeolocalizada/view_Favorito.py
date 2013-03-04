@@ -1,3 +1,12 @@
+
+"""
+view_Favorito.py: Se encarga de las funcionalidades asociadas
+a marcar y desmarcar un PDI como favorito de parte de un usuario
+
+@author Eric Huerta
+@date 03/03/2013
+"""
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponse;
 from utilidades import *;

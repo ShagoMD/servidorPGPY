@@ -1,3 +1,12 @@
+
+"""
+api_Favorito.py: Se encarga de las funcionalidades asociadas
+a marcar y desmarcar un PDI como favorito de parte de un usuario
+
+@author Eric Huerta
+@date 03/03/2013
+"""
+
 from publicidadGeolocalizada.models import *
 from django.contrib.auth.models import User
 from publicidadGeolocalizada.conversionTipos import *

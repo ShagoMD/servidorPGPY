@@ -1,3 +1,13 @@
+
+"""
+view_Anuncio.py: Se encarga de las funcionalidades asociadas
+a anuncio, tales como registrar, modificar y eliminar uno
+o todos los anuncios asociados a un PDI
+
+@author Eric Huerta
+@date 02/03/2013
+"""
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponse;
 from utilidades import *;

@@ -1,3 +1,13 @@
+
+"""
+api_Anuncio.py: Se encarga de las funcionalidades asociadas
+a anuncio, tales como registrar, modificar y eliminar uno
+o todos los anuncios asociados a un PDI
+
+@author Eric Huerta
+@date 02/03/2013
+"""
+
 from publicidadGeolocalizada.models import *
 from django.contrib.auth.models import User
 from publicidadGeolocalizada.conversionTipos import *
