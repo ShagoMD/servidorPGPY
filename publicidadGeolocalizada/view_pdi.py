@@ -54,7 +54,8 @@ def peticionRegistrarPDI(request):
 		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});		
 	
 def peticionActualizarPDI(request):
-	if request.method=="POST":		
+	if request.method=="POST":
+		#aasd		
 		exito, parametrosObligatorios = extract_params(request.POST,CAMPOS_OBLIGATORIOS_ACTUALIZAR_PDI);
 		exito2,parametrosOpcionales=extract_params(request.POST,CAMPOS_OPCIONALES_ACTUALIZAR_PDI);		
 		
