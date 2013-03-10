@@ -11,42 +11,73 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from utilidades import *
 from django.template import RequestContext
-from django.shortcuts import render_to_response
 from servidorPGPY.settings import MEDIA_ROOT
+from servidorPGPY.settings import MEDIA_URL
 from models import *
 from django.core.files.base import ContentFile
 from PIL import Image
+from api_Imagen import *
+import imghdr
+from django import forms
 
-#CAMPOS_IMAGEN = ["nombre", "imagen"]
 CAMPOS_IMAGEN = ["imagen"]
+CAMPOS_SEARCH = ["idImagen"]
+
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file  = forms.FileField()
 
 def peticionImagen(request):
 	if request.method == "POST":
-		params = extract_params(request.POST,CAMPOS_IMAGEN)
-       
-		#if success:
+		
+		#esImagen = validarSiEsUnaImagen()
+		
+		form = UploadFileForm(request.POST, request.FILES)
+		
+		if form.is_valid():
+		
+			#nuevaImagen = registrarImagen(request.FILES['imagen'])
+				
+			imagen = ImagenField()
 			
-		imagen = Imagen()
+			#file = params[0]
+			#size = (50,50)
+			imagen.imagen = request.FILES['imagen']
+			
+			nombre = imagen.imagen.name
+			url = imagen.imagen.url
+			
+			imagen.nombre = nombre
+			imagen.urlImagen = url
+	
+			fh = ContentFile(imagen.imagen.read())
+			#fh._set_size(500)
+			imagen.imagen.save(nombre, fh)
+			#i.file
+			
+			imagen.save()
+			
+			return render_to_response("PDI/respuesta/error.json",{'codigo':100, 'mensaje': request.build_absolute_uri('/geoAdds'+imagen.imagen.url) })
 		
-		#file = params[0]
-		#size = (50,50)
-		imagen.imagen = request.FILES['imagen']
-		
-		nombre = imagen.imagen.name
+		else:
+			return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'El campo de imagen se encuentra vacio'})
 
-		fh = ContentFile(imagen.imagen.read())
-		#fh._set_size(500)
-		imagen.imagen.save(nombre, fh)
-		#i.file
-		
-		#archivo.save();
-		
-		#fd = open('%s/%s' % (MEDIA_ROOT, file[0]), 'wb')
-		#fd.write(file[2])
-		#fd.close()
-		
-		return render_to_response("PDI/respuesta/error.json",{'codigo':100, 'mensaje':'Exito, imagen :'})
-		#else:			
-		#	return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'Parametros incorrectos'})	
 	else: 
 		return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'La peticion no es post'})
+
+def peticionObtenerURL(request):
+	if request.method == "POST":
+		
+		params = extract_params(request.POST,CAMPOS_SEARCH)
+		
+		idImag = 2
+		
+		imagen = ImagenField()
+		
+		imagen = ImagenField.objects.get(id=idImag)
+		
+		return render_to_response("PDI/respuesta/error.json",{'codigo':100, 'mensaje': request.build_absolute_uri('/geoAdds'+imagen.imagen.url) })
+		
+	else:
+		return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'La peticion no es post'})
+	

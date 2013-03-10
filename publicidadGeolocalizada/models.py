@@ -33,8 +33,11 @@ class PuntoDeInteres_Favoritos(models.Model):
     pdi = models.ForeignKey(PuntoDeInteres)
     usuario = models.ForeignKey(User)
 
-class Imagen(models.Model):
+class ImagenField(models.Model):
     #imagen = ImageWithThumbsField(upload_to='logo', sizes=((200,200)))
     #nombre = models.CharField(max_length=200)
+    nombre = models.CharField(max_length=100)
     imagen = models.ImageField(upload_to='logo')
+    urlImagen = models.CharField(max_length=100)
+
 
