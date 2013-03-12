@@ -11,6 +11,7 @@ BASEDIR = path.dirname(path.abspath(__file__))  # join ("/", join("var" , join (
 APPEND_SLASH = False
 RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
 
+AUTH_PROFILE_MODULE = 'publicidadGeolocalizada.PerfilDeUsuario'
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),

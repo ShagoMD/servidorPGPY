@@ -23,21 +23,13 @@ from django import forms
 CAMPOS_IMAGEN = ["imagen"]
 CAMPOS_SEARCH = ["idImagen"]
 
-class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    file  = forms.FileField()
-
 def peticionImagen(request):
 	if request.method == "POST":
-		
-		#esImagen = validarSiEsUnaImagen()
-		
+        
 		form = UploadFileForm(request.POST, request.FILES)
+        
+		if not form.is_valid():
 		
-		if form.is_valid():
-		
-			#nuevaImagen = registrarImagen(request.FILES['imagen'])
-				
 			imagen = ImagenField()
 			
 			#file = params[0]
@@ -54,10 +46,10 @@ def peticionImagen(request):
 			#fh._set_size(500)
 			imagen.imagen.save(nombre, fh)
 			#i.file
-			
+			#imghdr.what("/home/user/Pictures/Foto2x2.jpg")
 			imagen.save()
 			
-			return render_to_response("PDI/respuesta/error.json",{'codigo':100, 'mensaje': request.build_absolute_uri('/geoAdds'+imagen.imagen.url) })
+			return render_to_response("PDI/respuesta/error.json",{'codigo':100, 'mensaje': imghdr.what(imagen.imagen) })
 		
 		else:
 			return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'El campo de imagen se encuentra vacio'})
@@ -81,3 +73,11 @@ def peticionObtenerURL(request):
 	else:
 		return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'La peticion no es post'})
 	
+class UploadFileForm(forms.Form):
+    #title = forms.CharField(max_length=50)
+    file  = forms.FileField()
+    
+    def process(self):
+        cd = self.cleaned_data
+        
+        

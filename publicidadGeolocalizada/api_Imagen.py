@@ -16,6 +16,7 @@ from servidorPGPY.settings import MEDIA_ROOT
 from servidorPGPY.settings import MEDIA_URL
 from django.core.files.base import ContentFile
 from PIL import Image
+import imghdr
 connection._rollback()
 
 TIPO_ENTERO = '1'
@@ -56,39 +57,13 @@ CODIGO_NO_HAY_ANUNCIOS_REGISTRADOS = 18
 
 def registrarImagen(imagen):
     
-    parametrosObligatorios = sonParametrosObligatorios(idPDI,idUser,titulo,descripcion)
-    parametrosOpcionales = sonParametrosOpcionales(categoria,URLimagen)
-
-    if parametrosObligatorios != CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS:
-        return parametrosObligatorios
+    tipoDeImagen = imghdr.what(imagen.imagen)
     
-    if parametrosOpcionales != CODIGO_PARAMETROS_OPCIONALES_VALIDOS:
-        return parametrosOpcionales
+    if tipoDeImagen == 'jpeg':
     
-    PDIdelUsuario = esPDIdelUsuario(idPDI,idUser)
-    totalDeAnuncios = obtenerElTotalDeAnunciosDelPDI(idPDI)
-    
-    if PDIdelUsuario != CODIGO_PDI_ES_DEL_USUARIO:
-        return PDIdelUsuario
-    
-    if(len(totalDeAnuncios) >= MAX_ANUNCIOS):
-        return CODIGO_LIMITE_ANUNCIOS_ALCANZADO
-    
-    try:
+        nuevaImagen = ImagenField()
         
-        pdi = PuntoDeInteres.objects.get(id=idPDI)
-        nuevoAnuncio = Anuncio()
-        nuevoAnuncio.anunciante = pdi
-        nuevoAnuncio.titulo = titulo
-        nuevoAnuncio.descripcion = descripcion
-        nuevoAnuncio.categoria = categoria
-        nuevoAnuncio.rutaImagen = URLimagen
-        nuevoAnuncio.save()           
-         
-        return nuevoAnuncio
+    return imagen
     
-    except Exception,err:
-        return CODIGO_REGISTRO_FALLIDO
-
-
-
+    
+    

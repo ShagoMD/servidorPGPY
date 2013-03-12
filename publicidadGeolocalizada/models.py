@@ -40,4 +40,10 @@ class ImagenField(models.Model):
     imagen = models.ImageField(upload_to='logo')
     urlImagen = models.CharField(max_length=100)
 
-
+class PerfilDeUsuario(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    rutaImagen = models.CharField(max_length=310)
+    edad = models.CharField(max_length=50)
+    genero = models.CharField(max_length=50)
+    
+    

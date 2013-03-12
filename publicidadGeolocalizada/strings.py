@@ -1,3 +1,6 @@
+# -*- encoding: utf-8 -*-
+#La línea de arriba es para que python reconosca el ascii de las letras con acento
+
 #En esta seccion se colocan Strings generales que pueden ser usados por cualquier View y/o api
 GENERAL_MENSAJE_ERROR_TIPO_PETICION='La peticion no fue realizada a traves de POST.';
 GENERAL_MENSAJE_CAMPO_TEXTO_INVALIDO="El campo de texto es invalido.";
@@ -27,8 +30,12 @@ PDI_MENSAJE_PDI_ACTUALIZADO="Los datos del punto de interes fueron actualizados 
 USUARIO_MENSAJE_CORREO_INVALIDO='Introduzca un correo electronico valido.';
 USUARIO_MENSAJE_CONTRASENIA_INVALIDA='La contrasenia debe tener al menos 8 caracteres, una minuscula, una mayuscula y un digito.';
 USUARIO_MENSAJE_CORREO_REPETIDO='El correo electronico introducido ya ha sido registrado en el sistema.';
-USUARIO_MENSAJE_ERROR_INICIO_SESION="La combinacion de usuario y contrasenia utilizada no es valida.";
-USUARIO_MENSAJE_USUARIO_NO_EXISTE="El usuario con el que trata de ingresar no existe.";
+USUARIO_MENSAJE_ERROR_INICIO_SESION='La combinacion de usuario y contrasenia utilizada no es valida.';
+USUARIO_MENSAJE_USUARIO_NO_EXISTE='El usuario con el que trata de ingresar no existe.';
+USUARIO_MENSAJE_ACTUALIZACION_VACIA='La actualizacion de los datos del perfil no sufrieron cambio alguno.'
+USUARIO_MENSAJE_ID_DEL_USUARIO_INVALIDO='El ID del usuario es invalido.'
+USUARIO_MENSAJE_ACTUALIZACION_EXISTOSA='Actualizacion de los datos del perfil exitoso.'
+USUARIO_MENSAJE_ACTUALIZACION_FALLIDA='Actualizacion de los datos del perfil fallido.'
 
 #En esta seccion se definen los strings usados por el View, la api y otras clases concernientes a Categoria
 CATEGORIA_MENSAJE_CATEGORIA_INVALIDA="El valor que trata de registrar no es unca cadena de texto.";
