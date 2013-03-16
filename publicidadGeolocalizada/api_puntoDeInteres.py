@@ -210,7 +210,6 @@ def actualizarPuntoDeInteres(camposObligatorios,camposOpcionales):
         pdi.paginaWeb=camposOpcionales['paginaWeb'];
         pdi.telefono=camposOpcionales['telefono'];
         pdi.correoElectronico=camposOpcionales['email'];
-        pdi.rutaImagen=camposOpcionales['imagen'];
     
         pdi.save();
 

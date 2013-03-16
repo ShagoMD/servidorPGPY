@@ -9,7 +9,7 @@ CAMPOS_OBLIGATORIOS_REGISTRO_PDI = ["usuario","latitud","longitud","altitud","no
 CAMPOS_OPCIONALES_REGISTRO_PDI = ["descripcion","direccion","paginaWeb","telefono","email","imagen"];
 
 CAMPOS_OBLIGATORIOS_ACTUALIZAR_PDI=["usuario","idPDI"];
-CAMPOS_OPCIONALES_ACTUALIZAR_PDI=["descripcion","direccion","paginaWeb","telefono","email","imagen"];
+CAMPOS_OPCIONALES_ACTUALIZAR_PDI=["descripcion","direccion","paginaWeb","telefono","email"];
 
 CAMPOS_LISTADO_PDI = ["latitud","longitud","rangoMaximoAlcance"];
 
@@ -54,8 +54,7 @@ def peticionRegistrarPDI(request):
 		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});		
 	
 def peticionActualizarPDI(request):
-	if request.method=="POST":
-		#aasd		
+	if request.method=="POST":		
 		exito, parametrosObligatorios = extract_params(request.POST,CAMPOS_OBLIGATORIOS_ACTUALIZAR_PDI);
 		exito2,parametrosOpcionales=extract_params(request.POST,CAMPOS_OPCIONALES_ACTUALIZAR_PDI);		
 		
