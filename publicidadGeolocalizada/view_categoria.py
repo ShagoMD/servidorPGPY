@@ -7,24 +7,55 @@ from utilidades import *
 from strings import *
 
 CAMPOS_CATEGORIA=["categoria"];
-
-CODIGO_REGISTRO_EXITOSO=0;
-CODIGO_PARAMETRO_INVALIDO=-1;
-CODIGO_PARAMETRO_VACIO=-2;
-
+CAMPOS_ELIMINAR_CATEGORIA=["idCategoria","nombreCategoria"];
 
 def peticionRegistrarCategoria(request):
     if request.method=='POST':
         exito,parametros=extract_params(request.POST,CAMPOS_CATEGORIA);
-        if exito:
-            respuesta=registrarCategoria(parametros); 
-            if(respuesta==CODIGO_PARAMETRO_INVALIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':CATEGORIA_MENSAJE_CATEGORIA_INVALIDA});
-            if(respuesta==CODIGO_PARAMETRO_VACIO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':CATEGORIA_MENSAJE_CATEGORIA_VACIA});
-            else:
-                return render_to_json("PDI/respuesta/registroCategoria.json",{"codigo":100,"categoria":respuesta});
-        else:
+        
+        if not exito:            
             return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});
+        
+        codigoRespuesta,categoria=registrarCategoria(parametros); 
+        
+        if(codigoRespuesta==CODIGO_OPERACION_EXITOSA):                    
+            return render_to_json("PDI/respuesta/categoria.json",{'codigo':100,'mensaje':CATEGORIA_MENSAJE_REGISTRO_EXITOSO,'id':categoria.id});
+        else:                
+            return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
+        
     else:
         return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});
+    
+def peticionEliminarCategoria(request):
+    if request.method!='POST':        
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});
+    
+    exito,parametros=extract_params(request.POST,CAMPOS_ELIMINAR_CATEGORIA);
+    
+    if not exito:            
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});
+                
+    codigoRespuesta,categoria=eliminarCategoria(parametros);         
+    
+    if(codigoRespuesta==CODIGO_OPERACION_EXITOSA):                    
+        return render_to_json("PDI/respuesta/categoria.json",{'codigo':100,'mensaje':CATEGORIA_MENSAJE_CATEGORIA_ELIMINADA,'id':categoria});
+    else:                
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
+
+
+        
+def peticionActualizarCategoria(request):    
+    if request.method!='POST':        
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});
+    
+    exito,parametros=extract_params(request.POST,CAMPOS_ELIMINAR_CATEGORIA);
+    
+    if not exito:            
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});
+                
+    codigoRespuesta,categoria=actualizarCategoria(parametros);         
+    
+    if(codigoRespuesta==CODIGO_OPERACION_EXITOSA):                    
+        return render_to_json("PDI/respuesta/categoria.json",{'codigo':100,'mensaje':CATEGORIA_MENSAJE_ACTUALIZADA,'id':categoria.id});
+    else:                
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});

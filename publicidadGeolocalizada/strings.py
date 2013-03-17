@@ -48,5 +48,14 @@ USUARIO_MENSAJE_USUARIO_NO_EXISTE="El usuario con el que trata de ingresar no ex
 #En esta seccion se definen los strings usados por el View, la api y otras clases concernientes a Categoria
 CATEGORIA_MENSAJE_CATEGORIA_INVALIDA="El valor que trata de registrar no es unca cadena de texto.";
 CATEGORIA_MENSAJE_CATEGORIA_VACIA="El nombre de la Categoria se encuentra vacio.";
-
+CATEGORIA_MENSAJE_REGISTRO_EXITOSO="La categoria se registro exitosamente.";
+CATEGORIA_MENSAJE_CATEGORIA_DUPLICADA="La categoria que intenta registrar ya existe.";
+CATEGORIA_MENSAJE_CATEGORIA_ELIMINADA="La categoria fue eliminada.";
+CATEGORIA_MENSAJE_PARAMETROS_VACIOS="Parametros vacios.";
+CATEGORIA_MENSAJE_ID_INVALIDO="El id debe ser un entero.";
+CATEGORIA_MENSAJE_NOMBRE_INVALIDO="El nombre debe ser una cadena de caracteres.";
+CATEGORIA_MENSAJE_ERROR_ELIMINAR="No se pudo eliminar la categoria. Intentelo de nuevo.";
+CATEGORIA_MENSAJE_CATEGORIA_NO_EXISTE="La categoria no existe.";
+CATEGORIA_MENSAJE_NOMBRE_EXISTE="El nombre de la categoria que intenta actualizar ya existe";
+CATEGORIA_MENSAJE_ACTUALIZADA="La categoria fue actualizada correctamente";
 #En esta seccion se definen los strings usados por el View, la api, y otras clases relativas a Anuncio

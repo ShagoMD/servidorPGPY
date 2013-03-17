@@ -36,24 +36,7 @@ def peticionRegistrarPDI(request):
 		if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):					
 			return render_to_json("PDI/respuesta/registroPDI.json",{'codigo':100,'mensaje':PDI_MENSAJE_REGISTRO_EXITOSO});
 		else:				
-			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
-		
-		if (exito and sonParametrosObligatoriosPDIValidos(parametrosObligatorios)):
-			codigoRespuesta=registrarPuntoDeInteres(parametrosObligatorios);
-			if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):
-				return render_to_json("PDI/respuesta/registroPDI.json",{'codigo':100,'mensaje':PDI_MENSAJE_REGISTRO_EXITOSO});
-			if(codigoRespuesta==CODIGO_LOCALIZACION_REPETIDA):
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_LOCALIZACION_REPETIDA});
-			if(codigoRespuesta==CODIGO_LIMITE_PDI_ALCANZADO):
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_LIMITE_PDI_ALCANZADO});
-			if(codigoRespuesta==CODIGO_USUARIO_INVALIDO):
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_USUARIO_INVALIDO});
-			if(codigoRespuesta==CODIGO_CATEGORIA_INVALIDA):
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_CATEGORIA_INVALIDA});
-		else:	
-			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});						
-	else:
-		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});		
+			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});		
 	
 def peticionActualizarPDI(request):
 	if request.method=="POST":		
