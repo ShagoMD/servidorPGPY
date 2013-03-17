@@ -10,7 +10,7 @@ import re
 
 SRID=4326
 MAXIMO_PDI_REGISTRADOS=20
-REGEX=re.compile('\s+');
+CARACTER_ESPACIO=re.compile('^\s+$');
 
 CODIGO_REGISTRO_EXITOSO=0;
 
@@ -22,7 +22,11 @@ CODIGO_PDI_NO_EXISTE=5;
 CODIGO_PDI_ELIMINADO=6;
 CODIGO_NO_HAY_PDIs_REGISTRADOS=7;
 
+CODIGO_PARAMETRO_USUARIO_INVALIDO=8;
+CODIGO_PARAMETRO_PDI_INVALIDO=9;
 
+CODIGO_ERROR_GUARDAR_PDI=10;
+CODIGO_PDI_NO_PERTENECE_USUARIO=11;
 
 def obtenerListadoPuntosDeInteres(latitud,longitud,rangoMaximoAlcance):
    
@@ -120,7 +124,7 @@ def validarParametrosListadoPuntosDeInteresSearchCategoria(latitud,longitud,rang
         
     return parametrosValidos
 
-def sonParametrosObligatoriosPDIValidos(parametros):
+def sonParametrosObligatoriosRegistrarPDIValidos(parametros):
     usuario=parametros['usuario'];
     nombre=parametros['nombre'];
     categoria=parametros['categoria'];
@@ -129,94 +133,132 @@ def sonParametrosObligatoriosPDIValidos(parametros):
     altitud=parametros['altitud'];
     
 
-    if usuario=="" or REGEX.match(usuario) or not esTipoValido(usuario,TIPO_CADENA):
-        return False;
-    if nombre=="" or REGEX.match(nombre) or not esTipoValido(nombre,TIPO_CADENA):
-        return False;
+    if usuario=="" or CARACTER_ESPACIO.match(usuario) or not esTipoValido(usuario,TIPO_CADENA):
+        return PDI_MENSAJE_PARAMETRO_USUARIO_INVALIDO;
+    if nombre=="" or CARACTER_ESPACIO.match(nombre) or not esTipoValido(nombre,TIPO_CADENA):
+        return PDI_MENSAJE_PARAMETRO_NOMBRE_PDI_INVALIDO;
     if categoria=="" or not esTipoValido(categoria,TIPO_ENTERO):
-        return False;
+        return PDI_MENSAJE_PARAMETRO_CATEGORIA_INVALIDO;
     if latitud=="" or not esTipoValido(latitud,TIPO_FLOTANTE):
-        return False;
+        return PDI_MENSAJE_PARAMETRO_LOCALIZACION_INVALIDO;
     if longitud=="" or not esTipoValido(longitud,TIPO_FLOTANTE):
-        return False;
+        return PDI_MENSAJE_PARAMETRO_LOCALIZACION_INVALIDO;
     if altitud=="" or not esTipoValido(altitud,TIPO_FLOTANTE):
-        return False;
+        return PDI_MENSAJE_PARAMETRO_LOCALIZACION_INVALIDO;
     return True;
 
 def sonParametrosObligatoriosActualizarPDIValidos(parametros):    
     usuario=parametros['usuario'];
     idPDI=parametros['idPDI'];    
     
-    if usuario=="" or REGEX.match(usuario) or not esTipoValido(usuario,TIPO_CADENA):
-        return False;
-    if idPDI=="" or REGEX.match(idPDI) or not esTipoValido(idPDI,TIPO_ENTERO):
-        return False;
+    if usuario=="" or CARACTER_ESPACIO.match(usuario) or not esTipoValido(usuario,TIPO_CADENA):
+        return PDI_MENSAJE_PARAMETRO_USUARIO_INVALIDO;
+    if idPDI=="" or CARACTER_ESPACIO.match(idPDI) or not esTipoValido(idPDI,TIPO_ENTERO):
+        return PDI_MENSAJE_PARAMETRO_PDI_INVALIDO;
     return True;
 
-def sonParametrosOpcionalesPDIValidos(parametros):
+def sonParametrosOpcionalesActualizarPDIValidos(parametros):
     descripcion=parametros["descripcion"];
     direccion=parametros["direccion"];
     paginaWeb=parametros["paginaWeb"];
     telefono=parametros["telefono"];
     email=parametros["email"];
-    urlImagen=parametros["imagen"];
     
-    if descripcion!="" and not esTipoValido(descripcion,TIPO_CADENA):
-        return GENERAL_MENSAJE_CAMPO_TEXTO_INVALIDO;
-    if direccion!="" and not esTipoValido(direccion,TIPO_CADENA):
-        return GENERAL_MENSAJE_CAMPO_TEXTO_INVALIDO;
-    if REGEX.match(paginaWeb) and not esURLValida(paginaWeb):
-        return PDI_MENSAJE_URL_WEB_INVALIDA;
-    if REGEX.match(telefono) and not esTipoValido(telefono,TIPO_ENTERO):
-        return GENERAL_MENSAJE_CAMPO_TEXTO_INVALIDO;
-    if REGEX.match(email) and not esCorreoValido(email):
-        return PDI_MENSAJE_CORREO_INVALIDO;
-    if REGEX.match(urlImagen) and not esURLValida(urlImagen):
-        return PDI_MENSAJE_URL_IMAGEN_INVALIDA;
+    if CARACTER_ESPACIO.match(descripcion) or (descripcion!="" and not esTipoValido(descripcion,TIPO_CADENA)):
+        return PDI_MENSAJE_PARAMETRO_DESCRIPCION_INVALIDO;
+    if CARACTER_ESPACIO.match(direccion) or (direccion !="" and not esTipoValido(direccion,TIPO_CADENA)):
+        return PDI_MENSAJE_PARAMETRO_DIRECCION_INVALIDO;
+    if CARACTER_ESPACIO.match(paginaWeb) or (paginaWeb!="" and not esURLValida(paginaWeb)):
+        return PDI_MENSAJE_PARAMETRO_URL_INVALIDO;
+    if CARACTER_ESPACIO.match(telefono) or (telefono!="" and not esTipoValido(telefono,TIPO_ENTERO)):
+        return PDI_MENSAJE_PARAMETRO_TELEFONO_INVALIDO;
+    if CARACTER_ESPACIO.match(email) or (email!="" and not esCorreoValido(email)):
+        return PDI_MENSAJE_PARAMETRO_CORREO_INVALIDO;
+
+    return True;
+
+def sonParametrosOpcionalesActualizarPDIVacios(parametros):    
+    descripcion=parametros["descripcion"];
+    direccion=parametros["direccion"];
+    paginaWeb=parametros["paginaWeb"];
+    telefono=parametros["telefono"];
+    email=parametros["email"];    
+    
+    if CARACTER_ESPACIO.match(descripcion) or descripcion!="":
+        return False;
+    if CARACTER_ESPACIO.match(direccion) or direccion !="":
+        return False;
+    if CARACTER_ESPACIO.match(paginaWeb) or paginaWeb!="":
+        return False;
+    if CARACTER_ESPACIO.match(telefono) or telefono!="":
+        return False;
+    if CARACTER_ESPACIO.match(email) or email!="":
+        return False;
 
     return True;
 
 def registrarPuntoDeInteres(camposObligatorios):
+    paramObligValidos=sonParametrosObligatoriosRegistrarPDIValidos(camposObligatorios);
+    if paramObligValidos is not True:
+        return paramObligValidos;
+    
     usuarioValido=esUsuarioValido(camposObligatorios["usuario"]);
-    if usuarioValido is not False:            
-        listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=camposObligatorios["usuario"]);
-        if(len(listaPDI)<MAXIMO_PDI_REGISTRADOS):
-            posicionNueva=Point(float(camposObligatorios["longitud"]),float(camposObligatorios["latitud"]),srid=SRID);
-            listaPDIPosiciones=PuntoDeInteres.objects.filter(posicion__exact=posicionNueva,altitud__exact=camposObligatorios['altitud']);
-            if(len(listaPDIPosiciones)==0):
-                try:
-                    cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]))
-                    nuevoPDI=PuntoDeInteres();
-                    guardarPuntoDeInteres(usuarioValido,posicionNueva,camposObligatorios,nuevoPDI);
-                    
-                    return CODIGO_REGISTRO_EXITOSO;    
-                except Exception,err:
-                    return CODIGO_CATEGORIA_INVALIDA;
-            else:
-                return CODIGO_LOCALIZACION_REPETIDA;
-        else:
-            return CODIGO_LIMITE_PDI_ALCANZADO;
-    else:
-        return CODIGO_USUARIO_INVALIDO;
-
-def actualizarPuntoDeInteres(camposObligatorios,camposOpcionales):    
-    usuarioValido=esUsuarioValido(camposObligatorios["usuario"]);
-    if usuarioValido is not False:            
-        pdi=PuntoDeInteres.objects.get(id=camposObligatorios["idPDI"]);
+    if usuarioValido is False:
+        return PDI_MENSAJE_USUARIO_INVALIDO;
+                
+    listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=camposObligatorios["usuario"]);
+    if(len(listaPDI)>=MAXIMO_PDI_REGISTRADOS):
+        return PDI_MENSAJE_LIMITE_PDI_ALCANZADO;
         
-        #campos opcionales
-        pdi.descripcion=camposOpcionales['descripcion'];
-        pdi.direccion=camposOpcionales['direccion'];
-        pdi.paginaWeb=camposOpcionales['paginaWeb'];
-        pdi.telefono=camposOpcionales['telefono'];
-        pdi.correoElectronico=camposOpcionales['email'];
+    posicionNueva=Point(float(camposObligatorios["longitud"]),float(camposObligatorios["latitud"]),srid=SRID);
+    listaPDIPosiciones=PuntoDeInteres.objects.filter(posicion__exact=posicionNueva,altitud__exact=camposObligatorios['altitud']);
+    if(len(listaPDIPosiciones)>0):
+        return PDI_MENSAJE_LOCALIZACION_REPETIDA;
     
-        pdi.save();
-
+    try:
+        cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]));
+    except Exception,err:                
+        return PDI_MENSAJE_CATEGORIA_INVALIDA;
+               
+    try:   
+        nuevoPDI=PuntoDeInteres();
+        guardarPuntoDeInteres(usuarioValido,posicionNueva,camposObligatorios,nuevoPDI);
+        
         return CODIGO_REGISTRO_EXITOSO;    
-    else:
-        return CODIGO_USUARIO_INVALIDO;
+    except Exception,err:
+        return PDI_MENSAJE_REGISTRO_FALLIDO;
+
+
+def actualizarPuntoDeInteres(camposObligatorios,camposOpcionales):
+    paramObligValidos=sonParametrosObligatoriosActualizarPDIValidos(camposObligatorios);
+    if paramObligValidos is not True:
+        return paramObligValidos;
     
+    paramOpcVacios=sonParametrosOpcionalesActualizarPDIVacios(camposOpcionales);
+    paramOpcValidos=sonParametrosOpcionalesActualizarPDIValidos(camposOpcionales);
+    if paramOpcVacios is not True and paramOpcValidos is not True:
+            return paramOpcValidos;
+    
+    usuarioValido=esUsuarioValido(camposObligatorios["usuario"]);
+    if usuarioValido is False:
+        return PDI_MENSAJE_USUARIO_INVALIDO;
+    
+    listaPDI=PuntoDeInteres.objects.filter(id__exact=camposObligatorios["idPDI"],propietario__exact=usuarioValido.id);
+    if(len(listaPDI)==0):        
+        return PDI_MENSAJE_NO_PERTENECE_USUARIO;
+    pdi=listaPDI[0];
+    #campos opcionales
+    pdi.descripcion=camposOpcionales['descripcion'];
+    pdi.direccion=camposOpcionales['direccion'];
+    pdi.paginaWeb=camposOpcionales['paginaWeb'];
+    pdi.telefono=camposOpcionales['telefono'];
+    pdi.correoElectronico=camposOpcionales['email'];
+
+    try:
+        pdi.save();
+        return CODIGO_REGISTRO_EXITOSO;            
+    except Exception,err:
+        return PDI_MENSAJE_PDI_NO_ACTUALIZADO;
 
 def eliminarPuntoDeInteres(usuario,idPDI):
     validacion=esUsuarioValido(usuario);

@@ -6,6 +6,7 @@ GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS='No se enviaron todos los parametros obli
 
 #En esta seccion se definen los strings usados por el View, la api y cualquier otra clase referente a PDI
 PDI_MENSAJE_REGISTRO_EXITOSO='Registro de PDI exitoso';
+PDI_MENSAJE_REGISTRO_FALLIDO='Ocurrio un error al intentar registrar el PDI. Intentelo de nuevo.';
 PDI_MENSAJE_LOCALIZACION_REPETIDA='Los datos de localizacion del PDI que se desea registrar ya han sido utilizados previamente.';
 PDI_MENSAJE_LIMITE_PDI_ALCANZADO='Se ha alcanzado el limite de PDI que su cuenta le permite registrar.';
 PDI_MENSAJE_USUARIO_INVALIDO='El usuario no existe.';
@@ -20,7 +21,22 @@ PDI_MENSAJE_NO_HAY_PDIs_REGISTRADOS="El usuario no tiene puntos de interes regis
 PDI_MENSAJE_PDI_ELIMINADO="El punto de interes y todos sus anuncion asociados fueron eliminados correctamente.";
 PDI_MENSAJE_TODOS_PDIS_ELIMINADOS="Todos los puntos de interes del usuario y sus respectivos anuncios han sido eliminados correctamente.";
 
+PDI_MENSAJE_PARAMETRO_USUARIO_INVALIDO="El usuario debe ser un correo electronico.";
+PDI_MENSAJE_PARAMETRO_PDI_INVALIDO="La referencia al pdi que intenta actualizar no posee un formato valido.";
+
+PDI_MENSAJE_PARAMETRO_NOMBRE_PDI_INVALIDO="El nombre del pdi no tiene el formato valido.";
+PDI_MENSAJE_PARAMETRO_CATEGORIA_INVALIDO="La categoria no tiene el formato valido.";
+PDI_MENSAJE_PARAMETRO_LOCALIZACION_INVALIDO="Los datos de localizacion no tienen el formato valido.";
+PDI_MENSAJE_PARAMETRO_DESCRIPCION_INVALIDO="La descripcion no puede tener solo espacios en blanco.";
+PDI_MENSAJE_PARAMETRO_DIRECCION_INVALIDO="La direccion no puede tener solo espacios en blanco";
+PDI_MENSAJE_PARAMETRO_TELEFONO_INVALIDO="No se pueden introducir espacios en blanco o letras en el telefono.";
+PDI_MENSAJE_PARAMETRO_CORREO_INVALIDO="El correo electronico no tiene el formato adecuado";
+PDI_MENSAJE_PARAMETRO_URL_INVALIDO="La url del sitio no tiene el formto adecuado";
+
 PDI_MENSAJE_PDI_ACTUALIZADO="Los datos del punto de interes fueron actualizados correctamente.";
+PDI_MENSAJE_PDI_NO_ACTUALIZADO="Los datos del PDI no pudieron ser actualizados. Intentelo de nuevo.";
+PDI_MENSAJE_NO_PERTENECE_USUARIO="Este usuario no tiene los privilegios para modificar el PDI.";
+
 
 #En esta seccion se definen los strings usados por el View, la api y otras clases correspondientes a Usuario
 USUARIO_MENSAJE_CORREO_INVALIDO='Introduzca un correo electronico valido.';

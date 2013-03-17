@@ -28,13 +28,17 @@ CODIGO_NO_HAY_PDIs_REGISTRADOS=7;
 def peticionRegistrarPDI(request):
 	if request.method == "POST":
 		exito, parametrosObligatorios = extract_params(request.POST,CAMPOS_OBLIGATORIOS_REGISTRO_PDI);
-		#exito2,parametrosOpcionales=extract_params(request.POST,CAMPOS_OPCIONALES_REGISTRO_PDI);
-		#eliminar esta linea cuando las categorias esten registradas y funcionando
-		#parametrosObligatorios['categoria']='2';
+		if not exito:			
+			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});						
+
+		codigoRespuesta=registrarPuntoDeInteres(parametrosObligatorios);		
+		
+		if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):					
+			return render_to_json("PDI/respuesta/registroPDI.json",{'codigo':100,'mensaje':PDI_MENSAJE_REGISTRO_EXITOSO});
+		else:				
+			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
 		
 		if (exito and sonParametrosObligatoriosPDIValidos(parametrosObligatorios)):
-			#respuestaOpcinales=sonParametrosOpcionalesPDIValidos(parametrosOpcionales);
-			#if respuestaOpcinales==True:
 			codigoRespuesta=registrarPuntoDeInteres(parametrosObligatorios);
 			if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):
 				return render_to_json("PDI/respuesta/registroPDI.json",{'codigo':100,'mensaje':PDI_MENSAJE_REGISTRO_EXITOSO});
@@ -46,8 +50,6 @@ def peticionRegistrarPDI(request):
 				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_USUARIO_INVALIDO});
 			if(codigoRespuesta==CODIGO_CATEGORIA_INVALIDA):
 				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_CATEGORIA_INVALIDA});
-		#else:
-		#		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':respuestaOpcinales});
 		else:	
 			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});						
 	else:
@@ -58,19 +60,16 @@ def peticionActualizarPDI(request):
 		exito, parametrosObligatorios = extract_params(request.POST,CAMPOS_OBLIGATORIOS_ACTUALIZAR_PDI);
 		exito2,parametrosOpcionales=extract_params(request.POST,CAMPOS_OPCIONALES_ACTUALIZAR_PDI);		
 		
-		if (exito and sonParametrosObligatoriosActualizarPDIValidos(parametrosObligatorios)):
-			respuestaOpcinales=sonParametrosOpcionalesPDIValidos(parametrosOpcionales);
-			
-			if respuestaOpcinales==True:
-				codigoRespuesta=actualizarPuntoDeInteres(parametrosObligatorios,parametrosOpcionales);
-				if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):
-					return render_to_json("PDI/respuesta/registroPDI.json",{'codigo':100,'mensaje':PDI_MENSAJE_PDI_ACTUALIZADO});
-				if(codigoRespuesta==CODIGO_USUARIO_INVALIDO):
-					return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_USUARIO_INVALIDO});
-			else:
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':respuestaOpcinales});
-		else:	
+		if not exito:			
 			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});	
+		
+		codigoRespuesta=actualizarPuntoDeInteres(parametrosObligatorios,parametrosOpcionales);
+
+		if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):					
+			return render_to_json("PDI/respuesta/registroPDI.json",{'codigo':100,'mensaje':PDI_MENSAJE_PDI_ACTUALIZADO});
+		else:				
+			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
+				
 	else:		
 		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});		
 

@@ -48,7 +48,7 @@ def esUsuarioValido(correo_e):
         return False;
 
 def esURLValida(url):
-    regex=re.compile('^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)( [a-zA-Z0-9\-\.\?\,\'\/\\\+&%\$#_]*)?$');
+    regex=re.compile('^(www\.)[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#!]*[\w\-\@?^=%&/~\+#])?');
     resultado=regex.match(url);
     if resultado:
         return True;
