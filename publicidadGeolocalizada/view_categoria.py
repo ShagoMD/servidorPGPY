@@ -41,9 +41,7 @@ def peticionEliminarCategoria(request):
         return render_to_json("PDI/respuesta/categoria.json",{'codigo':100,'mensaje':CATEGORIA_MENSAJE_CATEGORIA_ELIMINADA,'id':categoria});
     else:                
         return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
-
-
-        
+     
 def peticionActualizarCategoria(request):    
     if request.method!='POST':        
         return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});

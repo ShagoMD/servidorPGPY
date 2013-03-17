@@ -199,53 +199,54 @@ def sonParametrosOpcionalesActualizarPDIVacios(parametros):
 
 def registrarPuntoDeInteres(camposObligatorios):
     paramObligValidos=sonParametrosObligatoriosRegistrarPDIValidos(camposObligatorios);
+    nuevoPDI=PuntoDeInteres();
     if paramObligValidos is not True:
-        return paramObligValidos;
+        return paramObligValidos,nuevoPDI;
     
     usuarioValido=esUsuarioValido(camposObligatorios["usuario"]);
     if usuarioValido is False:
-        return PDI_MENSAJE_USUARIO_INVALIDO;
+        return PDI_MENSAJE_USUARIO_INVALIDO,nuevoPDI;
                 
     listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=camposObligatorios["usuario"]);
     if(len(listaPDI)>=MAXIMO_PDI_REGISTRADOS):
-        return PDI_MENSAJE_LIMITE_PDI_ALCANZADO;
+        return PDI_MENSAJE_LIMITE_PDI_ALCANZADO,nuevoPDI;
         
     posicionNueva=Point(float(camposObligatorios["longitud"]),float(camposObligatorios["latitud"]),srid=SRID);
     listaPDIPosiciones=PuntoDeInteres.objects.filter(posicion__exact=posicionNueva,altitud__exact=camposObligatorios['altitud']);
     if(len(listaPDIPosiciones)>0):
-        return PDI_MENSAJE_LOCALIZACION_REPETIDA;
+        return PDI_MENSAJE_LOCALIZACION_REPETIDA,nuevoPDI;
     
     try:
         cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]));
     except Exception,err:                
-        return PDI_MENSAJE_CATEGORIA_INVALIDA;
+        return PDI_MENSAJE_CATEGORIA_INVALIDA,nuevoPDI;
                
     try:   
-        nuevoPDI=PuntoDeInteres();
+        
         guardarPuntoDeInteres(usuarioValido,posicionNueva,camposObligatorios,nuevoPDI);
         
-        return CODIGO_REGISTRO_EXITOSO;    
+        return CODIGO_REGISTRO_EXITOSO,nuevoPDI;    
     except Exception,err:
-        return PDI_MENSAJE_REGISTRO_FALLIDO;
+        return PDI_MENSAJE_REGISTRO_FALLIDO,nuevoPDI;
 
 
 def actualizarPuntoDeInteres(camposObligatorios,camposOpcionales):
     paramObligValidos=sonParametrosObligatoriosActualizarPDIValidos(camposObligatorios);
     if paramObligValidos is not True:
-        return paramObligValidos;
+        return paramObligValidos,False;
     
     paramOpcVacios=sonParametrosOpcionalesActualizarPDIVacios(camposOpcionales);
     paramOpcValidos=sonParametrosOpcionalesActualizarPDIValidos(camposOpcionales);
     if paramOpcVacios is not True and paramOpcValidos is not True:
-            return paramOpcValidos;
+            return paramOpcValidos,False;
     
     usuarioValido=esUsuarioValido(camposObligatorios["usuario"]);
     if usuarioValido is False:
-        return PDI_MENSAJE_USUARIO_INVALIDO;
+        return PDI_MENSAJE_USUARIO_INVALIDO,False;
     
     listaPDI=PuntoDeInteres.objects.filter(id__exact=camposObligatorios["idPDI"],propietario__exact=usuarioValido.id);
     if(len(listaPDI)==0):        
-        return PDI_MENSAJE_NO_PERTENECE_USUARIO;
+        return PDI_MENSAJE_NO_PERTENECE_USUARIO,False;
     pdi=listaPDI[0];
     #campos opcionales
     pdi.descripcion=camposOpcionales['descripcion'];
@@ -256,22 +257,25 @@ def actualizarPuntoDeInteres(camposObligatorios,camposOpcionales):
 
     try:
         pdi.save();
-        return CODIGO_REGISTRO_EXITOSO;            
+        return CODIGO_REGISTRO_EXITOSO,pdi;            
     except Exception,err:
-        return PDI_MENSAJE_PDI_NO_ACTUALIZADO;
+        return PDI_MENSAJE_PDI_NO_ACTUALIZADO,False;
 
 def eliminarPuntoDeInteres(usuario,idPDI):
     validacion=esUsuarioValido(usuario);
-    if validacion!=False:
-        try:
-            pdi=PuntoDeInteres.objects.get(pk=idPDI);
-            #FALTA CODIGO DE ELIMINAR ANUNCIOS
-            pdi.delete();
-            return CODIGO_PDI_ELIMINADO;
-        except Exception, err:
-            return CODIGO_PDI_NO_EXISTE;
-    else:        
-        return CODIGO_USUARIO_INVALIDO;
+    if validacion is False:
+        return PDI_MENSAJE_USUARIO_INVALIDO,False;
+    
+    try:
+        pdi=PuntoDeInteres.objects.get(pk=idPDI);
+        pdiRespuesta=pdi;
+        idPDI=pdi.id;
+        #FALTA CODIGO DE ELIMINAR ANUNCIOS
+        pdi.delete();
+        pdiRespuesta.id=idPDI;
+        return CODIGO_REGISTRO_EXITOSO,pdiRespuesta;
+    except Exception, err:
+        return PDI_MENSAJE_PDI_NO_EXISTE,False;
 
 def eliminarTodosPuntosDeInteresDeUsuario(usuario):
     listaPDI=obtenerPDIsDeUsuario(usuario);

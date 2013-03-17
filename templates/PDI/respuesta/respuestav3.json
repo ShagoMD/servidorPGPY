@@ -1,0 +1,5 @@
+{
+	"codigo":{% block codigo %}{% endblock %},
+	"mensaje":{% block mensaje %}{% endblock %},
+	"objeto":{%block objeto %}{% endblock %}
+}

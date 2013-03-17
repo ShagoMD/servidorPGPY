@@ -1,4 +1,0 @@
-{% extends 'PDI/respuesta/respuesta.json' %}
-
-{% block codigo %}{{codigo}}{% endblock %}
-{% block mensaje %}"{{mensaje}}"{% endblock %} 

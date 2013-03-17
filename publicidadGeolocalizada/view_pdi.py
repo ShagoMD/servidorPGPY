@@ -26,35 +26,37 @@ CODIGO_PDI_ELIMINADO=6;
 CODIGO_NO_HAY_PDIs_REGISTRADOS=7;
 
 def peticionRegistrarPDI(request):
-	if request.method == "POST":
-		exito, parametrosObligatorios = extract_params(request.POST,CAMPOS_OBLIGATORIOS_REGISTRO_PDI);
-		if not exito:			
-			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});						
+	if request.method != "POST":		
+		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});		
+	
+	exito, parametrosObligatorios = extract_params(request.POST,CAMPOS_OBLIGATORIOS_REGISTRO_PDI);
+	if not exito:			
+		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});						
 
-		codigoRespuesta=registrarPuntoDeInteres(parametrosObligatorios);		
-		
-		if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):					
-			return render_to_json("PDI/respuesta/registroPDI.json",{'codigo':100,'mensaje':PDI_MENSAJE_REGISTRO_EXITOSO});
-		else:				
-			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});		
+	codigoRespuesta,pdi=registrarPuntoDeInteres(parametrosObligatorios);		
+	
+	if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):					
+		return render_to_json("PDI/respuesta/pdi.json",{'codigo':100,'mensaje':PDI_MENSAJE_REGISTRO_EXITOSO,'pdi':pdi});
+	else:				
+		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});		
 	
 def peticionActualizarPDI(request):
-	if request.method=="POST":		
-		exito, parametrosObligatorios = extract_params(request.POST,CAMPOS_OBLIGATORIOS_ACTUALIZAR_PDI);
-		exito2,parametrosOpcionales=extract_params(request.POST,CAMPOS_OPCIONALES_ACTUALIZAR_PDI);		
-		
-		if not exito:			
-			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});	
-		
-		codigoRespuesta=actualizarPuntoDeInteres(parametrosObligatorios,parametrosOpcionales);
+	if request.method!="POST":	
+		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});	
+	
+	exito, parametrosObligatorios = extract_params(request.POST,CAMPOS_OBLIGATORIOS_ACTUALIZAR_PDI);
+	exito2,parametrosOpcionales=extract_params(request.POST,CAMPOS_OPCIONALES_ACTUALIZAR_PDI);		
+	
+	if not exito:			
+		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});	
+	
+	codigoRespuesta,pdi=actualizarPuntoDeInteres(parametrosObligatorios,parametrosOpcionales);
 
-		if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):					
-			return render_to_json("PDI/respuesta/registroPDI.json",{'codigo':100,'mensaje':PDI_MENSAJE_PDI_ACTUALIZADO});
-		else:				
-			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
-				
-	else:		
-		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});		
+	if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):					
+		return render_to_json("PDI/respuesta/pdi.json",{'codigo':100,'mensaje':PDI_MENSAJE_PDI_ACTUALIZADO,'pdi':pdi});
+	else:				
+		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});		
+
 
 def peticionObtenerListadoPuntosDeInteres(request):	
 	if request.method == "POST":
@@ -80,20 +82,20 @@ def peticionObtenerListadoPuntosDeInteres(request):
 		return	render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'La peticion no es post'})
 	
 def peticionEliminarPDI(request):
-	if request.method=="POST":
-		exito,parametros=extract_params(request.POST,CAMPOS_ELIMINAR_PDI);
-		if(exito):
-			respuesta=eliminarPuntoDeInteres(parametros["usuario"],parametros["idPDI"]);
-			if(respuesta==CODIGO_USUARIO_INVALIDO):
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_USUARIO_INVALIDO});
-			if(respuesta==CODIGO_PDI_NO_EXISTE):
-				return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':PDI_MENSAJE_PDI_NO_EXISTE});
-			if(respuesta==CODIGO_PDI_ELIMINADO):
-				return render_to_json("PDI/respuesta/eliminarPDI.json",{'codigo':100,'mensaje':PDI_MENSAJE_PDI_ELIMINADO});
-		else:
-			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});
+	if request.method!="POST":
+		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});	
+	
+	exito,parametros=extract_params(request.POST,CAMPOS_ELIMINAR_PDI);
+	if not exito:
+		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});
+	
+	codigoRespuesta,pdi=eliminarPuntoDeInteres(parametros["usuario"],parametros["idPDI"]);
+	
+	if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):
+		return render_to_json("PDI/respuesta/pdi.json",{'codigo':100,'mensaje':PDI_MENSAJE_PDI_ELIMINADO,'pdi':pdi});
 	else:
-		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});		
+		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
+	
 				
 def peticionEliminarTodosPDI(request):
 	if request.method=="POST":	
