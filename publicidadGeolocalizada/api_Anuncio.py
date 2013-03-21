@@ -2,16 +2,17 @@ from models import *
 from conversionTipos import *
 from django.contrib.auth.models import User
 from django.db import connection
+from utilidades import *
 connection._rollback()
 #import pdb
 
 
-def registrarAnuncio(idPDI,idUser,titulo,descripcion,categoria,URLimagen):
+def registrarAnuncio(idPDI,correoUsuario,titulo,descripcion,categoria,URLimagen):
     
-    parametrosObligatorios = sonParametrosObligatorios(idPDI,idUser,titulo,descripcion)
+    parametrosObligatorios = sonParametrosObligatorios(idPDI,correoUsuario,titulo,descripcion)
     parametrosOpcionales = sonParametrosOpcionales(categoria,URLimagen)
     
-    PDIdelUsuario = esPDIdelUsuario(idPDI,idUser)
+    PDIdelUsuario = esPDIdelUsuario(idPDI,correoUsuario)
 
     if not PDIdelUsuario:
         return 1
@@ -33,7 +34,7 @@ def registrarAnuncio(idPDI,idUser,titulo,descripcion,categoria,URLimagen):
     except Exception,err:
         return 3
 
-def esPDIdelUsuario(idPDI,idUser):
+def esPDIdelUsuario(idPDI,correoUsuario):
     #pdb.set_trace()
     
     try:
@@ -42,18 +43,18 @@ def esPDIdelUsuario(idPDI,idUser):
         print("No existe el PDI")
         return False
     
-    id = pdi.propietario_id
-    if id == int(float(idUser)):
+    email = pdi.propietario.email
+    if email == correoUsuario:
         return True
     else:
         return False
     
 
-def sonParametrosObligatorios(idPDI,idUser,titulo,descripcion):
+def sonParametrosObligatorios(idPDI,correoUsuario,titulo,descripcion):
     
-    if idPDI==None and not esTipoValido(idPDI,TIPO_ENTERO):
+    if idPDI==None and not esTipoValido(idPDI,TIPO_CADENA):
         return False;
-    if idUser==None and not esTipoValido(idUser,TIPO_ENTERO):
+    if correoUsuario==None and not esTipoValido(correoUsuario,TIPO_ENTERO):
         return False;
     if titulo==None and not esTipoValido(titulo,TIPO_CADENA):
         return False;
