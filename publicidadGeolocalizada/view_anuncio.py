@@ -16,10 +16,10 @@ from api_Anuncio import *;
 from strings import *;
 
 
-CAMPOS_REGISTRAR_ANUNCIO=["idPDI","idUser","titulo","descripcion","categoria","URLimagen"]
-CAMPOS_MODIFICAR_ANUNCIO=["idAnuncio","idPDI","idUser","titulo","descripcion","categoria","URLimagen"]
-CAMPOS_ELIMINAR_ANUNCIO=["idAnuncio","idPDI","idUser"]
-CAMPOS_ELIMINAR_TODOS_LOS_ANUNCIOS=["idPDI","idUser"]
+CAMPOS_REGISTRAR_ANUNCIO=["idPDI","correo_e","titulo","descripcion","categoria","URLimagen"]
+CAMPOS_MODIFICAR_ANUNCIO=["idAnuncio","correo_e","idUser","titulo","descripcion","categoria","URLimagen"]
+CAMPOS_ELIMINAR_ANUNCIO=["idAnuncio","idPDI","correo_e"]
+CAMPOS_ELIMINAR_TODOS_LOS_ANUNCIOS=["idPDI","correo_e"]
 
 def peticionRegistrarAnuncio(request):
     if request.method=="POST":
@@ -28,12 +28,12 @@ def peticionRegistrarAnuncio(request):
         
         if(success):
             
-            registroExitoso = registrarAnuncio(params["idPDI"],params["idUser"],params["titulo"],params["descripcion"],params["categoria"],params["URLimagen"])
+            registroExitoso = registrarAnuncio(params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["categoria"],params["URLimagen"])
             
             if(registroExitoso == CODIGO_ID_PDI_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_PDI_INVALIDO})
-            if(registroExitoso == CODIGO_ID_USER_INVALIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_USER_INVALIDO})
+            if(registroExitoso == CODIGO_CORREO_USER_INVALIDO):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_CORREO_USER_INVALIDO})
             if(registroExitoso == CODIGO_TITULO_ANUNCIO_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_TITULO_INVALIDO})
             if(registroExitoso == CODIGO_DESCRIPCION_ANUNCIO_INVALIDO):
@@ -51,7 +51,7 @@ def peticionRegistrarAnuncio(request):
             if(registroExitoso == CODIGO_REGISTRO_FALLIDO):        
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_FALLIDO})
             else:                                
-                return render_to_json("PDI/respuesta/registroAnuncio.json",{'codigo':100, 'anuncio':registroExitoso}) 
+                return render_to_json("PDI/respuesta/Anuncio.json",{'codigo':100, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_EXITOSO,'anuncio':registroExitoso}) 
         else:
             return    render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS})
     else:
@@ -71,8 +71,8 @@ def peticionModificarAnuncio(request):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_ANUNCIO_INVALIDO})
             if(modificacionExitoso == CODIGO_ID_PDI_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_PDI_INVALIDO})
-            if(modificacionExitoso == CODIGO_ID_USER_INVALIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_USER_INVALIDO})
+            if(modificacionExitoso == CODIGO_CORREO_USER_INVALIDO):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_CORREO_USER_INVALIDO})
             if(modificacionExitoso == CODIGO_TITULO_ANUNCIO_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_TITULO_INVALIDO})
             if(modificacionExitoso == CODIGO_DESCRIPCION_ANUNCIO_INVALIDO):
@@ -94,7 +94,7 @@ def peticionModificarAnuncio(request):
             if(modificacionExitoso == CODIGO_MODIFICA_FALLIDO):        
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_FALLIDO})
             else:                                
-                return render_to_json("PDI/respuesta/registroAnuncio.json",{'codigo':100, 'anuncio':modificacionExitoso}) 
+                return render_to_json("PDI/respuesta/Anuncio.json",{'codigo':100, 'mensaje':ANUNCIO_MENSAJE_ANUNCIO_ACTUALIZADO,'anuncio':modificacionExitoso}) 
             
         else:
             return    render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS})
@@ -109,14 +109,14 @@ def peticionEliminarAnuncio(request):
         
         if(success):
             
-            eliminacionExitoso = eliminarAnuncio(params["idAnuncio"],params["idPDI"],params["idUser"])
+            eliminacionExitoso = eliminarAnuncio(params["idAnuncio"],params["idPDI"],params["correo_e"])
             
             if(eliminacionExitoso == CODIGO_ID_ANUNCIO_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_ANUNCIO_INVALIDO})
             if(eliminacionExitoso == CODIGO_ID_PDI_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_PDI_INVALIDO})
-            if(eliminacionExitoso == CODIGO_ID_USER_INVALIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_USER_INVALIDO})
+            if(eliminacionExitoso == CODIGO_CORREO_USER_INVALIDO):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_CORREO_USER_INVALIDO})
             if(eliminacionExitoso == CODIGO_ANUNCIO_NO_EXISTE):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ANUNCIO_NO_EXISTE})
             if(eliminacionExitoso == CODIGO_PDI_NO_EXISTE):
@@ -130,7 +130,7 @@ def peticionEliminarAnuncio(request):
             if(eliminacionExitoso == CODIGO_ELIMINA_FALLIDO):        
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_FALLIDO})
             else:                                
-                return render_to_json("PDI/respuesta/registroAnuncio.json",{'codigo':100, 'anuncio':eliminacionExitoso}) 
+                return render_to_json("PDI/respuesta/error.json",{'codigo':100, 'mensaje':ANUNCIO_MENSAJE_ELIMINACION_EXITOSO}) 
             
         else:
             return    render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS})
@@ -145,12 +145,12 @@ def peticionEliminarTodoLosAnuncios(request):
         
         if(success):
             
-            eliminacionExitoso = eliminarTodosLosAnuncios(params["idPDI"],params["idUser"])
+            eliminacionExitoso = eliminarTodosLosAnuncios(params["idPDI"],params["correo_e"])
             
             if(eliminacionExitoso == CODIGO_ID_PDI_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_PDI_INVALIDO})
-            if(eliminacionExitoso == CODIGO_ID_USER_INVALIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_USER_INVALIDO})
+            if(eliminacionExitoso == CODIGO_CORREO_USER_INVALIDO):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_CORREO_USER_INVALIDO})
             if(eliminacionExitoso == CODIGO_PDI_NO_EXISTE):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_PDI_NO_EXISTE})
             if(eliminacionExitoso == CODIGO_NO_HAY_ANUNCIOS_REGISTRADOS):
@@ -160,7 +160,7 @@ def peticionEliminarTodoLosAnuncios(request):
             if(eliminacionExitoso == CODIGO_ELIMINA_FALLIDO):        
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_FALLIDO})
             else:                                
-                return render_to_json("PDI/respuesta/registroAnuncio.json",{'codigo':100, 'mensaje':ANUNCIO_MENSAJE_TODOS_LOS_ANUNCIOS_ELIMINADOS}) 
+                return render_to_json("PDI/respuesta/error.json",{'codigo':100, 'mensaje':ANUNCIO_MENSAJE_TODOS_LOS_ANUNCIOS_ELIMINADOS}) 
             
         else:
             return    render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS})

@@ -23,13 +23,14 @@ NO_HAY_ANUNCIOS = 0
 
 CODIGO_REGISTRO_EXITOSO = 0
 CODIGO_ELIMINAR_TODOS_EXITOSO = 0
+CODIGO_ELIMINAR_EXITOSO = 0
 CODIGO_REGISTRO_FALLIDO = 1
 CODIGO_MODIFICA_FALLIDO = 1
 CODIGO_ELIMINA_FALLIDO = 1
 
 CODIGO_ID_ANUNCIO_INVALIDO = 2
 CODIGO_ID_PDI_INVALIDO = 3
-CODIGO_ID_USER_INVALIDO = 4
+CODIGO_CORREO_USER_INVALIDO = 4
 CODIGO_TITULO_ANUNCIO_INVALIDO = 5
 CODIGO_DESCRIPCION_ANUNCIO_INVALIDO = 6
 CODIGO_CATEGORIA_ANUNCIO_INVALIDO = 7
@@ -45,15 +46,16 @@ CODIGO_PDI_ES_DEL_USUARIO = 14
 
 CODIGO_PDI_NO_EXISTE = 15
 CODIGO_ANUNCIO_NO_EXISTE = 16
+CODIGO_USER_NO_EXISTE = 17
 
-CODIGO_LIMITE_ANUNCIOS_ALCANZADO = 17
-CODIGO_NO_HAY_ANUNCIOS_REGISTRADOS = 18
+CODIGO_LIMITE_ANUNCIOS_ALCANZADO = 18
+CODIGO_NO_HAY_ANUNCIOS_REGISTRADOS = 19
 
 
-def registrarAnuncio(idPDI,idUser,titulo,descripcion,categoria,URLimagen):
+def registrarAnuncio(idPDI,correo_e,titulo,descripcion,categoria,URLimagen):
     
-    parametrosObligatorios = sonParametrosObligatorios(idPDI,idUser,titulo,descripcion)
-    parametrosOpcionales = sonParametrosOpcionales(categoria,URLimagen)
+    parametrosObligatorios = sonParametrosObligatorios(idPDI,correo_e,titulo,descripcion,categoria)
+    parametrosOpcionales = sonParametrosOpcionales(URLimagen)
 
     if parametrosObligatorios != CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS:
         return parametrosObligatorios
@@ -61,7 +63,7 @@ def registrarAnuncio(idPDI,idUser,titulo,descripcion,categoria,URLimagen):
     if parametrosOpcionales != CODIGO_PARAMETROS_OPCIONALES_VALIDOS:
         return parametrosOpcionales
     
-    PDIdelUsuario = esPDIdelUsuario(idPDI,idUser)
+    PDIdelUsuario = esPDIdelUsuario(idPDI,correo_e)
     totalDeAnuncios = obtenerElTotalDeAnunciosDelPDI(idPDI)
     
     if PDIdelUsuario != CODIGO_PDI_ES_DEL_USUARIO:
@@ -86,10 +88,10 @@ def registrarAnuncio(idPDI,idUser,titulo,descripcion,categoria,URLimagen):
     except Exception,err:
         return CODIGO_REGISTRO_FALLIDO
 
-def modificarAnuncio(idAnuncio,idPDI,idUser,titulo,descripcion,categoria,URLimagen):
+def modificarAnuncio(idAnuncio,idPDI,correo_e,titulo,descripcion,categoria,URLimagen):
     
-    parametrosObligatorios = sonParametrosObligatoriosCambio(idAnuncio,idPDI,idUser,titulo,descripcion)
-    parametrosOpcionales = sonParametrosOpcionales(categoria,URLimagen)
+    parametrosObligatorios = sonParametrosObligatoriosCambio(idAnuncio,idPDI,correo_e,titulo,descripcion,categoria)
+    parametrosOpcionales = sonParametrosOpcionales(URLimagen)
     
     if parametrosObligatorios != CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS:
         return parametrosObligatorios
@@ -98,7 +100,7 @@ def modificarAnuncio(idAnuncio,idPDI,idUser,titulo,descripcion,categoria,URLimag
         return parametrosOpcionales
     
     
-    PDIdelUsuario = esPDIdelUsuario(idPDI,idUser)
+    PDIdelUsuario = esPDIdelUsuario(idPDI,correo_e)
     totalDeAnuncios = obtenerElTotalDeAnunciosDelPDI(idPDI)
     
     if PDIdelUsuario != CODIGO_PDI_ES_DEL_USUARIO:
@@ -125,14 +127,14 @@ def modificarAnuncio(idAnuncio,idPDI,idUser,titulo,descripcion,categoria,URLimag
     except Exception,err:
         return CODIGO_MODIFICA_FALLIDO
 
-def eliminarAnuncio(idAnuncio,idPDI,idUser):
+def eliminarAnuncio(idAnuncio,idPDI,correo_e):
     
-    parametrosObligatorios = sonParametrosObligatoriosEliminar(idAnuncio,idPDI,idUser)
+    parametrosObligatorios = sonParametrosObligatoriosEliminar(idAnuncio,idPDI,correo_e)
     
     if parametrosObligatorios != CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS:
         return parametrosObligatorios
     
-    PDIdelUsuario = esPDIdelUsuario(idPDI,idUser)
+    PDIdelUsuario = esPDIdelUsuario(idPDI,correo_e)
     totalDeAnuncios = obtenerElTotalDeAnunciosDelPDI(idPDI)
     
     if PDIdelUsuario != CODIGO_PDI_ES_DEL_USUARIO:
@@ -150,19 +152,19 @@ def eliminarAnuncio(idAnuncio,idPDI,idUser):
         
         anuncio = Anuncio.objects.get(id=idAnuncio)
         anuncio.delete()  
-        return anuncio
+        return CODIGO_ELIMINAR_EXITOSO
     
     except Exception,err:
         return CODIGO_ELIMINA_FALLIDO
 
-def eliminarTodosLosAnuncios(idPDI,idUser):
+def eliminarTodosLosAnuncios(idPDI,correo_e):
     
-    parametrosObligatorios = sonParametrosObligatoriosEliminar(idAnuncio,idPDI,idUser)
+    parametrosObligatorios = sonParametrosObligatoriosEliminar(idAnuncio,idPDI,correo_e)
     
     if parametrosObligatorios != CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS:
         return parametrosObligatorios
     
-    PDIdelUsuario = esPDIdelUsuario(idPDI,idUser)
+    PDIdelUsuario = esPDIdelUsuario(idPDI,correo_e)
     totalDeAnuncios = obtenerElTotalDeAnunciosDelPDI(idPDI)
     
     if PDIdelUsuario != CODIGO_PDI_ES_DEL_USUARIO:
@@ -181,15 +183,21 @@ def eliminarTodosLosAnuncios(idPDI,idUser):
     except Exception,err:
         return CODIGO_ELIMINA_FALLIDO
 
-def esPDIdelUsuario(idPDI,idUser):
+def esPDIdelUsuario(idPDI,correo_e):
     
     try:
         pdi = PuntoDeInteres.objects.get(id=idPDI)
     except Exception,err:
         return CODIGO_PDI_NO_EXISTE
     
-    id = pdi.propietario_id
-    if id == int(float(idUser)):
+    idUser = pdi.propietario_id
+    
+    try:
+        usuario = User.objects.get(id=idUser)
+    except Exception,err:
+        return CODIGO_USER_NO_EXISTE
+    
+    if correo_e == usuario.email:
         return CODIGO_PDI_ES_DEL_USUARIO
     else:
         return CODIGO_PDI_NO_ES_DEL_USUARIO
@@ -213,49 +221,51 @@ def obtenerElTotalDeAnunciosDelPDI(idPDI):
     
     return listaDeAnuncios
 
-def sonParametrosObligatorios(idPDI,idUser,titulo,descripcion):
+def sonParametrosObligatorios(idPDI,idUser,titulo,descripcion,categoria):
     
     if len(idPDI)==0 or not esTipoValido(idPDI,TIPO_ENTERO):
         return CODIGO_ID_PDI_INVALIDO
-    if len(idUser)==0 or not esTipoValido(idUser,TIPO_ENTERO):
-        return CODIGO_ID_USER_INVALIDO
+    if len(idUser)==0 or not esTipoValido(idUser,TIPO_CADENA):
+        return CODIGO_CORREO_USER_INVALIDO
     if len(titulo)==0 or not esTipoValido(titulo,TIPO_CADENA):
         return CODIGO_TITULO_ANUNCIO_INVALIDO
     if len(descripcion)==0 or not esTipoValido(descripcion,TIPO_CADENA):
         return CODIGO_DESCRIPCION_ANUNCIO_INVALIDO
-    
-    return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
-
-def sonParametrosObligatoriosCambio(idAnuncio,idPDI,idUser,titulo,descripcion):
-    
-    if len(idAnuncio)==0 or not esTipoValido(idAnuncio,TIPO_ENTERO):
-        return CODIGO_ID_ANUNCIO_INVALIDO
-    if len(idPDI)==0 or not esTipoValido(idPDI,TIPO_ENTERO):
-        return CODIGO_ID_PDI_INVALIDO
-    if len(idUser)==0 or not esTipoValido(idUser,TIPO_ENTERO):
-        return CODIGO_ID_USER_INVALIDO
-    if len(titulo)==0 or not esTipoValido(titulo,TIPO_CADENA):
-        return CODIGO_TITULO_ANUNCIO_INVALIDO
-    if len(descripcion)==0 or not esTipoValido(descripcion,TIPO_CADENA):
-        return CODIGO_DESCRIPCION_ANUNCIO_INVALIDO
-    
-    return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
-
-def sonParametrosObligatoriosEliminar(idAnuncio,idPDI,idUser):
-    
-    if len(idAnuncio)==0 or not esTipoValido(idAnuncio,TIPO_ENTERO):
-        return CODIGO_ID_ANUNCIO_INVALIDO
-    if len(idPDI)==0 or not esTipoValido(idPDI,TIPO_ENTERO):
-        return CODIGO_ID_PDI_INVALIDO
-    if len(idUser)==0 or not esTipoValido(idUser,TIPO_ENTERO):
-        return CODIGO_ID_USER_INVALIDO
-    
-    return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
-
-def sonParametrosOpcionales(categoria,URLimagen):
-    
-    if not esTipoValido(categoria,TIPO_CADENA):
+    if len(categoria)==0 or not esTipoValido(categoria,TIPO_CADENA):
         return CODIGO_CATEGORIA_ANUNCIO_INVALIDO
+    
+    return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
+
+def sonParametrosObligatoriosCambio(idAnuncio,idPDI,correo_e,titulo,descripcion,categoria):
+    
+    if len(idAnuncio)==0 or not esTipoValido(idAnuncio,TIPO_ENTERO):
+        return CODIGO_ID_ANUNCIO_INVALIDO
+    if len(idPDI)==0 or not esTipoValido(idPDI,TIPO_ENTERO):
+        return CODIGO_ID_PDI_INVALIDO
+    if len(correo_e)==0 or not esTipoValido(correo_e,TIPO_CADENA):
+        return CODIGO_CORREO_USER_INVALIDO
+    if len(titulo)==0 or not esTipoValido(titulo,TIPO_CADENA):
+        return CODIGO_TITULO_ANUNCIO_INVALIDO
+    if len(descripcion)==0 or not esTipoValido(descripcion,TIPO_CADENA):
+        return CODIGO_DESCRIPCION_ANUNCIO_INVALIDO
+    if len(categoria)==0 or not esTipoValido(categoria,TIPO_CADENA):
+        return CODIGO_CATEGORIA_ANUNCIO_INVALIDO
+    
+    return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
+
+def sonParametrosObligatoriosEliminar(idAnuncio,idPDI,correo_e):
+    
+    if len(idAnuncio)==0 or not esTipoValido(idAnuncio,TIPO_ENTERO):
+        return CODIGO_ID_ANUNCIO_INVALIDO
+    if len(idPDI)==0 or not esTipoValido(idPDI,TIPO_ENTERO):
+        return CODIGO_ID_PDI_INVALIDO
+    if len(correo_e)==0 or not esTipoValido(correo_e,TIPO_CADENA):
+        return CODIGO_CORREO_USER_INVALIDO
+    
+    return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
+
+def sonParametrosOpcionales(URLimagen):
+    
     if not esTipoValido(URLimagen,TIPO_CADENA):
         return CODIGO_URL_IMAGEN_ANUNCIO_INVALIDO
 

@@ -100,7 +100,7 @@ def actualizarDatosDelPerfil(idUser,correo_e,contrasenia,nombre,apellido,URLimag
 
     #Se validad primero que el correo contenga algo para poder actualizar
     if (esCorreoVacio(correo_e) == CODIGO_PARAMETRO_NO_VACIO):
-        if(existeDuplicidadDeCorreo(correo_e) == CODIGO_DUPLICIDAD_DE_CORREOS):
+        if(existeDuplicidadDeCorreo(correo_e, idUser) == CODIGO_DUPLICIDAD_DE_CORREOS):
             return CODIGO_DUPLICIDAD_DE_CORREOS
         if not (esCorreoValido(correo_e)):
             return CODIGO_CORREO_NO_VALIDO
@@ -220,14 +220,15 @@ def esGeneroVacio(genero):
         return CODIGO_GENERO_VACIO
     return CODIGO_PARAMETRO_NO_VACIO
 
-def existeDuplicidadDeCorreo(correo_e):
+def existeDuplicidadDeCorreo(correo_e, idUser):
     
     listaDeUsuarios = User.objects.all()
     
     if(len(listaDeUsuarios)!=CADENA_VACIA):
         for user in listaDeUsuarios:
             if(user.email == correo_e):
-                return CODIGO_DUPLICIDAD_DE_CORREOS
+                if(user.id != int(float(idUser))):
+                    return CODIGO_DUPLICIDAD_DE_CORREOS
     
     return CODIGO_NO_DUPLICIDAD_DE_CORREOS
 
