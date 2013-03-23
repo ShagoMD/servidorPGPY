@@ -1,5 +1,6 @@
 # Django settings for servidorPGPY project.
 import sys
+import os
 from os.path import abspath, dirname, join
 from os import path
 
@@ -8,6 +9,9 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 BASEDIR = path.dirname(path.abspath(__file__))  # join ("/", join("var" , join ("www",  "test-server")))  #path.dirname(path.abspat
 APPEND_SLASH = False
+RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
+
+AUTH_PROFILE_MODULE = 'publicidadGeolocalizada.PerfilDeUsuario'
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
