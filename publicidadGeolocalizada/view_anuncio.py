@@ -51,7 +51,7 @@ def peticionRegistrarAnuncio(request):
             if(registroExitoso == CODIGO_REGISTRO_FALLIDO):        
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_FALLIDO})
             else:                                
-                return render_to_json("PDI/respuesta/Anuncio.json",{'codigo':100, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_EXITOSO,'anuncio':registroExitoso}) 
+                return render_to_json("PDI/respuesta/anuncio.json",{'codigo':100, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_EXITOSO,'anuncio':registroExitoso}) 
         else:
             return    render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS})
     else:
