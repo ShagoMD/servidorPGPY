@@ -3,7 +3,7 @@
 {% block mensaje %}
 		
 	{
-		"pdi" : "{{anuncio.anunciante_id}}",
+		"pdi" : "{{anuncio.anunciante}}",
 		"anuncio" : "{{anuncio.titulo}}",
 		"descripcion" : "{{anuncio.descripcion}}"
 		"categoria" : "{{anuncio.categoria}}",
