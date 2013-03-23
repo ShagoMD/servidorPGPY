@@ -76,7 +76,7 @@ def registrarAnuncio(idPDI,correo_e,titulo,descripcion,categoria,URLimagen):
         
         pdi = PuntoDeInteres.objects.get(id=idPDI)
         nuevoAnuncio = Anuncio()
-        nuevoAnuncio.anunciante = pdi
+        nuevoAnuncio.anunciante = pdi.id
         nuevoAnuncio.titulo = titulo
         nuevoAnuncio.descripcion = descripcion
         nuevoAnuncio.categoria = categoria
