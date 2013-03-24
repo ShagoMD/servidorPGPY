@@ -3,7 +3,7 @@
 """
 view_usuario.py: Se encarga de las funcionalidades asociadas
 al usuario, tales como registrar el usuario asi como la de
-actualizar la iformaci�n de su perfil
+actualizar la iformación de su perfil
 
 @author Eric Huerta
 @date 10/03/2013
@@ -57,7 +57,7 @@ def peticionIniciarSesion(request):
     codigoRespuesta,listaPDI=iniciarSesion(parametros["correo"],parametros["contrasenia"]);
 
     if(codigoRespuesta==CODIGO_OPERACION_EXITOSA):
-        return render_to_json("PDI/respuesta/inicioSesion.json",{"codigo":100,'mensaje':USUARIO_MENSAJE_INICIO_SESION_EXITOSO,'objeto':listaPDI});
+        return render_to_json("PDI/respuesta/inicioSesion.json",{"codigo":100,'mensaje':USUARIO_MENSAJE_INICIO_SESION_EXITOSO,'lista_pdi':listaPDI});
     else:                
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':codigoRespuesta});     
                     
