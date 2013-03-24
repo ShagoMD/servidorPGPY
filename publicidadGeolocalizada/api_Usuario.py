@@ -65,19 +65,25 @@ CODIGO_PERFIL_CREADO = 21
 CODIGO_OPERACION_EXITOSA=0;
 
 def registrarUsuario(correo_e,password):
+    parametrosValidos=sonParametrosValidosRegistroUsuario(correo_e,password);
+    
+    if parametrosValidos is not True:
+        return GENERAL_MENSAJE_PARAMETROS_INCORRECTOS,False;
+    
     correoValido=esCorreoValido(correo_e);
     contraseniaValida=esContraseniaValida(password);
-    if not correoValido:
-        return CODIGO_CORREO_INVALIDO;   
-    if not contraseniaValida:
-        return CODIGO_CONTRASENIA_INVALIDA;   
+    
+    if correoValido is not True:
+        return USUARIO_MENSAJE_CORREO_INVALIDO,False;   
+    if contraseniaValida is not True:
+        return USUARIO_MENSAJE_CONTRASENIA_INVALIDA,False;   
     
     try:
         nuevoUsuario=User.objects.create_user(correo_e,correo_e, password);
         nuevoUsuario.save();
-        return nuevoUsuario;
+        return CODIGO_OPERACION_EXITOSA,nuevoUsuario;
     except Exception,err:
-        return CODIGO_ERROR_CREACION_USUARIO;
+        return USUARIO_MENSAJE_CORREO_REPETIDO,False;
 
 
 #Actualizac�n de datos del perfil de Usuario

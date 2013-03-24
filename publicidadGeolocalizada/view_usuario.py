@@ -31,20 +31,21 @@ CODIGO_USUARIO_NO_EXISTE=2;
 CODIGO_OPERACION_EXITOSA=0;
 
 def peticionRegistrarUsuario(request):
-    if request.method=="POST":
-        exito,parametros=extract_params(request.POST,CAMPOS_REGISTRAR_USUARIO);
-        if(exito and sonParametrosValidosRegistroUsuario(parametros['correo'],parametros['contrasenia'])):
-            registroExitoso=registrarUsuario(parametros["correo"],parametros["contrasenia"]);
-            if(registroExitoso==CODIGO_CORREO_INVALIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_CORREO_INVALIDO});
-            if(registroExitoso==CODIGO_CONTRASENIA_INVALIDA):            
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_CONTRASENIA_INVALIDA});
-            if(registroExitoso==CODIGO_CORREO_REPETIDO):        
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_CORREO_REPETIDO});
-            else:                                
-                return render_to_json("PDI/respuesta/registroUsuario.json",{'codigo':100,'mensaje':USUARIO_MENSAJE_REGISTRO_EXITOSO,'usuario':registroExitoso}); 
-    else:
+    if request.method!="POST":        
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});
+    
+    exito,parametros=extract_params(request.POST,CAMPOS_REGISTRAR_USUARIO);
+    
+    if not exito:        
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});                     
+    
+    codigoRespuesta,usuario=registrarUsuario(parametros["correo"],parametros["contrasenia"]);
+
+    if(codigoRespuesta==CODIGO_OPERACION_EXITOSA):            
+        return render_to_json("PDI/respuesta/registroUsuario.json",{'codigo':100,'mensaje':USUARIO_MENSAJE_REGISTRO_EXITOSO,'usuario':usuario});       
+    else:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':codigoRespuesta});                               
+
        
 def peticionIniciarSesion(request):
     if(request.method!="POST"):        
