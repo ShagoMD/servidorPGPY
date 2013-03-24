@@ -1,12 +1,24 @@
-{% extends 'PDI/respuesta/respuesta.json' %}
+{% extends 'PDI/respuesta/respuestav3.json' %}
 
 {% block codigo %}{{codigo}}{% endblock %}
-{% block mensaje %}
-	PDIs del usuario:[
-		{% for pdi in lista_pdi  %}
-	 	{
-	 		"idPDI": "{{pdi.id}}"
-	 	}		   
-{% if not forloop.last %},{% endif %}{% endfor %}]
-	
-{% endblock %}
+{% block mensaje %}{{mensaje}}{% endblock %}
+{% block objeto %}	
+	[{% for pdi in lista_pdi  %}
+		{
+			"id": {{pdi.id}},
+			"nombre": "{{ pdi.nombre }}",
+			"descripcion": "{{pdi.descripcion}}",
+			"telefono": "{{pdi.telefono}}",
+			"direccion":"{{pdi.direccion}}", 
+			"categoria":"{{pdi.categoria.nombre}}",
+			"url":"{{pdi.paginaWeb}}",
+			"correoElectronico":"{{pdi.correoElectronico}}",
+			"urlImagen": "{{pdi.rutaImagen}}",
+			"posicion":
+						{
+		   					"latitud":{{pdi.posicion.y}} ,
+		   					"longitud":{{pdi.posicion.x}} ,
+		   					"altitud": {{ pdi.altitud }}
+						}		   
+		} {% if not forloop.last %},{% endif %}{% endfor %}]
+{% endblock %} 

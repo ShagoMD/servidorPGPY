@@ -16,6 +16,9 @@ from utilidades import *
 from django.db import connection
 connection._rollback()
 import re
+from strings import *;
+from api_puntoDeInteres import *;
+
 CODIGO_CORREO_INVALIDO=1;
 CODIGO_CONTRASENIA_INVALIDA=2;
 CODIGO_ERROR_CREACION_USUARIO=3;
@@ -58,6 +61,8 @@ CODIGO_USUARIO_NO_EXISTE = 19
 
 CODIGO_YA_TIENE_PERFIL = 20
 CODIGO_PERFIL_CREADO = 21
+
+CODIGO_OPERACION_EXITOSA=0;
 
 def registrarUsuario(correo_e,password):
     correoValido=esCorreoValido(correo_e);
@@ -158,14 +163,18 @@ def actualizarDatosDelPerfil(idUser,correo_e,contrasenia,nombre,apellido,URLimag
     
 
 def iniciarSesion(correo_e,password):
+    parametrosValidos=sonParametrosValidosRegistroUsuario(correo_e, password);
+    if parametrosValidos is not True:
+        return GENERAL_MENSAJE_PARAMETROS_INCORRECTOS,False;
     try:
         usuario=User.objects.get(email__exact=correo_e);            
         if(usuario.check_password(password)):
-            return CODIGO_INICIO_SESION_EXITOSO;
+            listaPDI=obtenerPDIsDeUsuario(correo_e);
+            return CODIGO_OPERACION_EXITOSA,listaPDI;
         else:
-            return CODIGO_INICIO_SESION_FALLIDO;
+            return USUARIO_MENSAJE_ERROR_INICIO_SESION,False;
     except Exception,err:
-        return CODIGO_USUARIO_NO_EXISTE;
+        return USUARIO_MENSAJE_USUARIO_NO_EXISTE,False;
     
     
 def sonParametrosValidosRegistroUsuario(correo_e,password):

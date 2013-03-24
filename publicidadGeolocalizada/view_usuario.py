@@ -28,6 +28,7 @@ CODIGO_CORREO_REPETIDO=3;
 CODIGO_INICIO_SESION_EXITOSO=0;
 CODIGO_INICIO_SESION_FALLIDO=1;
 CODIGO_USUARIO_NO_EXISTE=2;
+CODIGO_OPERACION_EXITOSA=0;
 
 def peticionRegistrarUsuario(request):
     if request.method=="POST":
@@ -41,36 +42,24 @@ def peticionRegistrarUsuario(request):
             if(registroExitoso==CODIGO_CORREO_REPETIDO):        
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_CORREO_REPETIDO});
             else:                                
-                return render_to_json("PDI/respuesta/registroUsuario.json",{'codigo':100, 'usuario':registroExitoso}); 
+                return render_to_json("PDI/respuesta/registroUsuario.json",{'codigo':100,'mensaje':USUARIO_MENSAJE_REGISTRO_EXITOSO,'usuario':registroExitoso}); 
     else:
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});
        
 def peticionIniciarSesion(request):
-    if(request.method=="POST"):
-        exito,parametros=extract_params(request.POST,CAMPOS_REGISTRAR_USUARIO);
-        parametrosValidos=sonParametrosValidosRegistroUsuario(parametros['correo'],parametros['contrasenia']);
-        if(parametrosValidos):
-            respuesta=iniciarSesion(parametros["correo"],parametros["contrasenia"]);
-            if(respuesta==CODIGO_INICIO_SESION_EXITOSO):
-                listaPDI=obtenerPDIsDeUsuario(parametros["correo"]);
-                return render_to_json("PDI/respuesta/inicioSesion.json",{"codigo":100,'lista_pdi':listaPDI});
-            if(respuesta==CODIGO_INICIO_SESION_FALLIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_ERROR_INICIO_SESION});
-            if(respuesta==CODIGO_USUARIO_NO_EXISTE):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_USUARIO_NO_EXISTE});
-        else:        
-            return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});                     
-    else:
+    if(request.method!="POST"):        
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION}); 
-    
-    
-    
-    
-    
-                  
-        return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'No se pueden procesar peticiones por GET.'});
-                    
-                    
+
+    exito,parametros=extract_params(request.POST,CAMPOS_REGISTRAR_USUARIO);
+    if not exito:            
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});                     
+       
+    codigoRespuesta,listaPDI=iniciarSesion(parametros["correo"],parametros["contrasenia"]);
+
+    if(codigoRespuesta==CODIGO_OPERACION_EXITOSA):
+        return render_to_json("PDI/respuesta/inicioSesion.json",{"codigo":100,'mensaje':USUARIO_MENSAJE_INICIO_SESION_EXITOSO,'objeto':listaPDI});
+    else:                
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':codigoRespuesta});     
                     
 def peticionActualizarDatosDelPerfil(request):
     
