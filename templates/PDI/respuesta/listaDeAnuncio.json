@@ -1,0 +1,14 @@
+{% extends 'PDI/respuesta/respuestav3.json' %}
+
+{% block codigo %}{{codigo}}{% endblock %}
+{% block mensaje %}"{{mensaje}}"{% endblock %} 
+{%block objeto %}
+	[{% for anuncio in lista_anuncio  %}
+		{
+			"pdi" : "{{anuncio.anunciante.id}}",
+			"anuncio" : "{{anuncio.titulo}}",
+			"descripcion" : "{{anuncio.descripcion}}"
+			"categoria" : "{{anuncio.categoria}}",
+			"imagen" : "{{anuncio.rutaImagen}}",
+		} {% if not forloop.last %},{% endif %}{% endfor %}]
+{% endblock %}

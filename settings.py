@@ -1,5 +1,6 @@
 # Django settings for servidorPGPY project.
 import sys
+import os
 from os.path import abspath, dirname, join
 from os import path
 
@@ -9,6 +10,10 @@ TEMPLATE_DEBUG = DEBUG
 BASEDIR = path.dirname(path.abspath(__file__))  # join ("/", join("var" , join ("www",  "test-server")))  #path.dirname(path.abspat
 APPEND_SLASH = False
 AUTH_PROFILE_MODULE = 'publicidadGeolocalizada.PerfilDeUsuario'
+
+RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
+
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -20,7 +25,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'publicidadGeolocalizada',                      # Or path to database file if using sqlite3.
         'USER': 'postgres',                      # Not used with sqlite3.
-        'PASSWORD': '123456',                  # Not used with sqlite3.
+        'PASSWORD': 'Pokachu7',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -51,12 +56,13 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
-
+MEDIA_ROOT = os.path.join(RUTA_PROYECTO,'publicidadGeolocalizada\carga')
+#MEDIA_ROOT = "C:\Users\Eric\Favorites\Documents"
+#MEDIA_ROOT ='/carga'
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
