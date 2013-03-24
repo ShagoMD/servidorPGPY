@@ -14,12 +14,15 @@ from utilidades import *;
 from django.template import RequestContext;
 from api_Anuncio import *;
 from strings import *;
+from servidorPGPY.settings import MEDIA_ROOT
+from servidorPGPY.settings import MEDIA_URL
 
 
 CAMPOS_REGISTRAR_ANUNCIO=["idPDI","correo_e","titulo","descripcion","categoria","URLimagen"]
-CAMPOS_MODIFICAR_ANUNCIO=["idAnuncio","correo_e","idUser","titulo","descripcion","categoria","URLimagen"]
+CAMPOS_MODIFICAR_ANUNCIO=["idAnuncio","idPDI","correo_e","titulo","descripcion","categoria","URLimagen"]
 CAMPOS_ELIMINAR_ANUNCIO=["idAnuncio","idPDI","correo_e"]
 CAMPOS_ELIMINAR_TODOS_LOS_ANUNCIOS=["idPDI","correo_e"]
+CAMPOS_OBTENER_TODOS_LOS_ANUNCIOS_DEL_PDI=["idPDI"]
 
 def peticionRegistrarAnuncio(request):
     if request.method=="POST":
@@ -65,7 +68,7 @@ def peticionModificarAnuncio(request):
         
         if(success):
             
-            modificacionExitoso = modificarAnuncio(params["idAnuncio"],params["idPDI"],params["idUser"],params["titulo"],params["descripcion"],params["categoria"],params["URLimagen"])
+            modificacionExitoso = modificarAnuncio(params["idAnuncio"],params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["categoria"],params["URLimagen"])
             
             if(modificacionExitoso == CODIGO_ID_ANUNCIO_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_ANUNCIO_INVALIDO})
@@ -167,5 +170,26 @@ def peticionEliminarTodoLosAnuncios(request):
     else:
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION})
     
-    
+def peticionObtenerTodosLosAnunciosDelPDI(request):
+    if request.method=="POST":
         
+        success, params = extract_params(request.POST,CAMPOS_OBTENER_TODOS_LOS_ANUNCIOS_DEL_PDI)
+        
+        if(success):
+            
+            obtenerTodosLosAnunciosDelPDIExitoso = obtenerTodosLosAnunciosDelPDI(params["idPDI"])
+                        
+            if(obtenerTodosLosAnunciosDelPDIExitoso == CODIGO_ID_PDI_INVALIDO):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_PDI_INVALIDO})
+            if(obtenerTodosLosAnunciosDelPDIExitoso == CODIGO_PDI_NO_EXISTE):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_PDI_NO_EXISTE})
+            if(obtenerTodosLosAnunciosDelPDIExitoso == CODIGO_NO_HAY_ANUNCIOS_REGISTRADOS):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_NO_HAY_ANUNCIOS_REGISTRADOS})
+            else:                                
+                return render_to_json("PDI/respuesta/listaDeAnuncio.json",{'codigo':100, 'mensaje':ANUNCIO_MENSAJE_TODOS_LOS_ANUNCIOS_EXITO,'lista_anuncio':obtenerTodosLosAnunciosDelPDIExitoso}) 
+            
+        else:
+            return    render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS})
+    else:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION})
+    

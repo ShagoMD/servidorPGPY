@@ -48,8 +48,9 @@ def peticionImagen(request):
 			#i.file
 			#imghdr.what("/home/user/Pictures/Foto2x2.jpg")
 			imagen.save()
+			#imghdr.what(imagen.imagen)
 			
-			return render_to_response("PDI/respuesta/error.json",{'codigo':100, 'mensaje': imghdr.what(imagen.imagen) })
+			return render_to_response("PDI/respuesta/error.json",{'codigo':100, 'mensaje': request.build_absolute_uri('/geoAdds'+imagen.imagen.url) })
 		
 		else:
 			return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'El campo de imagen se encuentra vacio'})

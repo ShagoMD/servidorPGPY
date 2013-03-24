@@ -91,6 +91,7 @@ ANUNCIO_MENSAJE_ELIMINACION_EXITOSO='Eliminacion del anuncio exitoso'
 
 ANUNCIO_MENSAJE_ANUNCIO_ACTUALIZADO='Los datos del Anuncio de fueron actualizadas correctamente.'
 ANUNCIO_MENSAJE_LIMITE_ANUNCIO_ALCANZADO='Se ha alcanzado el limite de Anuncios que su PDI le permite registrar.'
+ANUNCIO_MENSAJE_TODOS_LOS_ANUNCIOS_EXITO='Todos los anuncios del PDI fueron devueltos correctamente'
 
 #En esta seccion se definen los strings usados por el View, la api, y otras clases relativas a Anuncio
 FAVORITO_MENSAJE_MARCACION_EXITOSA='Marcacion como favorito exitoso'
