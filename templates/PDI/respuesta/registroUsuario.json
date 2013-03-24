@@ -1,10 +1,9 @@
-{% extends 'PDI/respuesta/respuesta.json' %}
+{% extends 'PDI/respuesta/respuestav3.json' %}
 {% block codigo %}{{codigo}}{% endblock %}
-{% block mensaje %}
-		
+{% block mensaje %}{{mensaje}}{% endblock %}
+{% block objeto %}	
 	{
 		"usuario" : "{{usuario.email}}",
 		"correo electronico" : "{{usuario.email}}"
 	}
-	
 {% endblock %} 
