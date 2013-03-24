@@ -31,7 +31,7 @@ CODIGO_USUARIO_NO_EXISTE=2;
 CODIGO_OPERACION_EXITOSA=0;
 
 def peticionRegistrarUsuario(request):
-    if request.method!="POST":        
+    if request.method!="POST":       
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});
     
     exito,parametros=extract_params(request.POST,CAMPOS_REGISTRAR_USUARIO);
