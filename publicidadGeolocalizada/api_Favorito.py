@@ -7,9 +7,9 @@ a marcar y desmarcar un PDI como favorito de parte de un usuario
 @date 03/03/2013
 """
 
-from publicidadGeolocalizada.models import *
+from models import *
 from django.contrib.auth.models import User
-from publicidadGeolocalizada.conversionTipos import *
+from conversionTipos import *
 from django.db import connection
 connection._rollback()
 

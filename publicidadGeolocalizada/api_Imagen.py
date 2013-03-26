@@ -8,9 +8,9 @@ o todos los anuncios asociados a un PDI
 @date 02/03/2013
 """
 
-from publicidadGeolocalizada.models import *
+from models import *
 from django.contrib.auth.models import User
-from publicidadGeolocalizada.conversionTipos import *
+from conversionTipos import *
 from django.db import connection
 from servidorPGPY.settings import MEDIA_ROOT
 from servidorPGPY.settings import MEDIA_URL

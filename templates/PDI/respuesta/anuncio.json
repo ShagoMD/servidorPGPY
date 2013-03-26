@@ -1,7 +1,7 @@
 {% extends 'PDI/respuesta/respuestav3.json' %}
 
 {% block codigo %}{{codigo}}{% endblock %}
-{% block mensaje %}"{{mensaje}}"{% endblock %} 
+{% block mensaje %}{{mensaje}}{% endblock %} 
 {%block objeto %}
 	{
 		"pdi" : "{{anuncio.anunciante.id}}",

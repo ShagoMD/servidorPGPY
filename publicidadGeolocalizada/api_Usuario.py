@@ -9,7 +9,7 @@ actualizar la iformaci�n de su perfil
 @date 10/03/2013
 """
 
-from publicidadGeolocalizada.models import *
+from models import *
 from django.contrib.auth.models import User
 from conversionTipos import *
 from utilidades import *
