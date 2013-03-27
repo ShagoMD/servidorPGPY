@@ -175,8 +175,11 @@ def iniciarSesion(correo_e,password):
     try:
         usuario=User.objects.get(email__exact=correo_e);            
         if(usuario.check_password(password)):
-            listaPDI=obtenerPDIsDeUsuario(correo_e);
-            return CODIGO_OPERACION_EXITOSA,listaPDI;
+            respuesta,listaPDI=obtenerPDIsDeUsuario(correo_e);
+            if(respuesta==CODIGO_OPERACION_EXITOSA):
+                return CODIGO_OPERACION_EXITOSA,listaPDI;
+            else:
+                return USUARIO_MENSAJE_USUARIO_NO_EXISTE,False;
         else:
             return USUARIO_MENSAJE_ERROR_INICIO_SESION,False;
     except Exception,err:

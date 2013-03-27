@@ -278,9 +278,9 @@ def eliminarPuntoDeInteres(usuario,idPDI):
         return PDI_MENSAJE_PDI_NO_EXISTE,False;
 
 def eliminarTodosPuntosDeInteresDeUsuario(usuario):
-    listaPDI=obtenerPDIsDeUsuario(usuario);
-    if(listaPDI==CODIGO_USUARIO_INVALIDO):
-        return CODIGO_USUARIO_INVALIDO;
+    respuesta,listaPDI=obtenerPDIsDeUsuario(usuario);
+    if(respuesta!=CODIGO_REGISTRO_EXITOSO):
+        return respuesta;
     if(len(listaPDI)>0):
         for pdi in listaPDI:
             idPDI=pdi.id;
@@ -306,9 +306,9 @@ def obtenerPDIsDeUsuario(usuario):
     usuarioValido=esUsuarioValido(usuario);
     if usuarioValido is not False: 
         listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=usuario);
-        return listaPDI;
+        return CODIGO_REGISTRO_EXITOSO,listaPDI;
     else:    
-        return CODIGO_USUARIO_INVALIDO;
+        return PDI_MENSAJE_USUARIO_INVALIDO,False;
     
     
     
