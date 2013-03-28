@@ -17,85 +17,87 @@ TIPO_ENTERO = '1'
 TIPO_FLOTANTE = '2'
 TIPO_CADENA = '3'
 
+CODIGO_MARCAR_PDI = 0
+CODIGO_DESMARCAR_PDI = 1
+
 CODIGO_MARCACION_EXITOSO = 0
 CODIGO_DESMARCACION_EXITOSO = 0
 CODIGO_MARCACION_FALLIDO = 1
 CODIGO_DESMARCACION_FALLIDO = 1
 
 CODIGO_ID_PDI_INVALIDO = 2
-CODIGO_ID_USER_INVALIDO = 3
+CODIGO_CORREO_USER_INVALIDO = 3
+CODIGO_MARCADO_INVAIDO = 4
+CODIGO_NOTIFICACIONES_INVALIDO = 5
 
-CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS = 4
+CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS = 6
 
-CODIGO_EXISTE_PDI = 5
-CODIGO_NO_EXISTE_PDI = 6
-CODIGO_EXISTE_USER = 7
-CODIGO_NO_EXISTE_USER = 8
+CODIGO_EXISTE_PDI = 7
+CODIGO_NO_EXISTE_PDI = 8
+CODIGO_EXISTE_USER = 9
+CODIGO_NO_EXISTE_USER = 10
 
-CODIGO_PDI_YA_SE_ENCUENTRA_MARCADO = 9
-CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO = 10
+CODIGO_PDI_YA_SE_ENCUENTRA_MARCADO = 11
+CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO = 12
 
-def marcarPDIcomoFavorito(idPDI,idUser):
+CODIGO_DE_OPCIONES_DE_MARCADO_INCORRECTO = 13
+
+def marcarPDIcomoFavorito(idPDI,correo_e,marcado):
     
-    parametrosObligatorios = sonParametrosObligatorios(idPDI,idUser)
-
+    parametrosObligatorios = sonParametrosObligatoriosMarcacion(idPDI,correo_e,marcado)
+    
     if parametrosObligatorios != CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS:
         return parametrosObligatorios
     
+    if int(float(marcado)) != 0 and int(float(marcado)) != 1:
+        return CODIGO_DE_OPCIONES_DE_MARCADO_INCORRECTO
+    
     existePDI = verificarPDI(idPDI)
-    existeUser = verificarUser(idUser)
+    existeUser = verificarUser(correo_e)
     
     if existePDI != CODIGO_EXISTE_PDI:
         return existePDI
     if existeUser != CODIGO_EXISTE_USER:
         return existeUser
     
-    #yaSeEncuentraMarcado = verificarSiEstaMarcado(idPDI, idUser)
+    if int(float(marcado)) == 1:
+        desmarcacionExitosa = desmarcarPDIcomoFavorito(idPDI,correo_e)
+        return desmarcacionExitosa
     
-    #if yaSeEncuentraMarcado != CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO:
-    #    return CODIGO_PDI_YA_SE_ENCUENTRA_MARCADO
+    yaSeEncuentraMarcado = verificarSiEstaMarcado(idPDI, correo_e)
+    
+    if yaSeEncuentraMarcado != CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO:
+        return CODIGO_PDI_YA_SE_ENCUENTRA_MARCADO
     
     try:
         
         pdi = PuntoDeInteres.objects.get(id=idPDI)
-        usuario = User.objects.get(id=idUser)         
+        usuario = User.objects.get(email=correo_e)         
         
         pdi.favoritos.add(usuario)
          
-        return CODIGO_MARCACION_EXITOSO
+        return pdi
     
     except Exception,err:
         return CODIGO_MARCACION_FALLIDO
     
 
-def desmarcarPDIcomoFavorito(idPDI,idUser):
+def desmarcarPDIcomoFavorito(idPDI,correo_e):
     
-    parametrosObligatorios = sonParametrosObligatorios(idPDI,idUser)
-
-    if parametrosObligatorios != CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS:
-        return parametrosObligatorios
     
-    existePDI = verificarPDI(idPDI)
-    existeUser = verificarUser(idUser)
+    seEncuentraMarcado = verificarSiEstaMarcado(idPDI, correo_e)
     
-    if existePDI != CODIGO_EXISTE_PDI:
-        return existePDI
-    if existeUser != CODIGO_EXISTE_USER:
-        return existeUser
-    
-    #seEncuentraMarcado = verificarSiEstaMarcado(idPDI, idUser)
-    
-    #if seEncuentraMarcado != CODIGO_PDI_YA_SE_ENCUENTRA_MARCADO:
-    #    return CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO
+    if seEncuentraMarcado != CODIGO_PDI_YA_SE_ENCUENTRA_MARCADO:
+        return CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO
     
     try:
         
         pdi = PuntoDeInteres.objects.get(id=idPDI)
-        usuario = User.objects.get(id=idUser)         
+        usuario = User.objects.get(email=correo_e)         
         
         pdi.favoritos.remove(usuario)
          
-        return CODIGO_DESMARCACION_EXITOSO
+        return pdi
     
     except Exception,err:
         return CODIGO_DESMARCACION_FALLIDO
@@ -110,37 +112,37 @@ def verificarPDI(idPDI):
         return CODIGO_NO_EXISTE_PDI
     
 
-def verificarUser(idUser):
+def verificarUser(correo_e):
     
     try:
-        usuario = User.objects.get(id=idUser)
+        usuario = User.objects.get(email=correo_e)
         return CODIGO_EXISTE_USER
     except Exception,err:
         return CODIGO_NO_EXISTE_USER
     
-def verificarSiEstaMarcado(idPDI, idUser):
+def verificarSiEstaMarcado(idPDI, correo_e):
     
     try:
-        listaDePDIFavoritos = PuntoDeInteres.objects.filter(favoritos__id__exact = idUser)
+        pdi = PuntoDeInteres.objects.get(id=idPDI)
         
-        if(len(listaDeUsuariosFavoritos)==0):
+        listaDePDIFavoritos = pdi.favoritos.filter(email__exact = correo_e)
+        
+        if(len(listaDePDIFavoritos)==0):
             return CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO
         
-        for pdi in listaDePDIFavoritos:
-            id_PDI = pdi.id
-            if(id_PDI == int(float(inPDI))):
-                return CODIGO_PDI_YA_SE_ENCUENTRA_MARCADO
-            
-        return CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO
+        return CODIGO_PDI_YA_SE_ENCUENTRA_MARCADO
+
     except Exception,err:
         return CODIGO_NO_EXISTE_PDI
 
-def sonParametrosObligatorios(idPDI,idUser):
+def sonParametrosObligatoriosMarcacion(idPDI,correo_e,marcado):
     
     if len(idPDI)==0 or not esTipoValido(idPDI,TIPO_ENTERO):
         return CODIGO_ID_PDI_INVALIDO
-    if len(idUser)==0 or not esTipoValido(idUser,TIPO_ENTERO):
-        return CODIGO_ID_USER_INVALIDO
+    if len(correo_e)==0 or not esTipoValido(correo_e,TIPO_CADENA):
+        return CODIGO_CORREO_USER_INVALIDO
+    if len(marcado)==0 or not esTipoValido(marcado,TIPO_ENTERO):
+        return CODIGO_MARCADO_INVAIDO
     
     return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
 

@@ -6,7 +6,7 @@
 	{
 		"pdi" : "{{anuncio.anunciante.id}}",
 		"anuncio" : "{{anuncio.titulo}}",
-		"descripcion" : "{{anuncio.descripcion}}"
+		"descripcion" : "{{anuncio.descripcion}}",
 		"categoria" : "{{anuncio.categoria}}",
 		"imagen" : "{{anuncio.rutaImagen}}",
 	}

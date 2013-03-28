@@ -14,7 +14,7 @@ from django.template import RequestContext;
 from api_Favorito import *;
 from strings import *;
 
-CAMPOS_FAVORITO=["idPDI","idUser"]
+CAMPOS_FAVORITO=["idPDI","correo_e","marcado"]
 
 def peticionMarcarPDIcomoFavorito(request):
     if request.method=="POST":
@@ -23,54 +23,38 @@ def peticionMarcarPDIcomoFavorito(request):
         
         if(success):
             
-            marcacionExitoso = marcarPDIcomoFavorito(params["idPDI"],params["idUser"])
+            marcacionExitoso = marcarPDIcomoFavorito(params["idPDI"],params["correo_e"],params["marcado"])                
             
             if(marcacionExitoso == CODIGO_ID_PDI_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_PDI_INVALIDO})
-            if(marcacionExitoso == CODIGO_ID_USER_INVALIDO):
+            if(marcacionExitoso == CODIGO_CORREO_USER_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_USER_INVALIDO})
+            if(marcacionExitoso == CODIGO_MARCADO_INVAIDO):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':FAVORITO_MENSAJE_CODIGO_MARCADO_INVAIDO})
+            if(marcacionExitoso == CODIGO_NOTIFICACIONES_INVALIDO):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':FAVORITO_MENSAJE_CODIGO_NOTIFICACION_INVALIDO})
+            if(marcacionExitoso == CODIGO_DE_OPCIONES_DE_MARCADO_INCORRECTO):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':FAVORITO_MENSAJE_CODIGO_MARCADO_INCORRECTO})
             if(marcacionExitoso == CODIGO_NO_EXISTE_PDI):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_PDI_NO_EXISTE})
             if(marcacionExitoso == CODIGO_NO_EXISTE_USER):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_USUARIO_NO_EXISTE})
             if(marcacionExitoso == CODIGO_PDI_YA_SE_ENCUENTRA_MARCADO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':FAVORITO_MENSAJE_PDI_YA_SE_ENCUENTRA_MARCADO})
+            if(marcacionExitoso == CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':FAVORITO_MENSAJE_PDI_NO_SE_ENCUENTRA_MARCADO})
+            if(marcacionExitoso == CODIGO_DESMARCACION_FALLIDO):        
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_FALLIDO})
             if(marcacionExitoso == CODIGO_MARCACION_FALLIDO):        
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_FALLIDO})
-            else:                                
-                return render_to_json("PDI/respuesta/registroAnuncio.json",{'codigo':100, 'mensaje':FAVORITO_MENSAJE_MARCACION_EXITOSA}) 
+            else:
+                
+                if(int(float(params["marcado"])) == 0):
+                    return render_to_json("PDI/respuesta/favorito.json",{'codigo':100, 'mensaje':FAVORITO_MENSAJE_MARCACION_EXITOSA, 'pdi':marcacionExitoso})
+                else:
+                    return render_to_json("PDI/respuesta/favorito.json",{'codigo':100, 'mensaje':FAVORITO_MENSAJE_DESMARCACION_EXITOSA, 'pdi':marcacionExitoso})
         else:
             return    render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS})
     else:
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION})
-         
-         
-def peticionDesmarcarPDIcomoFavorito(request):
-    if request.method=="POST":
-        
-        success, params = extract_params(request.POST,CAMPOS_FAVORITO)
-        
-        if(success):
-            
-            desmarcacionExitoso = desmarcarPDIcomoFavorito(params["idPDI"],params["idUser"])
-            
-            if(desmarcacionExitoso == CODIGO_ID_PDI_INVALIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_PDI_INVALIDO})
-            if(desmarcacionExitoso == CODIGO_ID_USER_INVALIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_USER_INVALIDO})
-            if(desmarcacionExitoso == CODIGO_NO_EXISTE_PDI):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_PDI_NO_EXISTE})
-            if(desmarcacionExitoso == CODIGO_NO_EXISTE_USER):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_USUARIO_NO_EXISTE})
-            if(desmarcacionExitoso == CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':FAVORITO_MENSAJE_PDI_NO_SE_ENCUENTRA_MARCADO})
-            if(desmarcacionExitoso == CODIGO_DESMARCACION_FALLIDO):        
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_FALLIDO})
-            else:                                
-                return render_to_json("PDI/respuesta/registroAnuncio.json",{'codigo':100, 'mensaje':FAVORITO_MENSAJE_DESMARCACION_EXITOSA}) 
-        else:
-            return    render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS})
-    else:
-        return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION})
-         
-         
+
