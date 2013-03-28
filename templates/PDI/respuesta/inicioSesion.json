@@ -20,5 +20,6 @@
 		   					"longitud":{{pdi.posicion.x}} ,
 		   					"altitud": {{ pdi.altitud }}
 						}		   
-		} {% if not forloop.last %},{% endif %}{% endfor %}]
+		} {% if not forloop.last %},{% endif %}{% endfor %}
+	]
 {% endblock %} 

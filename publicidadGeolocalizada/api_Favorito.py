@@ -117,6 +117,14 @@ def verificarUser(idUser):
         return CODIGO_EXISTE_USER
     except Exception,err:
         return CODIGO_NO_EXISTE_USER
+
+def verficaCorreo(correoUsuario):
+    
+    try:
+        usuario = User.objects.get(email=correoUsuario)
+        return CODIGO_EXISTE_USER
+    except Exception,err:
+        return CODIGO_NO_EXISTE_USER
     
 def verificarSiEstaMarcado(idPDI, idUser):
     

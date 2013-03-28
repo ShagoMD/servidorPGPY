@@ -21,6 +21,8 @@ from strings import *;
 CAMPOS_REGISTRAR_USUARIO=["correo","contrasenia"];
 CAMPOS_ACTUALIZAR_DATOS_DEL_PERFIL = ["idUser","correo","contrasenia","nombre","apellido","URLimagen","edad","genero"]
 
+CAMPOS_LISTAR_PDIs_USUARIO=["usuario"];
+
 CODIGO_CORREO_INVALIDO=1;
 CODIGO_CONTRASENIA_INVALIDA=2;
 CODIGO_CORREO_REPETIDO=3;
@@ -31,7 +33,7 @@ CODIGO_USUARIO_NO_EXISTE=2;
 CODIGO_OPERACION_EXITOSA=0;
 
 def peticionRegistrarUsuario(request):
-    if request.method!="POST":        
+    if request.method!="POST":       
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});
     
     exito,parametros=extract_params(request.POST,CAMPOS_REGISTRAR_USUARIO);
@@ -100,6 +102,19 @@ def peticionActualizarDatosDelPerfil(request):
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});
     
     
+def peticionObtenerPDIsDeUsuario(request):
+    if request.method!="POST":
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});    
     
+    exito,parametros=extract_params(request.POST,CAMPOS_LISTAR_PDIs_USUARIO);
+    if not exito:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});
+    
+    codigoRespuesta,listaPDI=obtenerPDIsDeUsuario(parametros["usuario"]);
+    
+    if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):
+        return render_to_json("PDI/respuesta/inicioSesion.json",{'codigo':100,'mensaje':PDI_MENSAJE_LISTA_OBTENIDA,'lista_pdi':listaPDI});
+    else:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
     
             

@@ -95,8 +95,7 @@ def peticionEliminarPDI(request):
 		return render_to_json("PDI/respuesta/pdi.json",{'codigo':100,'mensaje':PDI_MENSAJE_PDI_ELIMINADO,'pdi':pdi});
 	else:
 		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
-	
-				
+					
 def peticionEliminarTodosPDI(request):
 	if request.method=="POST":	
 		exito,parametros=extract_params(request.POST,CAMPOS_ELIMINAR_TODOS_PDI);
@@ -112,7 +111,6 @@ def peticionEliminarTodosPDI(request):
 			return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});		
 	else:
 		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});
-
 	
 	
 	
