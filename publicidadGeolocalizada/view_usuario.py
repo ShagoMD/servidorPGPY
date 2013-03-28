@@ -22,7 +22,7 @@ CAMPOS_REGISTRAR_USUARIO=["correo","contrasenia"];
 CAMPOS_ACTUALIZAR_DATOS_DEL_PERFIL = ["idUser","correo","contrasenia","nombre","apellido","URLimagen","edad","genero"]
 
 CAMPOS_LISTAR_PDIs_USUARIO=["usuario"];
-
+ 
 CODIGO_CORREO_INVALIDO=1;
 CODIGO_CONTRASENIA_INVALIDA=2;
 CODIGO_CORREO_REPETIDO=3;
