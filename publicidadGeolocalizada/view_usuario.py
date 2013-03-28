@@ -116,5 +116,20 @@ def peticionObtenerPDIsDeUsuario(request):
         return render_to_json("PDI/respuesta/inicioSesion.json",{'codigo':100,'mensaje':PDI_MENSAJE_LISTA_OBTENIDA,'lista_pdi':listaPDI});
     else:
         return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
+
+def peticionObtenerFavoritosDeUsuario(request):      
+    if request.method!="POST":
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});    
     
+    exito,parametros=extract_params(request.POST,CAMPOS_LISTAR_PDIs_USUARIO);
+    if not exito:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});
+    
+    codigoRespuesta,listaFavoritos=obtenerFavoritosDeUsuario(parametros["usuario"]);
+    
+    if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):
+        return render_to_json("PDI/respuesta/inicioSesion.json",{'codigo':100,'mensaje':PDI_MENSAJE_LISTA_FAVORITOS_OBTENIDA,'lista_pdi':listaFavoritos});
+    else:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta}); 
+     
             

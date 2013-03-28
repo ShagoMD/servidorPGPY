@@ -42,6 +42,7 @@ PDI_MENSAJE_PDI_ACTUALIZADO="Los datos del punto de interes fueron actualizados 
 PDI_MENSAJE_PDI_NO_ACTUALIZADO="Los datos del PDI no pudieron ser actualizados. Intentelo de nuevo.";
 PDI_MENSAJE_NO_PERTENECE_USUARIO="Este usuario no tiene los privilegios para modificar el PDI.";
 PDI_MENSAJE_LISTA_OBTENIDA="Se ha obtenido correcatmente la lista de PDIs del usuario.";
+PDI_MENSAJE_LISTA_FAVORITOS_OBTENIDA="Se ha obtenido correctamente la lista de Favoritos del usuario.";
 
 #En esta seccion se definen los strings usados por el View, la api y otras clases correspondientes a Usuario
 USUARIO_MENSAJE_CORREO_INVALIDO='Introduzca un correo electronico valido.';
