@@ -310,7 +310,14 @@ def obtenerPDIsDeUsuario(usuario):
     else:    
         return PDI_MENSAJE_USUARIO_INVALIDO,False;
     
-    
+def obtenerFavoritosDeUsuario(usuario):
+    usuarioValido=esUsuarioValido(usuario);
+    if usuarioValido is not False: 
+        listaPDI=PuntoDeInteres_Favoritos.objects.filter(user__email__exact=usuario);
+        #listaPDI=PuntoDeInteres.objects.filter(favoritos__email__exact=usuario);
+        return CODIGO_REGISTRO_EXITOSO,listaPDI;
+    else:    
+        return PDI_MENSAJE_USUARIO_INVALIDO,False; 
     
     
     
