@@ -14,10 +14,9 @@ from utilidades import *;
 from django.template import RequestContext;
 from api_Anuncio import *;
 from strings import *;
-from servidorPGPY.settings import MEDIA_ROOT
-from servidorPGPY.settings import MEDIA_URL
+import re
 
-
+CARACTER_ESPACIO=re.compile('^\s+$');
 CAMPOS_REGISTRAR_ANUNCIO=["idPDI","correo_e","titulo","descripcion","categoria","URLimagen"]
 CAMPOS_MODIFICAR_ANUNCIO=["idAnuncio","idPDI","correo_e","titulo","descripcion","categoria","URLimagen"]
 CAMPOS_ELIMINAR_ANUNCIO=["idAnuncio","idPDI","correo_e"]
@@ -31,7 +30,10 @@ def peticionRegistrarAnuncio(request):
         print params
         if(success):
             
-            registroExitoso = registrarAnuncio(params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["categoria"],params["URLimagen"])
+            if(len(params["URLimagen"])==0 or CARACTER_ESPACIO.match(params["URLimagen"])):
+                registroExitoso = registrarAnuncio(params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["categoria"],request.build_absolute_uri('/geoAdds/media/logo/a_nuncio.jpg'))
+            else:
+                registroExitoso = registrarAnuncio(params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["categoria"],params["URLimagen"])
             
             if(registroExitoso == CODIGO_ID_PDI_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_PDI_INVALIDO})
@@ -68,7 +70,10 @@ def peticionModificarAnuncio(request):
         
         if(success):
             
-            modificacionExitoso = modificarAnuncio(params["idAnuncio"],params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["categoria"],params["URLimagen"])
+            if(len(params["URLimagen"])==0):
+                modificacionExitoso = modificarAnuncio(params["idAnuncio"],params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["categoria"],request.build_absolute_uri('/geoAdds/media/logo/a_nuncio.jpg'))
+            else:
+                modificacionExitoso = modificarAnuncio(params["idAnuncio"],params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["categoria"],params["URLimagen"])
             
             if(modificacionExitoso == CODIGO_ID_ANUNCIO_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_ANUNCIO_INVALIDO})
@@ -97,7 +102,7 @@ def peticionModificarAnuncio(request):
             if(modificacionExitoso == CODIGO_MODIFICA_FALLIDO):        
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_REGISTRO_FALLIDO})
             else:                                
-                return render_to_json("PDI/respuesta/Anuncio.json",{'codigo':100, 'mensaje':ANUNCIO_MENSAJE_ANUNCIO_ACTUALIZADO,'anuncio':modificacionExitoso}) 
+                return render_to_json("PDI/respuesta/anuncio.json",{'codigo':100, 'mensaje':ANUNCIO_MENSAJE_ANUNCIO_ACTUALIZADO,'anuncio':modificacionExitoso}) 
             
         else:
             return    render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS})

@@ -46,7 +46,6 @@ urlpatterns = patterns('',
  (r'^anuncio/eliminarTodo/$', peticionEliminarTodoLosAnuncios), 
  (r'^anuncio/obtenerTodo/$', peticionObtenerTodosLosAnunciosDelPDI),
  (r'^favorito/marcar/$', peticionMarcarPDIcomoFavorito),
- (r'^favorito/desmarcar/$', peticionDesmarcarPDIcomoFavorito),
  (r'^imagen/mostrar/$', peticionImagen),
  (r'^imagen/buscar/$', peticionObtenerURL),
  

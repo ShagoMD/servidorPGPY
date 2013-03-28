@@ -51,7 +51,7 @@ def obtenerListadoPuntosDeInteresSearch(latitud, longitud, rangoMaximoAlcance, s
         
          posicionActual = Point(float(longitud),float(latitud),SRID)
          
-         listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(nombre__contains=searchString)
+         listaPuntosDeInteres =  PuntoDeInteres.objects.filter(posicion__distance_lte=(posicionActual, D(km=rangoMaximoAlcance))).filter(nombre__icontains=searchString)
 
     else:
          raise Exception("Los valores de los parametros son incorrectos");

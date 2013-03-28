@@ -90,15 +90,22 @@ ANUNCIO_MENSAJE_PDI_NO_EXISTE='El PDI que indico no existe.'
 ANUNCIO_MENSAJE_NO_HAY_ANUNCIOS_REGISTRADOS='El PDI no tiene Anuncios registrados.'
 ANUNCIO_MENSAJE_ANUNCIO_ELIMINADO='El anuncio del PDI fue eliminado.'
 ANUNCIO_MENSAJE_TODOS_LOS_ANUNCIOS_ELIMINADOS='Todos los anuncios del PDI fueron eliminados.'
-ANUNCIO_MENSAJE_ELIMINACION_EXITOSO='Eliminacion del anuncio exitoso'
+ANUNCIO_MENSAJE_ELIMINACION_EXITOSO='Eliminacion del anuncio exitoso.'
 
 ANUNCIO_MENSAJE_ANUNCIO_ACTUALIZADO='Los datos del Anuncio de fueron actualizadas correctamente.'
 ANUNCIO_MENSAJE_LIMITE_ANUNCIO_ALCANZADO='Se ha alcanzado el limite de Anuncios que su PDI le permite registrar.'
-ANUNCIO_MENSAJE_TODOS_LOS_ANUNCIOS_EXITO='Todos los anuncios del PDI fueron devueltos correctamente'
+ANUNCIO_MENSAJE_TODOS_LOS_ANUNCIOS_EXITO='Todos los anuncios del PDI fueron devueltos correctamente.'
 
 #En esta seccion se definen los strings usados por el View, la api, y otras clases relativas a Anuncio
-FAVORITO_MENSAJE_MARCACION_EXITOSA='Marcacion como favorito exitoso'
-FAVORITO_MENSAJE_DESMARCACION_EXITOSA='Desmarcacion como favorito exitoso'
+FAVORITO_MENSAJE_MARCACION_EXITOSA='Marcacion como favorito exitoso.'
+FAVORITO_MENSAJE_DESMARCACION_EXITOSA='Desmarcacion como favorito exitoso.'
 
-FAVORITO_MENSAJE_PDI_YA_SE_ENCUENTRA_MARCADO='El PDI que intenta marcar, ya se encuentra marcado'
-FAVORITO_MENSAJE_PDI_NO_SE_ENCUENTRA_MARCADO='El PDI que intenta desmarcar, no se encuentra marcado'
+FAVORITO_MENSAJE_CODIGO_MARCADO_INCORRECTO='El codigo para determinar si se marca o desmarca el PDI como favorito es incorrecto. Tiene que ser 0 para marcar y 1 para desmarcar'
+
+FAVORITO_MENSAJE_PDI_YA_SE_ENCUENTRA_MARCADO='El PDI que intenta marcar, ya se encuentra marcado.'
+FAVORITO_MENSAJE_PDI_NO_SE_ENCUENTRA_MARCADO='El PDI que intenta desmarcar, no se encuentra marcado.'
+
+FAVORITO_MENSAJE_CODIGO_MARCADO_INVAIDO='El codigo para determinar si se marca o desmarca el PDI como favorito es invalido.'
+FAVORITO_MENSAJE_CODIGO_NOTIFICACION_INVALIDO='El codigo para determinar si se desea recibir notificaciones de un PDI marcado como favorito es invalido.'
+
+

@@ -4,10 +4,11 @@
 {% block mensaje %}{{mensaje}}{% endblock %} 
 {%block objeto %}
 	{
-		"pdi" : "{{anuncio.anunciante.id}}",
+		"id_anuncio": {{anuncio.id}},
+		"id_pdi" : {{anuncio.anunciante.id}},
 		"anuncio" : "{{anuncio.titulo}}",
-		"descripcion" : "{{anuncio.descripcion}}"
+		"descripcion" : "1{{anuncio.descripcion}}",
 		"categoria" : "{{anuncio.categoria}}",
-		"imagen" : "{{anuncio.rutaImagen}}",
+		"imagen" : "{{anuncio.rutaImagen}}"
 	}
 {% endblock %}
