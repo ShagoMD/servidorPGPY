@@ -16,6 +16,8 @@ from utilidades import *
 from django.db import connection
 connection._rollback()
 import re
+
+CARACTER_ESPACIO=re.compile('^\s+$');
 CODIGO_CORREO_INVALIDO=1;
 CODIGO_CONTRASENIA_INVALIDA=2;
 CODIGO_ERROR_CREACION_USUARIO=3;
@@ -76,22 +78,11 @@ def registrarUsuario(correo_e,password):
 
 
 #Actualizac�n de datos del perfil de Usuario
-def actualizarDatosDelPerfil(idUser,correo_e,contrasenia,nombre,apellido,URLimagen,edad,genero):
-    
-    parametrosObligatorios = sonParametrosObligatorios(idUser)
-    
-    if(parametrosObligatorios == CODIGO_ID_USER_INVALIDO):
-        return CODIGO_ID_USER_INVALIDO
-    
-    parametrosVacios = sonTodosLosParametrosVacios(correo_e,contrasenia,nombre,apellido,URLimagen,edad,genero)
-    
-    #Verifico que si se envian puros parametros vacios, representa una actualizacion vacia, sin cambios
-    if (parametrosVacios == CODIGO_ACTUALIZACION_VACIA):
-        return CODIGO_ACTUALIZACION_VACIA
+def actualizarDatosDelPerfil(correo_e,contrasenia,nombre,apellido,URLimagen,edad,genero):
     
     try:
         #Despu�s de validar que el ID del usuario no este vac�o y que sea del tipo correcto, obtengo al usuario
-        usuario = User.objects.get(id=idUser)
+        usuario = User.objects.get(email=correo_e)
     except User.DoesNotExist:
         return CODIGO_USUARIO_NO_EXISTE
     
@@ -102,18 +93,6 @@ def actualizarDatosDelPerfil(idUser,correo_e,contrasenia,nombre,apellido,URLimag
     
     except Exception,err:
         perfil = PerfilDeUsuario.objects.create(user=usuario)
-
-
-    #Se validad primero que el correo contenga algo para poder actualizar
-    if (esCorreoVacio(correo_e) == CODIGO_PARAMETRO_NO_VACIO):
-        if(existeDuplicidadDeCorreo(correo_e, idUser) == CODIGO_DUPLICIDAD_DE_CORREOS):
-            return CODIGO_DUPLICIDAD_DE_CORREOS
-        if not (esCorreoValido(correo_e)):
-            return CODIGO_CORREO_NO_VALIDO
-        #Despu�s de validar a duplicidad y que sea valido, actualizo el correo
-        usuario.email = correo_e
-        #Por motivos propios del registro de usuario, se maneja el correo como nombre de usuario
-        usuario.username = correo_e
         
         
     #Se valida primero que la contrase�a contenga algo para poder actualizar
@@ -121,7 +100,7 @@ def actualizarDatosDelPerfil(idUser,correo_e,contrasenia,nombre,apellido,URLimag
         if not (esContraseniaValida(contrasenia)):
             return CODIGO_CONTRASENIA_NO_VALIDA
         #Despu�s de validar la contrase�a, actualizo la mencionada contrase�a
-        usuario.password = contrasenia
+        usuario.set_password(contrasenia)
     
     #Se valida que no este vac�o el nombre para poder actualizar
     if (esNombreVacio(nombre) == CODIGO_PARAMETRO_NO_VACIO):
@@ -151,7 +130,7 @@ def actualizarDatosDelPerfil(idUser,correo_e,contrasenia,nombre,apellido,URLimag
         usuario.save()
         perfil.save()
         #usuario.get_profile().save
-        return CODIGO_ACTUALIZACION_EXITOSA
+        return usuario
     except Exception,err:
         return CODIGO_ACTUALIZACION_FALLIDA
     
@@ -174,13 +153,6 @@ def sonParametrosValidosRegistroUsuario(correo_e,password):
     if password=="" or not esTipoValido(password,TIPO_CADENA):
         return False;    
     return True;
-def sonTodosLosParametrosVacios(correo_e,contrasenia,nombre,apellido,URLimagen,edad,genero):
-    
-    if len(correo_e)==0 and len(contrasenia)==0 and len(nombre)==0 and len(apellido)==0 and len(URLimagen)==0 and len(edad)==0 and len(genero)==0 :
-        return CODIGO_ACTUALIZACION_VACIA
-            
-    return CODIGO_TODOS_LOS_PARAMETROS_NO_ESTAN_VACIOS
-
 
 def sonParametrosObligatorios(idUser):
     
@@ -225,14 +197,13 @@ def esGeneroVacio(genero):
         return CODIGO_GENERO_VACIO
     return CODIGO_PARAMETRO_NO_VACIO
 
-def existeDuplicidadDeCorreo(correo_e, idUser):
+def existeDuplicidadDeCorreo(correo_e):
     
     listaDeUsuarios = User.objects.all()
     
     if(len(listaDeUsuarios)!=CADENA_VACIA):
         for user in listaDeUsuarios:
             if(user.email == correo_e):
-                if(user.id != int(float(idUser))):
-                    return CODIGO_DUPLICIDAD_DE_CORREOS
+                return CODIGO_DUPLICIDAD_DE_CORREOS
     
     return CODIGO_NO_DUPLICIDAD_DE_CORREOS

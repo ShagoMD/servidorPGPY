@@ -17,9 +17,11 @@ from django.shortcuts import render_to_response
 from strings import *;
 from api_puntoDeInteres import *;
 from strings import *;
+import re
 
+CARACTER_ESPACIO=re.compile('^\s+$');
 CAMPOS_REGISTRAR_USUARIO=["correo","contrasenia"];
-CAMPOS_ACTUALIZAR_DATOS_DEL_PERFIL = ["idUser","correo","contrasenia","nombre","apellido","URLimagen","edad","genero"]
+CAMPOS_ACTUALIZAR_DATOS_DEL_PERFIL = ["correo","contrasenia","nombre","apellido","URLimagen","edad","genero"]
 
 CODIGO_CORREO_INVALIDO=1;
 CODIGO_CONTRASENIA_INVALIDA=2;
@@ -78,31 +80,22 @@ def peticionActualizarDatosDelPerfil(request):
         exito, parametros = extract_params(request.POST,CAMPOS_ACTUALIZAR_DATOS_DEL_PERFIL)
         
         if(exito):
-            actualizarDatosExitoso = actualizarDatosDelPerfil(parametros["idUser"],parametros["correo"],parametros["contrasenia"],parametros["nombre"],parametros["apellido"],parametros["URLimagen"],parametros["edad"],parametros["genero"])
             
-            if(actualizarDatosExitoso == CODIGO_ID_USER_INVALIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_ID_DEL_USUARIO_INVALIDO});
-            
-            if(actualizarDatosExitoso == CODIGO_ACTUALIZACION_VACIA):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_ACTUALIZACION_VACIA});
-            
-            if(actualizarDatosExitoso == CODIGO_DUPLICIDAD_DE_CORREOS):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_CORREO_REPETIDO});
-            
+            if(len(parametros["URLimagen"])==0 or CARACTER_ESPACIO.match(parametros["URLimagen"])):
+                actualizarDatosExitoso = actualizarDatosDelPerfil(parametros["correo"],parametros["contrasenia"],parametros["nombre"],parametros["apellido"],request.build_absolute_uri('/geoAdds/media/logo/usuario.jpg'),parametros["edad"],parametros["genero"])
+            else:
+                actualizarDatosExitoso = actualizarDatosDelPerfil(parametros["correo"],parametros["contrasenia"],parametros["nombre"],parametros["apellido"],parametros["URLimagen"],parametros["edad"],parametros["genero"])
+
             if(actualizarDatosExitoso == CODIGO_USUARIO_NO_EXISTE):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_USUARIO_NO_EXISTE});
-            
-            if(actualizarDatosExitoso == CODIGO_CORREO_NO_VALIDO):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_CORREO_INVALIDO});
-            
+
             if(actualizarDatosExitoso == CODIGO_CONTRASENIA_NO_VALIDA):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_CONTRASENIA_INVALIDA});
             
-            if(actualizarDatosExitoso == CODIGO_ACTUALIZACION_EXITOSA):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':100, 'mensaje':USUARIO_MENSAJE_ACTUALIZACION_EXISTOSA}); 
-            else:
+            if(actualizarDatosExitoso == CODIGO_ACTUALIZACION_FALLIDA):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_ACTUALIZACION_FALLIDA});
-            
+            else:
+                return render_to_json("PDI/respuesta/actualizacionUsuario.json",{'codigo':100, 'mensaje':USUARIO_MENSAJE_ACTUALIZACION_EXISTOSA, 'usuario':actualizarDatosExitoso});
         else:
             return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS});
         

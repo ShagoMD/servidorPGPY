@@ -1,0 +1,17 @@
+{% extends 'PDI/respuesta/respuestav3.json' %}
+
+{% block codigo %}{{codigo}}{% endblock %}
+{% block mensaje %}{{mensaje}}{% endblock %} 
+{%block objeto %}
+		
+	{
+		"usuario" : "{{usuario.email}}",
+		"correo electronico" : "{{usuario.email}}"
+		"nombre" : "{{usuario.first_name}}",
+		"apellido" : "{{usuario.last_name}}"
+		"URLimagen" : "{{usuario.get_profile.rutaImagen}}",
+		"edad" : "{{usuario.get_profile.edad}}"
+		"genero" : "{{usuario.get_profile.genero}}",
+	}
+	
+{% endblock %} 
