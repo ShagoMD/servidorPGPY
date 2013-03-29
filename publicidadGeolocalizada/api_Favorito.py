@@ -158,6 +158,14 @@ def sonParametrosObligatoriosMarcacion(idPDI,correo_e,marcado):
     
     return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
 
+def obtenerFavoritosDeUsuario(usuario):
+    usuarioValido=esUsuarioValido(usuario);
+    if usuarioValido is False:
+        return PDI_MENSAJE_USUARIO_INVALIDO,False; 
+    
+    listaPDI=PuntoDeInteres.objects.filter(favoritos__email__exact=usuario);
+    return CODIGO_OPERACION_EXITOSA,listaPDI;  
+
 def esPDIFavoritoDelUsuario(usuario,idPDI):    
     usuarioValido=esUsuarioValido(usuario);
     if usuarioValido is False:        
@@ -173,3 +181,7 @@ def esPDIFavoritoDelUsuario(usuario,idPDI):
         return FAVORITO_MENSAJE_NO_ES_FAVORITO,"False";
     else:
         return FAVORITO_MENSAJE_ES_FAVORITO,"True";   
+
+      
+    
+    

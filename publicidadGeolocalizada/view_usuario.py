@@ -13,6 +13,7 @@ from django.http import HttpResponse
 from utilidades import *
 from django.template import RequestContext
 from api_Usuario import *
+from api_Favorito import *
 from django.shortcuts import render_to_response
 from strings import *;
 from api_puntoDeInteres import *;
