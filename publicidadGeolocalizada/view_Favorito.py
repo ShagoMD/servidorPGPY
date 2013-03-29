@@ -14,7 +14,10 @@ from django.template import RequestContext;
 from api_Favorito import *;
 from strings import *;
 
-CAMPOS_FAVORITO=["idPDI","correo_e","marcado"]
+CAMPOS_FAVORITO=["idPDI","correo_e","marcado"];
+CAMPOS_CONFIRMAR_FAVORITO=["usuario","idPDI"];
+
+CODIGO_OPERACION_EXITOSA=0;
 
 def peticionMarcarPDIcomoFavorito(request):
     if request.method=="POST":
@@ -58,3 +61,17 @@ def peticionMarcarPDIcomoFavorito(request):
     else:
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION})
 
+def peticionEsPDIFavoritoDelUsuario(request):    
+    if request.method!="POST":
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});    
+    
+    exito,parametros=extract_params(request.POST,CAMPOS_CONFIRMAR_FAVORITO);
+    if not exito:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});
+    
+    codigoRespuesta,respuesta=esPDIFavoritoDelUsuario(parametros["usuario"],parametros["idPDI"]);
+    
+    if(codigoRespuesta==FAVORITO_MENSAJE_ES_FAVORITO or codigoRespuesta==FAVORITO_MENSAJE_NO_ES_FAVORITO):
+        return render_to_json("PDI/respuesta/confirmarFavorito.json",{'codigo':100,'mensaje':codigoRespuesta,'objeto':respuesta});
+    else:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});

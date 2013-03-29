@@ -48,7 +48,6 @@ def peticionRegistrarUsuario(request):
     else:
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':codigoRespuesta});                               
 
-       
 def peticionIniciarSesion(request):
     if(request.method!="POST"):        
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION}); 
