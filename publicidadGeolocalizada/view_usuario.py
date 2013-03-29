@@ -13,6 +13,7 @@ from django.http import HttpResponse
 from utilidades import *
 from django.template import RequestContext
 from api_Usuario import *
+from api_Favorito import *
 from django.shortcuts import render_to_response
 from strings import *;
 from api_puntoDeInteres import *;
@@ -22,7 +23,7 @@ CAMPOS_REGISTRAR_USUARIO=["correo","contrasenia"];
 CAMPOS_ACTUALIZAR_DATOS_DEL_PERFIL = ["idUser","correo","contrasenia","nombre","apellido","URLimagen","edad","genero"]
 
 CAMPOS_LISTAR_PDIs_USUARIO=["usuario"];
-
+ 
 CODIGO_CORREO_INVALIDO=1;
 CODIGO_CONTRASENIA_INVALIDA=2;
 CODIGO_CORREO_REPETIDO=3;
@@ -48,7 +49,6 @@ def peticionRegistrarUsuario(request):
     else:
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':codigoRespuesta});                               
 
-       
 def peticionIniciarSesion(request):
     if(request.method!="POST"):        
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION}); 
@@ -116,5 +116,20 @@ def peticionObtenerPDIsDeUsuario(request):
         return render_to_json("PDI/respuesta/inicioSesion.json",{'codigo':100,'mensaje':PDI_MENSAJE_LISTA_OBTENIDA,'lista_pdi':listaPDI});
     else:
         return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta});
+
+def peticionObtenerFavoritosDeUsuario(request):      
+    if request.method!="POST":
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});    
     
+    exito,parametros=extract_params(request.POST,CAMPOS_LISTAR_PDIs_USUARIO);
+    if not exito:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});
+    
+    codigoRespuesta,listaFavoritos=obtenerFavoritosDeUsuario(parametros["usuario"]);
+    
+    if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):
+        return render_to_json("PDI/respuesta/inicioSesion.json",{'codigo':100,'mensaje':PDI_MENSAJE_LISTA_FAVORITOS_OBTENIDA,'lista_pdi':listaFavoritos});
+    else:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta}); 
+     
             

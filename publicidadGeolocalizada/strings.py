@@ -20,7 +20,7 @@ PDI_MENSAJE_URL_WEB_INVALIDA="La url del sitio web no tiene el formato correcto.
 PDI_MENSAJE_URL_IMAGEN_INVALIDA="La url de la imagen no tiene el formato correcto.";
 PDI_MENSAJE_CORREO_INVALIDO="El correo electronico del sitio no es valido.";
 
-PDI_MENSAJE_PDI_NO_EXISTE="El punto de interes que esta tratando de eliminar no existe.";
+PDI_MENSAJE_PDI_NO_EXISTE="El punto de interes no existe.";
 PDI_MENSAJE_NO_HAY_PDIs_REGISTRADOS="El usuario no tiene puntos de interes registrados.";
 PDI_MENSAJE_PDI_ELIMINADO="El punto de interes y todos sus anuncion asociados fueron eliminados correctamente.";
 PDI_MENSAJE_TODOS_PDIS_ELIMINADOS="Todos los puntos de interes del usuario y sus respectivos anuncios han sido eliminados correctamente.";
@@ -42,6 +42,7 @@ PDI_MENSAJE_PDI_ACTUALIZADO="Los datos del punto de interes fueron actualizados 
 PDI_MENSAJE_PDI_NO_ACTUALIZADO="Los datos del PDI no pudieron ser actualizados. Intentelo de nuevo.";
 PDI_MENSAJE_NO_PERTENECE_USUARIO="Este usuario no tiene los privilegios para modificar el PDI.";
 PDI_MENSAJE_LISTA_OBTENIDA="Se ha obtenido correcatmente la lista de PDIs del usuario.";
+PDI_MENSAJE_LISTA_FAVORITOS_OBTENIDA="Se ha obtenido correctamente la lista de Favoritos del usuario.";
 
 #En esta seccion se definen los strings usados por el View, la api y otras clases correspondientes a Usuario
 USUARIO_MENSAJE_CORREO_INVALIDO='Introduzca un correo electronico valido.';
@@ -107,5 +108,5 @@ FAVORITO_MENSAJE_PDI_NO_SE_ENCUENTRA_MARCADO='El PDI que intenta desmarcar, no s
 
 FAVORITO_MENSAJE_CODIGO_MARCADO_INVAIDO='El codigo para determinar si se marca o desmarca el PDI como favorito es invalido.'
 FAVORITO_MENSAJE_CODIGO_NOTIFICACION_INVALIDO='El codigo para determinar si se desea recibir notificaciones de un PDI marcado como favorito es invalido.'
-
-
+FAVORITO_MENSAJE_ES_FAVORITO="El pdi es un favorito del usuario";
+FAVORITO_MENSAJE_NO_ES_FAVORITO="El pdi no es un favorito del usuario";

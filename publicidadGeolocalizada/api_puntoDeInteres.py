@@ -311,6 +311,3 @@ def obtenerPDIsDeUsuario(usuario):
         return PDI_MENSAJE_USUARIO_INVALIDO,False;
     
     
-    
-    
-    

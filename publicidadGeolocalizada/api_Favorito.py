@@ -11,6 +11,8 @@ from models import *
 from django.contrib.auth.models import User
 from conversionTipos import *
 from django.db import connection
+from utilidades import *
+from strings import *
 connection._rollback()
 
 TIPO_ENTERO = '1'
@@ -41,6 +43,8 @@ CODIGO_PDI_YA_SE_ENCUENTRA_MARCADO = 11
 CODIGO_PDI_NO_SE_ENCUENTRA_MARCADO = 12
 
 CODIGO_DE_OPCIONES_DE_MARCADO_INCORRECTO = 13
+
+CODIGO_OPERACION_EXITOSA=0;
 
 def marcarPDIcomoFavorito(idPDI,correo_e,marcado):
     
@@ -154,3 +158,30 @@ def sonParametrosObligatoriosMarcacion(idPDI,correo_e,marcado):
     
     return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
 
+def obtenerFavoritosDeUsuario(usuario):
+    usuarioValido=esUsuarioValido(usuario);
+    if usuarioValido is False:
+        return PDI_MENSAJE_USUARIO_INVALIDO,False; 
+    
+    listaPDI=PuntoDeInteres.objects.filter(favoritos__email__exact=usuario);
+    return CODIGO_OPERACION_EXITOSA,listaPDI;  
+
+def esPDIFavoritoDelUsuario(usuario,idPDI):    
+    usuarioValido=esUsuarioValido(usuario);
+    if usuarioValido is False:        
+        return PDI_MENSAJE_USUARIO_INVALIDO,False; 
+
+    try:
+        pdi=PuntoDeInteres.objects.get(id=idPDI);
+    except Exception,err:
+        return PDI_MENSAJE_PDI_NO_EXISTE,False;
+    
+    favorito=pdi.favoritos.filter(email__exact=usuario);
+    if(len(favorito)==0):
+        return FAVORITO_MENSAJE_NO_ES_FAVORITO,"False";
+    else:
+        return FAVORITO_MENSAJE_ES_FAVORITO,"True";   
+
+      
+    
+    
