@@ -19,6 +19,8 @@ import re
 from strings import *;
 from api_puntoDeInteres import *;
 
+
+CARACTER_ESPACIO=re.compile('^\s+$');
 CODIGO_CORREO_INVALIDO=1;
 CODIGO_CONTRASENIA_INVALIDA=2;
 CODIGO_ERROR_CREACION_USUARIO=3;
