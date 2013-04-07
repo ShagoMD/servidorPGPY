@@ -1,4 +1,4 @@
-###Imports
+# -*- encoding: utf-8 -*-
 from models import *
 from django.contrib.gis.geos import *
 from conversionTipos import *
@@ -198,6 +198,8 @@ def sonParametrosOpcionalesActualizarPDIVacios(parametros):
     return True;
 
 def registrarPuntoDeInteres(camposObligatorios):
+    #import pdb
+    #pdb.set_trace()
     paramObligValidos=sonParametrosObligatoriosRegistrarPDIValidos(camposObligatorios);
     nuevoPDI=PuntoDeInteres();
     if paramObligValidos is not True:
@@ -304,10 +306,10 @@ def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,pdi):
 
 def obtenerPDIsDeUsuario(usuario):
     usuarioValido=esUsuarioValido(usuario);
-    if usuarioValido is not False: 
+    if usuarioValido is not False:
         listaPDI=PuntoDeInteres.objects.filter(propietario__email__exact=usuario);
         return CODIGO_REGISTRO_EXITOSO,listaPDI;
-    else:    
+    else:
         return PDI_MENSAJE_USUARIO_INVALIDO,False;
     
     
