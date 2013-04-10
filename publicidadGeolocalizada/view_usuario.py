@@ -134,18 +134,12 @@ def peticionObtenerPerfilDeUsuario(request):
         
         if(exito):
             
-            obtenerPerfilDeUsuario = actualizarDatosDelPerfil(parametros["correo"])
+            obtenerPerfilDeUsuarioExitoso = obtenerPerfilDeUsuario(parametros["correo"])
 
-            if(actualizarDatosExitoso == CODIGO_USUARIO_NO_EXISTE):
+            if(obtenerPerfilDeUsuarioExitoso == CODIGO_USUARIO_NO_EXISTE):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_USUARIO_NO_EXISTE});
-
-            if(actualizarDatosExitoso == CODIGO_CONTRASENIA_NO_VALIDA):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_CONTRASENIA_INVALIDA});
-            
-            if(actualizarDatosExitoso == CODIGO_ACTUALIZACION_FALLIDA):
-                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_ACTUALIZACION_FALLIDA});
             else:
-                return render_to_json("PDI/respuesta/actualizacionUsuario.json",{'codigo':100, 'mensaje':USUARIO_MENSAJE_ACTUALIZACION_EXISTOSA, 'usuario':actualizarDatosExitoso});
+                return render_to_json("PDI/respuesta/actualizacionUsuario.json",{'codigo':100, 'mensaje':USUARIO_MENSAJE_OBTENER_PERFIL, 'usuario':obtenerPerfilDeUsuarioExitoso});
         else:
             return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS});
         

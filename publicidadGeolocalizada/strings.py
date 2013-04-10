@@ -56,7 +56,7 @@ USUARIO_MENSAJE_ID_DEL_USUARIO_INVALIDO='El ID del usuario es invalido.';
 USUARIO_MENSAJE_ACTUALIZACION_EXISTOSA='Actualizacion de los datos del perfil exitoso.';
 USUARIO_MENSAJE_ACTUALIZACION_FALLIDA='Actualizacion de los datos del perfil fallido.';
 USUARIO_MENSAJE_REGISTRO_EXITOSO="El usuario fue registrado correctamente.";
-
+USUARIO_MENSAJE_OBTENER_PERFIL="Se obtuvo el perfil del usuario exitoso.";
 
 #En esta seccion se definen los strings usados por el View, la api y otras clases concernientes a Categoria
 CATEGORIA_MENSAJE_CATEGORIA_INVALIDA="El valor que trata de registrar no es unca cadena de texto.";
