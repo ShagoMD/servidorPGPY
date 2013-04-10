@@ -25,7 +25,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'publicidadGeolocalizada',                      # Or path to database file if using sqlite3.
         'USER': 'postgres',                      # Not used with sqlite3.
-        'PASSWORD': '123456',                  # Not used with sqlite3.
+        'PASSWORD': 'Pokachu7',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -139,6 +139,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'publicidadGeolocalizada',
+    'gcm',
     #'south',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
@@ -168,3 +169,12 @@ LOGGING = {
         },
     }
 }
+
+# ApiKey - https://code.google.com/apis/console (Key for server apps)
+#GCM_APIKEY = "<api_key>"
+GCM_APIKEY = "AIzaSyDWTgShzAZq48UgIk2ddkCD0vLhZ-_DWUY"
+
+try:
+    execfile(os.path.join(RUTA_PROYECTO, 'local_settings.py'))
+except IOError:
+    pass

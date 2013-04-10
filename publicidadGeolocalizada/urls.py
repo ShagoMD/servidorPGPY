@@ -9,7 +9,11 @@ from view_anuncio import *
 from view_imagen import *
 from view_Favorito import *
 from django.conf import settings
+from tastypie.api import Api
+from gcm.resources import DeviceResource
 
+gcm_api = Api(api_name='v1')
+gcm_api.register(DeviceResource())
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -50,7 +54,7 @@ urlpatterns = patterns('',
  (r'^imagen/mostrar/$', peticionImagen),
  (r'^imagen/buscar/$', peticionObtenerURL),
  (r'^favorito/esfavorito/$',peticionEsPDIFavoritoDelUsuario),
- 
+ (r'^gcm/', include(gcm_api)),
  #(r'^time/plus/(\d{1,2})/$', hours_ahead),
 
 

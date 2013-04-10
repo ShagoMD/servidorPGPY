@@ -8,7 +8,7 @@
 		"id_anuncio": {{anuncio.id}},
 		"id_pdi" : {{anuncio.anunciante.id}},
 		"anuncio" : "{{anuncio.titulo}}",
-		"descripcion" : "1{{anuncio.descripcion}}",
+		"descripcion" : "{{anuncio.descripcion}}",
 		"categoria" : "{{anuncio.categoria}}",
 		"imagen" : "{{anuncio.rutaImagen}}"
 	}

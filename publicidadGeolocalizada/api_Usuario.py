@@ -168,6 +168,7 @@ def actualizarDatosDelPerfil(idUser,correo_e,contrasenia,nombre,apellido,URLimag
     except Exception,err:
         return CODIGO_ACTUALIZACION_FALLIDA
     
+
     
 
 def iniciarSesion(correo_e,password):
