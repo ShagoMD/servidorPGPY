@@ -68,12 +68,16 @@ def registrarAnuncio(idPDI,correo_e,titulo,descripcion,categoria,URLimagen):
     if parametrosOpcionales != CODIGO_PARAMETROS_OPCIONALES_VALIDOS:
         return parametrosOpcionales
     
+    nuevaCategoria = parserCategoria(categoria)
+    
+    if nuevaCategoria == CODIGO_CATEGORIA_ANUNCIO_INVALIDO:
+        return CODIGO_CATEGORIA_ANUNCIO_INVALIDO 
+    
     PDIdelUsuario = esPDIdelUsuario(idPDI,correo_e)
     totalDeAnuncios = obtenerElTotalDeAnunciosDelPDI(idPDI)
 
     if PDIdelUsuario != CODIGO_PDI_ES_DEL_USUARIO:
         return PDIdelUsuario
-    
 
     if(len(totalDeAnuncios) >= MAX_ANUNCIOS):
         return CODIGO_LIMITE_ANUNCIOS_ALCANZADO
@@ -85,7 +89,7 @@ def registrarAnuncio(idPDI,correo_e,titulo,descripcion,categoria,URLimagen):
         nuevoAnuncio.anunciante = pdi
         nuevoAnuncio.titulo = titulo
         nuevoAnuncio.descripcion = descripcion
-        nuevoAnuncio.categoria = categoria
+        nuevoAnuncio.categoria = nuevaCategoria
         nuevoAnuncio.rutaImagen = URLimagen
         nuevoAnuncio.save()            
         return nuevoAnuncio
@@ -104,6 +108,10 @@ def modificarAnuncio(idAnuncio,idPDI,correo_e,titulo,descripcion,categoria,URLim
     if parametrosOpcionales != CODIGO_PARAMETROS_OPCIONALES_VALIDOS:
         return parametrosOpcionales
     
+    nuevaCategoria = parserCategoria(categoria)
+    
+    if nuevaCategoria == CODIGO_CATEGORIA_ANUNCIO_INVALIDO:
+        return CODIGO_CATEGORIA_ANUNCIO_INVALIDO 
     
     PDIdelUsuario = esPDIdelUsuario(idPDI,correo_e)
     totalDeAnuncios = obtenerElTotalDeAnunciosDelPDI(idPDI)
@@ -124,7 +132,7 @@ def modificarAnuncio(idAnuncio,idPDI,correo_e,titulo,descripcion,categoria,URLim
         anuncio = Anuncio.objects.get(id=idAnuncio)
         anuncio.titulo = titulo
         anuncio.descripcion = descripcion
-        anuncio.categoria = categoria
+        anuncio.categoria = nuevaCategoria
         anuncio.rutaImagen = URLimagen
         anuncio.save()  
         return anuncio
@@ -251,7 +259,7 @@ def sonParametrosObligatorios(idPDI,idUser,titulo,descripcion,categoria):
         return CODIGO_TITULO_ANUNCIO_INVALIDO
     if len(descripcion)==0 or not esTipoValido(descripcion,TIPO_CADENA):
         return CODIGO_DESCRIPCION_ANUNCIO_INVALIDO
-    if len(categoria)==0 or not esTipoValido(categoria,TIPO_CADENA):
+    if len(categoria)==0 or not esTipoValido(categoria,TIPO_ENTERO):
         return CODIGO_CATEGORIA_ANUNCIO_INVALIDO
 
     return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
@@ -275,7 +283,7 @@ def sonParametrosObligatoriosCambio(idAnuncio,idPDI,correo_e,titulo,descripcion,
         return CODIGO_TITULO_ANUNCIO_INVALIDO
     if len(descripcion)==0 or not esTipoValido(descripcion,TIPO_CADENA):
         return CODIGO_DESCRIPCION_ANUNCIO_INVALIDO
-    if len(categoria)==0 or not esTipoValido(categoria,TIPO_CADENA):
+    if len(categoria)==0 or not esTipoValido(categoria,TIPO_ENTERO):
         return CODIGO_CATEGORIA_ANUNCIO_INVALIDO
     return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
 
@@ -296,3 +304,30 @@ def sonParametrosOpcionales(URLimagen):
         return CODIGO_URL_IMAGEN_ANUNCIO_INVALIDO
 
     return CODIGO_PARAMETROS_OPCIONALES_VALIDOS
+
+def parserCategoria(categoria):
+    
+    if len(categoria) == 0:
+        return CODIGO_CATEGORIA_ANUNCIO_INVALIDO
+    if int(float(categoria)) == 1:
+        return 'Ropa y Accesorios'
+    if int(float(categoria)) == 2:
+        return 'Deportes'
+    if int(float(categoria)) == 3:
+        return 'Electronicos'
+    if int(float(categoria)) == 4:
+        return 'Zapatos'
+    if int(float(categoria)) == 5:
+        return 'Papelerias'
+    if int(float(categoria)) == 6:
+        return 'Librerias y Bibliotecas'
+    if int(float(categoria)) == 7:
+        return 'Cultura'
+    if int(float(categoria)) == 8:
+        return 'Telefonia'
+    if int(float(categoria)) == 9:
+        return 'Comida'
+    if int(float(categoria)) == 10:
+        return 'Entretenimiento'
+    
+    return CODIGO_CATEGORIA_ANUNCIO_INVALIDO

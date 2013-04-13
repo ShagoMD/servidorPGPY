@@ -138,8 +138,13 @@ def actualizarDatosDelPerfil(correo_e,contrasenia,nombre,apellido,URLimagen,edad
         return usuario
     except Exception,err:
         return CODIGO_ACTUALIZACION_FALLIDA
-    
-    
+
+def obtenerPerfilDeUsuario(correo_e):
+    try:
+        usuario = User.objects.get(email=correo_e)
+        return usuario
+    except Exception,err:
+        return CODIGO_USUARIO_NO_EXISTE
 
 def iniciarSesion(correo_e,password):
     parametrosValidos=sonParametrosValidosRegistroUsuario(correo_e, password);

@@ -23,6 +23,7 @@ import re
 CARACTER_ESPACIO=re.compile('^\s+$');
 CAMPOS_REGISTRAR_USUARIO=["correo","contrasenia"];
 CAMPOS_ACTUALIZAR_DATOS_DEL_PERFIL = ["correo","contrasenia","nombre","apellido","URLimagen","edad","genero"]
+CAMPOS_OBTENER_PERFIL = ["correo"]
 
 CAMPOS_LISTAR_PDIs_USUARIO=["usuario"];
  
@@ -124,5 +125,25 @@ def peticionObtenerFavoritosDeUsuario(request):
         return render_to_json("PDI/respuesta/inicioSesion.json",{'codigo':100,'mensaje':PDI_MENSAJE_LISTA_FAVORITOS_OBTENIDA,'lista_pdi':listaFavoritos});
     else:
         return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':codigoRespuesta}); 
+    
      
+def peticionObtenerPerfilDeUsuario(request):
+    
+    if request.method == "POST":
+        exito, parametros = extract_params(request.POST,CAMPOS_OBTENER_PERFIL)
+        
+        if(exito):
             
+            obtenerPerfilDeUsuarioExitoso = obtenerPerfilDeUsuario(parametros["correo"])
+
+            if(obtenerPerfilDeUsuarioExitoso == CODIGO_USUARIO_NO_EXISTE):
+                return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':USUARIO_MENSAJE_USUARIO_NO_EXISTE});
+            else:
+                return render_to_json("PDI/respuesta/actualizacionUsuario.json",{'codigo':100, 'mensaje':USUARIO_MENSAJE_OBTENER_PERFIL, 'usuario':obtenerPerfilDeUsuarioExitoso});
+        else:
+            return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCORRECTOS});
+        
+    else:
+        return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_ERROR_TIPO_PETICION});
+    
+    

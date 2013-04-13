@@ -36,6 +36,7 @@ urlpatterns = patterns('',
  (r'^usuario/actualizar/$',peticionActualizarDatosDelPerfil),
  (r'^usuario/listapdi/$',peticionObtenerPDIsDeUsuario),
  (r'^usuario/listafavoritos/$',peticionObtenerFavoritosDeUsuario),
+ (r'^usuario/perfil/$',peticionObtenerPerfilDeUsuario),
  (r'^pdi/buscar/$', peticionObtenerListadoPuntosDeInteresSearch),
  (r'^pdi/categoria/$', peticionObtenerListadoPuntosDeInteresSearchCategoria),
  (r'^categoria/registrar/$', peticionRegistrarCategoria),
@@ -50,7 +51,6 @@ urlpatterns = patterns('',
  (r'^imagen/mostrar/$', peticionImagen),
  (r'^imagen/buscar/$', peticionObtenerURL),
  (r'^favorito/esfavorito/$',peticionEsPDIFavoritoDelUsuario),
- 
  #(r'^time/plus/(\d{1,2})/$', hours_ahead),
 
 
