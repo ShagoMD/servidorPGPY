@@ -197,7 +197,7 @@ def sonParametrosOpcionalesActualizarPDIVacios(parametros):
 
     return True;
 
-def registrarPuntoDeInteres(camposObligatorios):
+def registrarPuntoDeInteres(camposObligatorios, urlImagen):
     paramObligValidos=sonParametrosObligatoriosRegistrarPDIValidos(camposObligatorios);
     nuevoPDI=PuntoDeInteres();
     if paramObligValidos is not True:
@@ -223,7 +223,7 @@ def registrarPuntoDeInteres(camposObligatorios):
                
     try:   
         
-        guardarPuntoDeInteres(usuarioValido,posicionNueva,camposObligatorios,nuevoPDI);
+        guardarPuntoDeInteres(usuarioValido,posicionNueva,camposObligatorios,nuevoPDI,urlImagen);
         
         return CODIGO_REGISTRO_EXITOSO,nuevoPDI;    
     except Exception,err:
@@ -289,7 +289,7 @@ def eliminarTodosPuntosDeInteresDeUsuario(usuario):
     else:
         return CODIGO_NO_HAY_PDIs_REGISTRADOS;
     
-def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,pdi):                    
+def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,pdi,urlImagen):                    
     cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]))
 
     #campos obligatorios
@@ -298,7 +298,7 @@ def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,pdi):
     pdi.propietario=usuario;
     pdi.posicion=posicion;
     pdi.altitud=float(camposObligatorios['altitud']);
-    pdi.rutaImagen='http://jd732.gondor.co/geoAdds/media/logo/PuntoDeInteres.jpg'
+    pdi.rutaImagen=urlImagen
     pdi.save();
     
     return;
