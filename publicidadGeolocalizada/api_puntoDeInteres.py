@@ -297,7 +297,8 @@ def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,pdi):
     pdi.categoria=cat;
     pdi.propietario=usuario;
     pdi.posicion=posicion;
-    pdi.altitud=float(camposObligatorios['altitud']);  
+    pdi.altitud=float(camposObligatorios['altitud']);
+    pdi.rutaImagen='http://jd732.gondor.co/geoAdds/media/logo/PuntoDeInteres.jpg'
     pdi.save();
     
     return;
