@@ -1,6 +1,8 @@
 #from django.db import models
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
+from django.db.models import get_model
+import os
 # Create your models here.
 
 class Categoria(models.Model):

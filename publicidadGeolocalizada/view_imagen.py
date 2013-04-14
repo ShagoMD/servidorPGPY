@@ -20,65 +20,48 @@ from api_Imagen import *
 import imghdr
 from django import forms
 
-CAMPOS_IMAGEN = ["imagen"]
+CAMPOS_IMAGEN = ["correo"]
 CAMPOS_SEARCH = ["idImagen"]
 
 def peticionImagen(request):
 	if request.method == "POST":
-        
-		form = UploadFileForm(request.POST, request.FILES)
-        
-		if not form.is_valid():
 		
+		success, parametrosPeticion = extract_params(request.POST,CAMPOS_IMAGEN)
+		
+		if success:
+			
 			imagen = ImagenField()
-			
-			#file = params[0]
-			#size = (50,50)
-			imagen.imagen = request.FILES['imagen']
-			
-			nombre = imagen.imagen.name
-			url = imagen.imagen.url
-			
-			imagen.nombre = nombre
-			imagen.urlImagen = url
 	
-			fh = ContentFile(imagen.imagen.read())
-			#fh._set_size(500)
-			imagen.imagen.save(nombre, fh)
-			#i.file
-			#imghdr.what("/home/user/Pictures/Foto2x2.jpg")
-			imagen.save()
-			#imghdr.what(imagen.imagen)
-			
-			return render_to_response("PDI/respuesta/error.json",{'codigo':100, 'mensaje': request.build_absolute_uri('/geoAdds'+imagen.imagen.url) })
+			try:
+				imagen.imagen = request.FILES['imagen']
+				nueva = registrarImagen(imagen, parametrosPeticion["correo"])
+				#nombre = imagen.imagen.name
+				#url = imagen.imagen.url
+				
+				#imagen.nombre = nombre
+				#imagen.urlImagen = url
 		
+				#fh = ContentFile(imagen.imagen.read())
+				#imagen.imagen.save(nombre, fh)
+				#imagen.save()
+				
+				if nueva == CODIGO_IMAGEN_NO_ES_DEL_TIPO_VALIDO:
+					return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'La imagen no es un jpeg.'})
+				if nueva == CODIGO_NOMBRE_DE_IMAGEN_MUY_LARGO:
+					return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'El nombre de la imagen es mayor que 100 caracteres.'})
+				if nueva == CODIGO_USUARIO_NO_EXISTE:
+					return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'El usuario no existe.'})
+				
+				return render_to_response("PDI/respuesta/error.json",{'codigo':100, 'mensaje': request.build_absolute_uri('/geoAdds'+imagen.imagen.url) })
+				
+			except KeyError:
+				return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'El campo de imagen se encuentra vacio'})
 		else:
-			return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'El campo de imagen se encuentra vacio'})
-
+			return	render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'Los parametros son incorrectos'})
 	else: 
 		return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'La peticion no es post'})
 
-def peticionObtenerURL(request):
-	if request.method == "POST":
-		
-		params = extract_params(request.POST,CAMPOS_SEARCH)
-		
-		idImag = 2
-		
-		imagen = ImagenField()
-		
-		imagen = ImagenField.objects.get(id=idImag)
-		
-		return render_to_response("PDI/respuesta/error.json",{'codigo':100, 'mensaje': request.build_absolute_uri('/geoAdds'+imagen.imagen.url) })
-		
-	else:
-		return render_to_response("PDI/respuesta/error.json",{'codigo':200, 'mensaje':'La peticion no es post'})
 	
-class UploadFileForm(forms.Form):
-    #title = forms.CharField(max_length=50)
-    file  = forms.FileField()
-    
-    def process(self):
-        cd = self.cleaned_data
+
         
         
