@@ -48,6 +48,7 @@ urlpatterns = patterns('',
  (r'^anuncio/obtenerTodo/$', peticionObtenerTodosLosAnunciosDelPDI),
  (r'^favorito/marcar/$', peticionMarcarPDIcomoFavorito),
  (r'^imagen/mostrar/$', peticionImagen),
+ (r'^imagen/eliminarTodo/$', peticionEliminarTodasLasImagenes),
  (r'^favorito/esfavorito/$',peticionEsPDIFavoritoDelUsuario),
  
  #(r'^time/plus/(\d{1,2})/$', hours_ahead),
