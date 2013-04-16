@@ -34,7 +34,7 @@ def peticionRegistrarPDI(request):
 	if not exito:			
 		return render_to_json("PDI/respuesta/error.json",{'codigo':200,'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});						
 
-	codigoRespuesta,pdi=registrarPuntoDeInteres(parametrosObligatorios);		
+	codigoRespuesta,pdi=registrarPuntoDeInteres(parametrosObligatorios, request.build_absolute_uri('/geoAdds/media/logo/PuntoDeInteres.jpg'));		
 	
 	if(codigoRespuesta==CODIGO_REGISTRO_EXITOSO):					
 		return render_to_json("PDI/respuesta/pdi.json",{'codigo':100,'mensaje':PDI_MENSAJE_REGISTRO_EXITOSO,'pdi':pdi});

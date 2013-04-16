@@ -19,51 +19,158 @@ from PIL import Image
 import imghdr
 connection._rollback()
 
-TIPO_ENTERO = '1'
-TIPO_FLOTANTE = '2'
-TIPO_CADENA = '3'
+CODIGO_IMAGEN_NO_ES_DEL_TIPO_VALIDO = 0
+CODIGO_NOMBRE_DE_IMAGEN_MUY_LARGO = 1
+CODIGO_USUARIO_NO_EXISTE = 2
+CODIGO_PDI_NO_EXISTE = 2
+CODIGO_ANUNCIO_NO_EXISTE = 2
 
-MAX_ANUNCIOS = 10
-NO_HAY_ANUNCIOS = 0
-
-CODIGO_REGISTRO_EXITOSO = 0
-CODIGO_ELIMINAR_TODOS_EXITOSO = 0
-CODIGO_REGISTRO_FALLIDO = 1
-CODIGO_MODIFICA_FALLIDO = 1
-CODIGO_ELIMINA_FALLIDO = 1
-
-CODIGO_ID_ANUNCIO_INVALIDO = 2
-CODIGO_ID_PDI_INVALIDO = 3
-CODIGO_ID_USER_INVALIDO = 4
-CODIGO_TITULO_ANUNCIO_INVALIDO = 5
-CODIGO_DESCRIPCION_ANUNCIO_INVALIDO = 6
-CODIGO_CATEGORIA_ANUNCIO_INVALIDO = 7
-CODIGO_URL_IMAGEN_ANUNCIO_INVALIDO = 8
-
-CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS = 9
-CODIGO_PARAMETROS_OPCIONALES_VALIDOS = 10
-
-CODIGO_ANUNCIO_NO_ES_DEL_PDI = 11
-CODIGO_ANUNCIO_ES_DEL_PDI = 12
-CODIGO_PDI_NO_ES_DEL_USUARIO = 13
-CODIGO_PDI_ES_DEL_USUARIO = 14
-
-CODIGO_PDI_NO_EXISTE = 15
-CODIGO_ANUNCIO_NO_EXISTE = 16
-
-CODIGO_LIMITE_ANUNCIOS_ALCANZADO = 17
-CODIGO_NO_HAY_ANUNCIOS_REGISTRADOS = 18
-
-
-def registrarImagen(imagen):
+def registrarImagenUsuario(imagen, correo):
     
     tipoDeImagen = imghdr.what(imagen.imagen)
     
-    if tipoDeImagen == 'jpeg':
-    
-        nuevaImagen = ImagenField()
+    if tipoDeImagen == 'jpeg' or tipoDeImagen == 'jpg' or tipoDeImagen =='png':
         
-    return imagen
+        try:
+            usuario = User.objects.get(email=correo)
+        except User.DoesNotExist:
+            if correo == 'pgpy':
+                nombre = imagen.imagen.name
+                url = imagen.imagen.url
+                
+                imagen.nombre = nombre
+                imagen.urlImagen = url
+        
+                fh = ContentFile(imagen.imagen.read())
+                imagen.imagen.save(nombre, fh)
+                imagen.save()
+                
+                return imagen
+            return CODIGO_USUARIO_NO_EXISTE
+        
+        #nombre = imagen.imagen.name
+        nombreImagen = correo+'.jpeg'
+        #url = imagen.imagen.url
+        
+        if len(nombreImagen) >= 100:
+            return CODIGO_NOMBRE_DE_IMAGEN_MUY_LARGO
+        
+        try:
+            antiguaImagen = ImagenField.objects.get(nombre=nombreImagen)
+        except Exception,err:
+            imagen.nombre = nombreImagen
+            fh = ContentFile(imagen.imagen.read())
+            imagen.imagen.save(nombreImagen, fh)
+            imagen.urlImagen = imagen.imagen.url
+            imagen.save()
+            
+            return imagen
+        
+        antiguaImagen.imagen.delete()
+        antiguaImagen.delete()
+        
+        imagen.nombre = nombreImagen
+        fh = ContentFile(imagen.imagen.read())
+        imagen.imagen.save(nombreImagen, fh)
+        imagen.urlImagen = imagen.imagen.url
+        imagen.save()
+        
+        return imagen
+        
+    return CODIGO_IMAGEN_NO_ES_DEL_TIPO_VALIDO
     
     
+def registrarImagenPDI(imagen, idPDI):
     
+    tipoDeImagen = imghdr.what(imagen.imagen)
+    
+    if tipoDeImagen == 'jpeg' or tipoDeImagen == 'jpg' or tipoDeImagen =='png':  
+        
+        try:
+            pdi = PuntoDeInteres.objects.get(id=idPDI)
+        except Exception,err:
+            return CODIGO_PDI_NO_EXISTE
+        
+        #nombre = imagen.imagen.name
+        nombreImagen = idPDI+'-pdi.jpeg'
+        #url = imagen.imagen.url
+        
+        if len(nombreImagen) >= 100:
+            return CODIGO_NOMBRE_DE_IMAGEN_MUY_LARGO
+        
+        try:
+            antiguaImagen = ImagenField.objects.get(nombre=nombreImagen)
+        except Exception,err:
+            imagen.nombre = nombreImagen
+            fh = ContentFile(imagen.imagen.read())
+            imagen.imagen.save(nombreImagen, fh)
+            imagen.urlImagen = imagen.imagen.url
+            imagen.save()
+            
+            return imagen
+        
+        antiguaImagen.imagen.delete()
+        antiguaImagen.delete()
+        
+        imagen.nombre = nombreImagen
+        fh = ContentFile(imagen.imagen.read())
+        imagen.imagen.save(nombreImagen, fh)
+        imagen.urlImagen = imagen.imagen.url
+        imagen.save()
+        
+        return imagen
+        
+    return CODIGO_IMAGEN_NO_ES_DEL_TIPO_VALIDO    
+    
+def registrarImagenAnuncio(imagen, idAnuncio):
+    
+    tipoDeImagen = imghdr.what(imagen.imagen)
+    
+    if tipoDeImagen == 'jpeg' or tipoDeImagen == 'jpg' or tipoDeImagen =='png':
+        
+        try:
+            anuncio = Anuncio.objects.get(id=idAnuncio)
+        except Exception,err:
+            return CODIGO_ANUNCIO_NO_EXISTE
+        
+        #nombre = imagen.imagen.name
+        nombreImagen = idAnuncio+'-anuncio.jpeg'
+        #url = imagen.imagen.url
+        
+        if len(nombreImagen) >= 100:
+            return CODIGO_NOMBRE_DE_IMAGEN_MUY_LARGO
+        
+        try:
+            antiguaImagen = ImagenField.objects.get(nombre=nombreImagen)
+        except Exception,err:
+            imagen.nombre = nombreImagen
+            fh = ContentFile(imagen.imagen.read())
+            imagen.imagen.save(nombreImagen, fh)
+            imagen.urlImagen = imagen.imagen.url
+            imagen.save()
+            
+            return imagen
+        
+        antiguaImagen.imagen.delete()
+        antiguaImagen.delete()
+        
+        imagen.nombre = nombreImagen
+        fh = ContentFile(imagen.imagen.read())
+        imagen.imagen.save(nombreImagen, fh)
+        imagen.urlImagen = imagen.imagen.url
+        imagen.save()
+        
+        return imagen
+        
+    return CODIGO_IMAGEN_NO_ES_DEL_TIPO_VALIDO
+
+def eliminarTodo():
+    try:
+        listaDeImagenes = ImagenField.objects.all()
+        for imagen in listaDeImagenes:
+            imagen.imagen.delete()
+            imagen.delete()  
+        return
+    except Exception,err:
+        return
+    return

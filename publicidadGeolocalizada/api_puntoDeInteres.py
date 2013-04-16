@@ -225,7 +225,7 @@ def registrarPuntoDeInteres(camposObligatorios):
                
     try:   
         
-        guardarPuntoDeInteres(usuarioValido,posicionNueva,camposObligatorios,nuevoPDI);
+        guardarPuntoDeInteres(usuarioValido,posicionNueva,camposObligatorios,nuevoPDI,urlImagen);
         
         return CODIGO_REGISTRO_EXITOSO,nuevoPDI;    
     except Exception,err:
@@ -299,7 +299,8 @@ def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,pdi):
     pdi.categoria=cat;
     pdi.propietario=usuario;
     pdi.posicion=posicion;
-    pdi.altitud=float(camposObligatorios['altitud']);  
+    pdi.altitud=float(camposObligatorios['altitud']);
+    pdi.rutaImagen=urlImagen
     pdi.save();
     
     return;
