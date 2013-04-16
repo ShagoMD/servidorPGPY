@@ -197,9 +197,7 @@ def sonParametrosOpcionalesActualizarPDIVacios(parametros):
 
     return True;
 
-def registrarPuntoDeInteres(camposObligatorios):
-    #import pdb
-    #pdb.set_trace()
+def registrarPuntoDeInteres(camposObligatorios, urlImagen):
     paramObligValidos=sonParametrosObligatoriosRegistrarPDIValidos(camposObligatorios);
     nuevoPDI=PuntoDeInteres();
     if paramObligValidos is not True:
@@ -220,14 +218,14 @@ def registrarPuntoDeInteres(camposObligatorios):
     
     try:
         cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]));
-    except Exception,err:                
+    except Exception,err:
         return PDI_MENSAJE_CATEGORIA_INVALIDA,nuevoPDI;
                
-    try:   
+    try:
         
         guardarPuntoDeInteres(usuarioValido,posicionNueva,camposObligatorios,nuevoPDI,urlImagen);
         
-        return CODIGO_REGISTRO_EXITOSO,nuevoPDI;    
+        return CODIGO_REGISTRO_EXITOSO,nuevoPDI;
     except Exception,err:
         return PDI_MENSAJE_REGISTRO_FALLIDO,nuevoPDI;
 
@@ -291,7 +289,7 @@ def eliminarTodosPuntosDeInteresDeUsuario(usuario):
     else:
         return CODIGO_NO_HAY_PDIs_REGISTRADOS;
     
-def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,pdi):                    
+def guardarPuntoDeInteres(usuario,posicion,camposObligatorios,pdi,urlImagen):
     cat=Categoria.objects.get(pk=int(camposObligatorios["categoria"]))
 
     #campos obligatorios
