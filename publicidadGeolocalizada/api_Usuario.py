@@ -82,19 +82,11 @@ def registrarUsuario(correo_e,password):
         return CODIGO_ERROR_CREACION_USUARIO;
 
 
-<<<<<<< HEAD
 #Actualizac�n de datos del perfil de Usuario
 def actualizarDatosDelPerfil(correo_e,contrasenia,nombre,apellido,URLimagen,edad,genero):
     
     try:
         #Despu�s de validar que el ID del usuario no este vac�o y que sea del tipo correcto, obtengo al usuario
-=======
-#Actualizacion de datos del perfil de Usuario
-def actualizarDatosDelPerfil(correo_e,contrasenia,nombre,apellido,URLimagen,edad,genero):
-    
-    try:
-        #Despues de validar que el ID del usuario no este vac�o y que sea del tipo correcto, obtengo al usuario
->>>>>>> eric_iteracion3.2
         usuario = User.objects.get(email=correo_e)
     except User.DoesNotExist:
         return CODIGO_USUARIO_NO_EXISTE
@@ -152,13 +144,9 @@ def obtenerPerfilDeUsuario(correo_e):
         usuario = User.objects.get(email=correo_e)
         return usuario
     except Exception,err:
-<<<<<<< HEAD
-        return CODIGO_USUARIO_NO_EXISTE
-=======
+
         return CODIGO_USUARIO_NO_EXISTE  
     
->>>>>>> eric_iteracion3.2
-
 def iniciarSesion(correo_e,password):
     parametrosValidos=sonParametrosValidosRegistroUsuario(correo_e, password);
     if parametrosValidos is not True:
