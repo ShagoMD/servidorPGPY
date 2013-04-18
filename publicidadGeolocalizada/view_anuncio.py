@@ -18,7 +18,7 @@ import re
 
 CARACTER_ESPACIO=re.compile('^\s+$');
 CAMPOS_REGISTRAR_ANUNCIO=["idPDI","correo_e","titulo","descripcion","categoria","URLimagen"]
-CAMPOS_MODIFICAR_ANUNCIO=["idAnuncio","idPDI","correo_e","titulo","descripcion","categoria","URLimagen"]
+CAMPOS_MODIFICAR_ANUNCIO=["idAnuncio","idPDI","correo_e","titulo","descripcion","URLimagen"]
 CAMPOS_ELIMINAR_ANUNCIO=["idAnuncio","idPDI","correo_e"]
 CAMPOS_ELIMINAR_TODOS_LOS_ANUNCIOS=["idPDI","correo_e"]
 CAMPOS_OBTENER_TODOS_LOS_ANUNCIOS_DEL_PDI=["idPDI"]
@@ -71,9 +71,9 @@ def peticionModificarAnuncio(request):
         if(success):
             
             if(len(params["URLimagen"])==0):
-                modificacionExitoso = modificarAnuncio(params["idAnuncio"],params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["categoria"],request.build_absolute_uri('/geoAdds/media/logo/a_nuncio.jpg'))
+                modificacionExitoso = modificarAnuncio(params["idAnuncio"],params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],request.build_absolute_uri('/geoAdds/media/logo/a_nuncio.jpg'))
             else:
-                modificacionExitoso = modificarAnuncio(params["idAnuncio"],params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["categoria"],params["URLimagen"])
+                modificacionExitoso = modificarAnuncio(params["idAnuncio"],params["idPDI"],params["correo_e"],params["titulo"],params["descripcion"],params["URLimagen"])
             
             if(modificacionExitoso == CODIGO_ID_ANUNCIO_INVALIDO):
                 return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':ANUNCIO_MENSAJE_ID_ANUNCIO_INVALIDO})

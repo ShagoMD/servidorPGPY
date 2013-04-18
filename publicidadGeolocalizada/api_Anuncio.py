@@ -97,9 +97,9 @@ def registrarAnuncio(idPDI,correo_e,titulo,descripcion,categoria,URLimagen):
     except Exception,err:
         return CODIGO_REGISTRO_FALLIDO
 
-def modificarAnuncio(idAnuncio,idPDI,correo_e,titulo,descripcion,categoria,URLimagen):
+def modificarAnuncio(idAnuncio,idPDI,correo_e,titulo,descripcion,URLimagen):
     
-    parametrosObligatorios = sonParametrosObligatoriosCambio(idAnuncio,idPDI,correo_e,titulo,descripcion,categoria)
+    parametrosObligatorios = sonParametrosObligatoriosCambio(idAnuncio,idPDI,correo_e,titulo,descripcion)
     parametrosOpcionales = sonParametrosOpcionales(URLimagen)
     
     if parametrosObligatorios != CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS:
@@ -107,11 +107,6 @@ def modificarAnuncio(idAnuncio,idPDI,correo_e,titulo,descripcion,categoria,URLim
     
     if parametrosOpcionales != CODIGO_PARAMETROS_OPCIONALES_VALIDOS:
         return parametrosOpcionales
-    
-    nuevaCategoria = parserCategoria(categoria)
-    
-    if nuevaCategoria == CODIGO_CATEGORIA_ANUNCIO_INVALIDO:
-        return CODIGO_CATEGORIA_ANUNCIO_INVALIDO 
     
     PDIdelUsuario = esPDIdelUsuario(idPDI,correo_e)
     totalDeAnuncios = obtenerElTotalDeAnunciosDelPDI(idPDI)
@@ -132,7 +127,6 @@ def modificarAnuncio(idAnuncio,idPDI,correo_e,titulo,descripcion,categoria,URLim
         anuncio = Anuncio.objects.get(id=idAnuncio)
         anuncio.titulo = titulo
         anuncio.descripcion = descripcion
-        anuncio.categoria = nuevaCategoria
         anuncio.rutaImagen = URLimagen
         anuncio.save()  
         return anuncio
@@ -271,7 +265,7 @@ def sonParametrosObligatoriosTodosLosAnuncios(idPDI):
 
     return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
 
-def sonParametrosObligatoriosCambio(idAnuncio,idPDI,correo_e,titulo,descripcion,categoria):
+def sonParametrosObligatoriosCambio(idAnuncio,idPDI,correo_e,titulo,descripcion):
     
     if len(idAnuncio)==0 or not esTipoValido(idAnuncio,TIPO_ENTERO):
         return CODIGO_ID_ANUNCIO_INVALIDO
@@ -283,8 +277,7 @@ def sonParametrosObligatoriosCambio(idAnuncio,idPDI,correo_e,titulo,descripcion,
         return CODIGO_TITULO_ANUNCIO_INVALIDO
     if len(descripcion)==0 or not esTipoValido(descripcion,TIPO_CADENA):
         return CODIGO_DESCRIPCION_ANUNCIO_INVALIDO
-    if len(categoria)==0 or not esTipoValido(categoria,TIPO_ENTERO):
-        return CODIGO_CATEGORIA_ANUNCIO_INVALIDO
+    
     return CODIGO_PARAMETROS_OBLIGATORIOS_VALIDOS
 
 def sonParametrosObligatoriosEliminar(idAnuncio,idPDI,correo_e):
