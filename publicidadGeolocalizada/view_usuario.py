@@ -46,7 +46,6 @@ def peticionRegistrarUsuario(request):
         return render_to_json("PDI/respuesta/error.json",{'codigo':200, 'mensaje':GENERAL_MENSAJE_PARAMETROS_INCOMPLETOS});                     
     
     codigoRespuesta,usuario=registrarUsuario(parametros["correo"],parametros["contrasenia"]);
-
     if(codigoRespuesta==CODIGO_OPERACION_EXITOSA):            
         return render_to_json("PDI/respuesta/registroUsuario.json",{'codigo':100,'mensaje':USUARIO_MENSAJE_REGISTRO_EXITOSO,'usuario':usuario});       
     else:
